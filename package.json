@@ -7,12 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "p:fix": "npx prettier \"src/{app,environments}/**/*{.ts,.html,.scss}\" --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npx run p:fix"
-    }
+    "p:fix": "npx prettier \"src/{app,environments}/**/*{.ts,.html,.scss}\" --write",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
