@@ -7,11 +7,11 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "p:fix": "prettier --config ./.prettierrc --write \"src/{app,environments}/**/*{.ts,.html,.scss}\""
+    "p:fix": "npx prettier \"src/{app,environments}/**/*{.ts,.html,.scss}\" --write"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run p:fix"
+      "pre-commit": "npx run p:fix"
     }
   },
   "private": true,
@@ -36,7 +36,7 @@
     "@angular/compiler-cli": "~13.3.0",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
-    "husky": "^7.0.4",
+    "husky": "^7.0.0",
     "jasmine-core": "~4.0.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
