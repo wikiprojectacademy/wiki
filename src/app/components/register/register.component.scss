@@ -1,0 +1,24 @@
+.form-container {
+  max-width: 600px;
+  max-height: 600px;
+  margin: 2em auto;
+}
+
+mat-toolbar {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2em;
+}
+
+mat-form-field {
+  margin-bottom: 1em;
+}
+
+.submit-button {
+  margin: 1em;
+}
