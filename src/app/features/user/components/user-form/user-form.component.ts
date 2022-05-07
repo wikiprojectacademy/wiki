@@ -1,0 +1,107 @@
+import { Component } from '@angular/core';
+import {
+	AbstractControl,
+	FormBuilder,
+	FormGroup,
+	Validators
+} from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+import { passwordValidation } from '../../../../shared/validators/validations';
+
+@Component({
+	selector: 'app-user-form',
+	templateUrl: './user-form.component.html',
+	styleUrls: ['./user-form.component.scss']
+})
+export class UserFormComponent {
+	public form: FormGroup;
+	public hide: boolean = true;
+	private isError: boolean;
+	public roles = [
+		{ id: 'superAdmin', name: 'superAdmin' },
+		{ id: 'admin', name: 'admin' },
+		{ id: 'user', name: 'user' }
+	];
+
+	constructor(
+		private formBuilder: FormBuilder,
+		private userService: UserService,
+		private router: Router
+	) {
+		this.form = formBuilder.group({
+			firstName: [
+				'',
+				[Validators.required, Validators.minLength(2), Validators.maxLength(25)]
+			],
+			lastName: [
+				'',
+				[Validators.required, Validators.minLength(2), Validators.maxLength(25)]
+			],
+			email: ['', [Validators.required, Validators.email]],
+			password: [
+				'',
+				[
+					Validators.required,
+					passwordValidation,
+					control => this.validatePasswords(control, 'password1')
+				]
+			],
+			confirmPassword: [
+				'',
+				[
+					Validators.required,
+					control => this.validatePasswords(control, 'password2')
+				]
+			],
+			role: ['']
+		});
+	}
+
+	get password(): AbstractControl {
+		return this.form.get('password');
+	}
+
+	get confirmPassword(): AbstractControl {
+		return this.form.get('confirmPassword');
+	}
+
+	validatePasswords(control: AbstractControl, name: string) {
+		if (
+			this.form === undefined ||
+			this.password.value === '' ||
+			this.confirmPassword.value === ''
+		) {
+			return null;
+		} else if (this.password.value === this.confirmPassword.value) {
+			if (
+				name === 'password' &&
+				this.confirmPassword.hasError('passwordMismatch')
+			) {
+				this.password.setErrors(null);
+				this.confirmPassword.updateValueAndValidity();
+			} else if (
+				name === 'confirmPassword' &&
+				this.password.hasError('passwordMismatch')
+			) {
+				this.confirmPassword.setErrors(null);
+				this.password.updateValueAndValidity();
+			}
+			return null;
+		} else {
+			return {
+				passwordMismatch: { value: 'The provided passwords do not match' }
+			};
+		}
+	}
+
+	addUser() {
+		if (this.form.valid) {
+			this.userService.addUser(this.form.value);
+			this.router.navigate(['/user/list']);
+		} else {
+			this.isError = true;
+			console.log('False');
+		}
+	}
+}

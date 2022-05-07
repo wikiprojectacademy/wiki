@@ -1,3 +1,8 @@
+<a
+	routerLink="../add"
+	routerLinkActive="active"
+	>Add new user</a
+>
 <div class="mat-elevation-z8">
 	<table
 		mat-table
@@ -86,9 +91,9 @@
 					mat-mini-fab
 					color="primary"
 					matTooltip="Info about the action"
-					(click)="onEdit(element.id)"
+					routerLink="/user/edit/{{ element.id }}"
 				>
-					<mat-icon>menu</mat-icon>
+					<mat-icon>edit</mat-icon>
 				</button>
 				<button
 					mat-mini-fab
@@ -96,7 +101,7 @@
 					matTooltip="Info about the action"
 					(click)="onDelete(element.id)"
 				>
-					<mat-icon>filter_list</mat-icon>
+					<mat-icon>delete</mat-icon>
 				</button>
 			</td></ng-container
 		>
@@ -118,3 +123,4 @@
 	>
 	</mat-paginator>
 </div>
+<router-outlet></router-outlet>

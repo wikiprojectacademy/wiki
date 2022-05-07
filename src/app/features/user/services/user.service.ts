@@ -4,7 +4,7 @@ import { IUserModel } from '../models/user.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class UserListService {
+export class UserService {
 	private users: IUserModel[] = [
 		{
 			id: '1',
@@ -133,6 +133,11 @@ export class UserListService {
 	getUsers(): IUserModel[] {
 		return this.users;
 	}
+
+	addUser(user): void {
+		this.users.push({ ...user, id: this.users.length + 1 });
+	}
+
 	deleteUser(id: string): void {
 		this.users = this.users.filter(function (item) {
 			return item.id !== id;

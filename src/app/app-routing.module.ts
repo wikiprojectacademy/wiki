@@ -4,11 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
 	{ path: '', redirectTo: '/authorization', pathMatch: 'full' },
 	{
-		path: 'user-list',
+		path: 'user',
 		loadChildren: () =>
-			import('./features/user-list/user-list.module').then(
-				m => m.UserListModule
-			)
+			import('./features/user/user.module').then(m => m.UserModule)
 	}
 ];
 
