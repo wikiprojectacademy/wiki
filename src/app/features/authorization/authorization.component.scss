@@ -1,0 +1,19 @@
+@import 'variable';
+
+.container {
+	padding: 0 15px;
+	background-color: $mainColor;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	flex-wrap: wrap;
+	height: 100%;
+
+	.username {
+	}
+
+	.test {
+		display: block;
+	}
+}
