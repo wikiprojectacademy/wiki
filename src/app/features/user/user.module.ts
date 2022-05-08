@@ -10,18 +10,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserAddComponent } from './components/user-add/user-add.component';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
-import { UserFormComponent } from './components/user-form/user-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
-	declarations: [
-		UserListComponent,
-		UserAddComponent,
-		UserEditComponent,
-		UserFormComponent
-	],
+	declarations: [UserListComponent, UserAddComponent, UserEditComponent],
 	imports: [
 		CommonModule,
 		UserRoutingModule,

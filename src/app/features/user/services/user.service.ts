@@ -134,12 +134,21 @@ export class UserService {
 		return this.users;
 	}
 
-	getUserById(id): void {
-		this.users = this.getUsers();
+	getUserById(id): IUserModel {
+		return this.users.filter(item => item.id === id)[0];
 	}
 
 	addUser(user): void {
 		this.users.push({ ...user, id: this.users.length + 1 });
+	}
+
+	editUser(user): void {
+		this.users = this.users.map(item => {
+			if (item.id === user.id) {
+				return { ...item, ...user };
+			}
+			return item;
+		});
 	}
 
 	deleteUser(id: string): void {

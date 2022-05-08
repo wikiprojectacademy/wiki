@@ -1,25 +1,69 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { IUserModel } from '../../models/user.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	selector: 'app-user-edit',
 	templateUrl: './user-edit.component.html',
 	styleUrls: ['./user-edit.component.scss']
 })
-export class UserEditComponent implements OnInit {
-	public users: IUserModel[] = [];
-	public id: string = '2';
-	constructor(private userService: UserService) {
-		this.userService.getUsers();
-		this.getUserById(this.id);
-	}
+export class UserEditComponent implements OnInit, OnDestroy {
+	public user: IUserModel;
+	public form: FormGroup;
+	public roles = [
+		{ id: 'superAdmin', name: 'superAdmin' },
+		{ id: 'admin', name: 'admin' },
+		{ id: 'user', name: 'user' }
+	];
+	private routeSub: Subscription;
+	private isError: boolean;
 
-	getUserById(id: string): any {
-		this.users = this.users.filter(function (item) {
-			return item.id === id;
+	constructor(
+		private userService: UserService,
+		private formBuilder: FormBuilder,
+		private router: Router,
+		private route: ActivatedRoute
+	) {
+		this.form = formBuilder.group({
+			id: [],
+			firstName: [
+				'',
+				[Validators.required, Validators.minLength(2), Validators.maxLength(25)]
+			],
+			lastName: [
+				'',
+				[Validators.required, Validators.minLength(2), Validators.maxLength(25)]
+			],
+			email: ['', [Validators.required, Validators.email]],
+			role: ['']
 		});
 	}
 
-	ngOnInit() {}
+	ngOnInit(): void {
+		this.routeSub = this.route.params.subscribe(params => {
+			this.getUserById(params['id']);
+		});
+	}
+
+	getUserById(id: string): void {
+		this.user = this.userService.getUserById(id);
+		this.form.patchValue(this.user);
+	}
+
+	editUser() {
+		if (this.form.valid) {
+			this.userService.editUser(this.form.value);
+			this.router.navigate(['/user/list']);
+		} else {
+			this.isError = true;
+			console.log('False');
+		}
+	}
+
+	ngOnDestroy(): void {
+		this.routeSub.unsubscribe();
+	}
 }
