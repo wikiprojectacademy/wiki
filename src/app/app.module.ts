@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './core/components/header/header.component';
 import { CoreModule } from './core/core.module';
 import { AuthorizationModule } from './features/authorization/authorization.module';
+import { ProfileModule } from './features/profile/profile-page.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -16,7 +17,8 @@ import { AppRoutingModule } from './app-routing.module';
 		AppRoutingModule,
 		CoreModule,
 		AuthorizationModule,
-		MatToolbarModule
+		MatToolbarModule,
+		ProfileModule
 	],
 	providers: [],
 	exports: [HeaderComponent],

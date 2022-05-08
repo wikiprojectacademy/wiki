@@ -1,0 +1,46 @@
+<div class="container">
+	<p>Edit Profile</p>
+	<form
+		(ngSubmit)="changeProfile()"
+		[formGroup]="changeProfileForm"
+	>
+		<mat-form-field appearance="fill">
+			<mat-label>First Name</mat-label>
+			<input
+				matInput
+				formControlName="firstName"
+				placeholder="Your first name"
+				value="Data.firstname"
+			/>
+		</mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Last Name</mat-label>
+			<input
+				matInput
+				formControlName="lastName"
+				placeholder="Your last name"
+				value="Data.lastname"
+			/>
+		</mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Email</mat-label>
+			<input
+				matInput
+				formControlName="email"
+				placeholder="Your email"
+				value="Data.email"
+			/>
+		</mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Password</mat-label>
+			<input
+				matInput
+				formControlName="password"
+				placeholder="Password"
+				value="Data.password"
+			/>
+		</mat-form-field>
+
+		<button type="submit">Save</button>
+	</form>
+</div>
