@@ -1,0 +1,93 @@
+<div class="form-container">
+	<mat-card>
+		<mat-toolbar color="primary">Login</mat-toolbar>
+		<form
+			[formGroup]="loginForm"
+			(ngSubmit)="onSubmit()"
+		>
+			<mat-form-field appearance="fill">
+				<mat-label>Email</mat-label>
+				<input
+					matInput
+					formControlName="email"
+				/>
+				<mat-error
+					*ngIf="
+						loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+					"
+				>
+					{{ getErrorMessage('email') }}</mat-error
+				>
+			</mat-form-field>
+
+			<mat-form-field appearance="fill">
+				<mat-label>Password</mat-label>
+				<input
+					matInput
+					formControlName="password"
+					[type]="hide ? 'password' : 'text'"
+				/>
+				<button
+					type="button"
+					mat-icon-button
+					matSuffix
+					(click)="hide = !hide"
+					[attr.aria-label]="'Hide password'"
+					[attr.aria-pressed]="hide"
+				>
+					<mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+				</button>
+				<mat-error
+					*ngIf="
+						loginForm.get('password')?.invalid &&
+						loginForm.get('password')?.touched
+					"
+				>
+					{{ getErrorMessage('password') }}
+				</mat-error>
+			</mat-form-field>
+
+			<button
+				class="submit-button"
+				mat-raised-button
+				color="primary"
+				type="submit"
+				[disabled]="loginForm.invalid"
+			>
+				Login
+			</button>
+		</form>
+
+		<span class="or"><span class="orInner">Or</span></span>
+
+		<!-- Continue with Google -->
+		<div class="google-button-container">
+			<button
+				class="google-button"
+				mat-raised-button
+				color="primary"
+				type="button"
+				(click)="onGoogleAuth()"
+			>
+				<mat-icon
+					svgIcon="google"
+					aria-hidden="false"
+					aria-label="Google icon"
+				></mat-icon>
+				Continue with Google
+			</button>
+		</div>
+	</mat-card>
+
+	<!-- If not register -->
+	<div class="redirectToRegister">
+		<span
+			>Don't have an account?
+			<span
+				class="redirect"
+				routerLink="/authorization/register"
+				>Register</span
+			></span
+		>
+	</div>
+</div>

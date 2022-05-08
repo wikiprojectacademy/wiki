@@ -10,11 +10,11 @@ import { FormControl } from '@angular/forms';
 export class AuthorizationComponent implements OnInit {
 	usernameControl: FormControl;
 
-	constructor(private currentUserService: CurrentUserService) {}
-
-	ngOnInit(): void {
+	constructor(private currentUserService: CurrentUserService) {
 		this.usernameControl = new FormControl(
 			this.currentUserService.getUsername()
 		);
 	}
+
+	ngOnInit(): void {}
 }
