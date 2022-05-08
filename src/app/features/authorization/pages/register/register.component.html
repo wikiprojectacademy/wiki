@@ -11,6 +11,7 @@
 					matInput
 					formControlName="firstName"
 				/>
+
 				<mat-error
 					*ngIf="
 						registerForm.get('firstName')?.invalid &&
@@ -58,17 +59,19 @@
 				<input
 					matInput
 					formControlName="password"
-					[type]="hide ? 'password' : 'text'"
+					[type]="isPasswordHidden ? 'password' : 'text'"
 				/>
 				<button
 					type="button"
 					mat-icon-button
 					matSuffix
-					(click)="hide = !hide"
+					(click)="isPasswordHidden = !isPasswordHidden"
 					[attr.aria-label]="'Hide password'"
-					[attr.aria-pressed]="hide"
+					[attr.aria-pressed]="isPasswordHidden"
 				>
-					<mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+					<mat-icon>{{
+						isPasswordHidden ? 'visibility_off' : 'visibility'
+					}}</mat-icon>
 				</button>
 				<mat-error
 					*ngIf="
@@ -91,5 +94,37 @@
 				Register
 			</button>
 		</form>
+
+		<span class="or"><span class="orInner">Or</span></span>
+
+		<!-- Continue with Google -->
+		<div class="google-button-container">
+			<button
+				class="google-button"
+				mat-raised-button
+				color="primary"
+				type="button"
+				(click)="onGoogleAuth()"
+			>
+				<mat-icon
+					svgIcon="google"
+					aria-hidden="false"
+					aria-label="Google icon"
+				></mat-icon>
+				Continue with Google
+			</button>
+		</div>
 	</mat-card>
+
+	<!-- If already register -->
+	<div class="redirectToLogin">
+		<span
+			>Already have an account?
+			<span
+				class="redirect"
+				routerLink="/authorization/login"
+				>Login</span
+			></span
+		>
+	</div>
 </div>

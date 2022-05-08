@@ -12,13 +12,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { LoginComponent } from './pages/login/login.component';
 
 /**
  * Authorization related module
  */
 @NgModule({
 	// List here all component related to authorization
-	declarations: [AuthorizationComponent, RegisterComponent],
+	declarations: [AuthorizationComponent, RegisterComponent, LoginComponent],
 	// Import here all module, that you need to implement your functionality
 	imports: [
 		BrowserModule,
