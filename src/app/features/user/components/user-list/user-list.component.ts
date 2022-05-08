@@ -50,10 +50,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
 		}
 	}
 
-	onEdit(id: string): void {
-		console.log(id);
-	}
-
 	onDelete(id: string): void {
 		this.userService.deleteUser(id);
 		this.getUsers();

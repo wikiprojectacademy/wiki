@@ -134,6 +134,10 @@ export class UserService {
 		return this.users;
 	}
 
+	getUserById(id): void {
+		this.users = this.getUsers();
+	}
+
 	addUser(user): void {
 		this.users.push({ ...user, id: this.users.length + 1 });
 	}
