@@ -57,5 +57,37 @@
 				Login
 			</button>
 		</form>
+
+		<span class="or"><span class="orInner">Or</span></span>
+
+		<!-- Continue with Google -->
+		<div class="google-button-container">
+			<button
+				class="google-button"
+				mat-raised-button
+				color="primary"
+				type="button"
+				(click)="onGoogleAuth()"
+			>
+				<mat-icon
+					svgIcon="google"
+					aria-hidden="false"
+					aria-label="Google icon"
+				></mat-icon>
+				Continue with Google
+			</button>
+		</div>
 	</mat-card>
+
+	<!-- If not register -->
+	<div class="redirectToRegister">
+		<span
+			>Don't have an account?
+			<span
+				class="redirect"
+				routerLink="/authorization/register"
+				>Register</span
+			></span
+		>
+	</div>
 </div>

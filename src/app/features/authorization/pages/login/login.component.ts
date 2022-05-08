@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
+import { GOOGLE_ICON } from '../../../../../assets/icons/googleIcon';
+import { PASSWORD_REGEXP } from '../../models/passwordRegExp';
 
 @Component({
 	selector: 'app-login',
@@ -10,22 +14,28 @@ export class LoginComponent {
 	public loginForm: FormGroup;
 	public hide: boolean = true;
 
-	public passwordRegexp: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+	constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+		iconRegistry.addSvgIconLiteral(
+			'google',
+			sanitizer.bypassSecurityTrustHtml(GOOGLE_ICON)
+		);
 
-	constructor() {
 		this.loginForm = new FormGroup({
 			email: new FormControl(null, [Validators.required, Validators.email]),
 			password: new FormControl(null, [
 				Validators.required,
-				Validators.pattern(this.passwordRegexp)
+				Validators.pattern(PASSWORD_REGEXP)
 			])
 		});
 	}
 
 	onSubmit() {
-		console.log('loginForm: ', this.loginForm);
-		console.log('loginForm: ', this.loginForm.value);
+		// console.log('loginForm: ', this.loginForm.value);
 		this.loginForm.reset();
+	}
+
+	onGoogleAuth() {
+		// console.log('Auth with google');
 	}
 
 	getErrorMessage(inputField: string): string | undefined {
