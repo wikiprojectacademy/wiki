@@ -1,7 +1,19 @@
 <div class="container">
 	<div class="buttons">
-		<button [routerLink]="'about'">About Me</button>
-		<button [routerLink]="'edit'">Edit Profile</button>
+		<button
+			mat-raised-button
+			color="primary"
+			[routerLink]="'about'"
+		>
+			About Me
+		</button>
+		<button
+			mat-raised-button
+			color="primary"
+			[routerLink]="'edit'"
+		>
+			Edit Profile
+		</button>
 		<!-- <button></button> -->
 	</div>
 	<router-outlet></router-outlet>

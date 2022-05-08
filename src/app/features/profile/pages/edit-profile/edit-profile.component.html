@@ -12,6 +12,13 @@
 				placeholder="Your first name"
 				value="Data.firstname"
 			/>
+			<mat-error
+				*ngIf="
+					changeProfileForm.get('firstName')?.invalid &&
+					changeProfileForm.get('firstName')?.touched
+				"
+				>{{ getNameErrorMessage('firstName') }}
+			</mat-error>
 		</mat-form-field>
 		<mat-form-field appearance="fill">
 			<mat-label>Last Name</mat-label>
@@ -21,6 +28,13 @@
 				placeholder="Your last name"
 				value="Data.lastname"
 			/>
+			<mat-error
+				*ngIf="
+					changeProfileForm.get('lastName')?.invalid &&
+					changeProfileForm.get('lastName')?.touched
+				"
+				>{{ getNameErrorMessage('lastName') }}</mat-error
+			>
 		</mat-form-field>
 		<mat-form-field appearance="fill">
 			<mat-label>Email</mat-label>
@@ -30,17 +44,50 @@
 				placeholder="Your email"
 				value="Data.email"
 			/>
+			<mat-error
+				*ngIf="
+					changeProfileForm.get('email')?.invalid &&
+					changeProfileForm.get('email')?.touched
+				"
+				>{{ getNameErrorMessage('email') }}</mat-error
+			>
 		</mat-form-field>
 		<mat-form-field appearance="fill">
 			<mat-label>Password</mat-label>
 			<input
 				matInput
 				formControlName="password"
-				placeholder="Password"
+				placeholder="Enter tour password"
 				value="Data.password"
+				[type]="isPasswordHidden ? 'password' : 'text'"
+				[attr.aria-label]="'Hide password'"
+				[attr.aria-pressed]="isPasswordHidden"
 			/>
+			<mat-error
+				*ngIf="
+					changeProfileForm.get('password')?.invalid &&
+					changeProfileForm.get('password')?.touched
+				"
+				>{{ getNameErrorMessage('password') }}</mat-error
+			>
+			<button
+				mat-icon-button
+				matSuffix
+				(click)="isPasswordHidden = !isPasswordHidden"
+			>
+				<mat-icon>{{
+					isPasswordHidden ? 'visibility_off' : 'visibility'
+				}}</mat-icon>
+			</button>
 		</mat-form-field>
 
-		<button type="submit">Save</button>
+		<button
+			mat-raised-button
+			color="primary"
+			type="submit"
+			[disabled]="changeProfileForm.invalid"
+		>
+			Save
+		</button>
 	</form>
 </div>
