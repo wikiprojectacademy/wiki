@@ -10,7 +10,8 @@
 					formControlName="firstName"
 				/>
 				<mat-error *ngIf="form.controls['firstName'].invalid"
-					>First name must be at least 2 characters long</mat-error
+					>First name must be at least 2 characters long and at most
+					25</mat-error
 				>
 			</mat-form-field>
 
@@ -22,7 +23,8 @@
 					formControlName="lastName"
 				/>
 				<mat-error *ngIf="form.controls['lastName'].invalid"
-					>Last name must be at least 2 characters long</mat-error
+					>Last name must be at least 2 characters long and at most
+					25</mat-error
 				>
 			</mat-form-field>
 

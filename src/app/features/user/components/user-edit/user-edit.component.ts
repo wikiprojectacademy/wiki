@@ -4,6 +4,7 @@ import { IUserModel } from '../../models/user.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SnackBarService } from '@shared/services/snackbar.service';
 
 @Component({
 	selector: 'app-user-edit',
@@ -13,19 +14,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class UserEditComponent implements OnInit, OnDestroy {
 	public user: IUserModel;
 	public form: FormGroup;
+	//todo will change after role module added
 	public roles = [
 		{ id: 'superAdmin', name: 'superAdmin' },
 		{ id: 'admin', name: 'admin' },
 		{ id: 'user', name: 'user' }
 	];
 	private routeSub: Subscription;
-	private isError: boolean;
 
 	constructor(
 		private userService: UserService,
 		private formBuilder: FormBuilder,
 		private router: Router,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private snackBService: SnackBarService
 	) {
 		this.form = formBuilder.group({
 			id: [],
@@ -53,13 +55,14 @@ export class UserEditComponent implements OnInit, OnDestroy {
 		this.form.patchValue(this.user);
 	}
 
-	editUser() {
+	editUser(): void {
 		if (this.form.valid) {
 			this.userService.editUser(this.form.value);
 			this.router.navigate(['/user/list']);
 		} else {
-			this.isError = true;
-			console.log('False');
+			this.snackBService.openSnackBar(
+				'To edit a user, you must correctly fill in all required fields'
+			);
 		}
 	}
 

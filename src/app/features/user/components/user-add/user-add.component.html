@@ -10,7 +10,8 @@
 					formControlName="firstName"
 				/>
 				<mat-error *ngIf="form.controls['firstName'].invalid"
-					>First name must be at least 2 characters long</mat-error
+					>First name must be at least 2 characters long and at most
+					25</mat-error
 				>
 			</mat-form-field>
 
@@ -22,7 +23,8 @@
 					formControlName="lastName"
 				/>
 				<mat-error *ngIf="form.controls['lastName'].invalid"
-					>Last name must be at least 2 characters long</mat-error
+					>Last name must be at least 2 characters long and at most
+					25</mat-error
 				>
 			</mat-form-field>
 
@@ -42,17 +44,18 @@
 				<mat-label>Enter your password</mat-label>
 				<input
 					matInput
-					[type]="hide ? 'password' : 'text'"
+					[type]="isHide ? 'password' : 'text'"
 					formControlName="password"
 				/>
 				<button
+					type="button"
 					mat-icon-button
 					matSuffix
-					(click)="hide = !hide"
+					(click)="$event.stopPropagation(); isHide = !isHide"
 					[attr.aria-label]="'Hide password'"
-					[attr.aria-pressed]="hide"
+					[attr.aria-pressed]="isHide"
 				>
-					<mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+					<mat-icon>{{ isHide ? 'visibility_off' : 'visibility' }}</mat-icon>
 				</button>
 				<mat-error *ngIf="form.controls['password'].invalid"
 					>Required minimum eight characters, at least one letter and one
@@ -64,17 +67,20 @@
 				<mat-label>Confirm your password</mat-label>
 				<input
 					matInput
-					[type]="hide ? 'password' : 'text'"
+					[type]="isConfirmHide ? 'password' : 'text'"
 					formControlName="confirmPassword"
 				/>
 				<button
+					type="button"
 					mat-icon-button
 					matSuffix
-					(click)="hide = !hide"
+					(click)="$event.stopPropagation(); isConfirmHide = !isConfirmHide"
 					[attr.aria-label]="'Hide password'"
-					[attr.aria-pressed]="hide"
+					[attr.aria-pressed]="isConfirmHide"
 				>
-					<mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+					<mat-icon>{{
+						isConfirmHide ? 'visibility_off' : 'visibility'
+					}}</mat-icon>
 				</button>
 				<mat-error
 					*ngIf="form.controls['confirmPassword'].hasError('passwordMismatch')"

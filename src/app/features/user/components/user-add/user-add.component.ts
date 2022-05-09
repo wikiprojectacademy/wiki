@@ -7,7 +7,8 @@ import {
 } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { passwordValidation } from '../../../../shared/validators/validations';
+import { passwordValidation } from '@shared/validators/validations';
+import { SnackBarService } from '@shared/services/snackbar.service';
 
 @Component({
 	selector: 'app-user-add',
@@ -16,8 +17,9 @@ import { passwordValidation } from '../../../../shared/validators/validations';
 })
 export class UserAddComponent {
 	public form: FormGroup;
-	public hide: boolean = true;
-	private isError: boolean;
+	isHide: boolean = true;
+	isConfirmHide: boolean = true;
+	//todo will change after added role module
 	public roles = [
 		{ id: 'superAdmin', name: 'superAdmin' },
 		{ id: 'admin', name: 'admin' },
@@ -27,7 +29,8 @@ export class UserAddComponent {
 	constructor(
 		private formBuilder: FormBuilder,
 		private userService: UserService,
-		private router: Router
+		private router: Router,
+		private snackBService: SnackBarService
 	) {
 		this.form = formBuilder.group({
 			firstName: [
@@ -95,13 +98,14 @@ export class UserAddComponent {
 		}
 	}
 
-	addUser() {
+	addUser(): void {
 		if (this.form.valid) {
 			this.userService.addUser(this.form.value);
 			this.router.navigate(['/user/list']);
 		} else {
-			this.isError = true;
-			console.log('False');
+			this.snackBService.openSnackBar(
+				'To create a user, you must correctly fill in all required fields'
+			);
 		}
 	}
 }

@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { SnackBarService } from '@shared/services/snackbar.service';
 
 @Component({
 	selector: 'app-user',
@@ -24,7 +25,8 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
 	constructor(
 		private userService: UserService,
-		private _liveAnnouncer: LiveAnnouncer
+		private liveAnnouncer: LiveAnnouncer,
+		private snackBService: SnackBarService
 	) {
 		this.getUsers();
 	}
@@ -44,14 +46,15 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
 	announceSortChange(sortState: Sort): void {
 		if (sortState.direction) {
-			this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+			this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
 		} else {
-			this._liveAnnouncer.announce('Sorting cleared');
+			this.liveAnnouncer.announce('Sorting cleared');
 		}
 	}
 
 	onDelete(id: string): void {
 		this.userService.deleteUser(id);
 		this.getUsers();
+		this.snackBService.openSnackBar('User account deleted', '', 1000);
 	}
 }

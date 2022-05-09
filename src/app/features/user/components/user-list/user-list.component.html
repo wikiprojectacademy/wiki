@@ -1,8 +1,12 @@
-<a
+<button
+	mat-raised-button
+	color="primary"
 	routerLink="../add"
 	routerLinkActive="active"
-	>Add new user</a
 >
+	Add new user
+</button>
+
 <div class="mat-elevation-z8">
 	<table
 		mat-table
@@ -17,7 +21,7 @@
 				mat-sort-header="firstName"
 				sortActionDescription="Sort by first name"
 			>
-				First Name.
+				First Name
 			</th>
 			<td
 				mat-cell
@@ -90,7 +94,7 @@
 				<button
 					mat-mini-fab
 					color="primary"
-					matTooltip="Info about the action"
+					matTooltip="Edit user {{ element.firstName }}	{{ element.lastName }}"
 					routerLink="/user/edit/{{ element.id }}"
 				>
 					<mat-icon>edit</mat-icon>
@@ -98,7 +102,7 @@
 				<button
 					mat-mini-fab
 					color="warn"
-					matTooltip="Info about the action"
+					matTooltip="Delete user {{ element.firstName }}	{{ element.lastName }}"
 					(click)="onDelete(element.id)"
 				>
 					<mat-icon>delete</mat-icon>

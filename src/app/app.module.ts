@@ -12,6 +12,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { HeaderComponent } from '@core/components/header/header.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
 	declarations: [AppComponent, HeaderComponent],
@@ -22,6 +23,7 @@ import { HeaderComponent } from '@core/components/header/header.component';
 		CoreModule,
 		AuthorizationModule,
 		MatToolbarModule,
+		MatSnackBarModule,
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideAuth(() => getAuth()),
 		provideFirestore(() => getFirestore())
@@ -32,7 +34,6 @@ import { HeaderComponent } from '@core/components/header/header.component';
 			useValue: environment.firebase
 		}
 	],
-	exports: [HeaderComponent],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}
