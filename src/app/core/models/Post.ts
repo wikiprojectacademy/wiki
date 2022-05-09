@@ -6,8 +6,10 @@ import { ISubCategory } from '@core/models/SubCategory';
  * Relation between Post to Category | SubCategory -> Many to One
  */
 export interface IPost {
+	id?: string;
 	title: string;
 	contentHTML: string;
-	category?: ICategory;
+	category: ICategory;
+	createdAt: Date;
 	subCategory?: ISubCategory;
 }

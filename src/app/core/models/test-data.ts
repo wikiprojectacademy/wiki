@@ -4,6 +4,7 @@ import { IPost } from '@core/models/Post';
 import { ICategory } from '@core/models/Category';
 
 const role: IRole = {
+	id: '1',
 	type: 'guest',
 	availableCategoriesToView: [],
 	permissions: []
@@ -20,12 +21,15 @@ const defaultData: IUser = {
 
 const features: ICategory = {
 	name: 'Features',
+	createdBy: '0',
 	availableRolesToView: [],
 	subCategories: []
 };
 
 const post: IPost = {
+	id: '0',
 	title: 'Guards',
 	contentHTML: '<div><span>content</span></div>',
-	category: features
+	category: features,
+	createdAt: new Date()
 };

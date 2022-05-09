@@ -5,6 +5,7 @@ import { IRole } from '@core/models/Role';
  * Relation between SubCategory to Category -> Many to One
  */
 export interface ISubCategory {
+	id?: string;
 	name: string;
 	availableRolesToView?: IRole[];
 }

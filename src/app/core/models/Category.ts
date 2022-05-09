@@ -7,7 +7,9 @@ import { IRole } from '@core/models/Role';
  * Relation between Category to Role -> Many to Many
  */
 export interface ICategory {
+	id?: string;
 	name: string;
+	createdBy: string; // Id of user who is created category
 	subCategories: ISubCategory[];
 	availableRolesToView: IRole[];
 }

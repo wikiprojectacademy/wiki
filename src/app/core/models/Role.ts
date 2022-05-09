@@ -7,6 +7,7 @@ import { IPermission } from '@core/models/Permission';
  * Relation between Role to Category -> Many to Many
  */
 export interface IRole {
+	id?: string;
 	type: 'admin' | 'user' | 'guest';
 	permissions: IPermission[];
 	availableCategoriesToView: ICategory[];
