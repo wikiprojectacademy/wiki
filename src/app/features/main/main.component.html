@@ -1,0 +1,34 @@
+<aside
+	class="categories"
+	[class.categories_opened]="isOpened"
+>
+	<button
+		mat-button
+		(click)="isOpened = false"
+		class="small-screen-element"
+	>
+		x
+	</button>
+	<div>testegsegesgsrges</div>
+</aside>
+
+<main
+	class="post-list"
+	[class.post-list_opened]="isOpened"
+>
+	<button
+		mat-button
+		(click)="isOpened = true"
+		class="small-screen-element"
+	>
+		Show Categories
+	</button>
+	<mat-card
+		matRipple
+		class="post"
+		*ngFor="let post of mockedPosts"
+	>
+		<mat-card-title>{{ post.title }}</mat-card-title>
+		<mat-card-content>{{ post.content | contentShortner }}</mat-card-content>
+	</mat-card>
+</main>

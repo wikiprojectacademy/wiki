@@ -1,0 +1,68 @@
+@import '../../../styles/variable.scss';
+
+:host {
+	display: flex;
+	height: 100%;
+	width: 100%;
+
+	@media screen and (max-width: $screen-width-small) {
+		overflow-x: hidden;
+	}
+}
+
+.small-screen-element {
+	//will not shown on big screen
+	display: none;
+	@media screen and (max-width: $screen-width-small) {
+		display: unset;
+	}
+}
+
+.categories {
+	width: clamp(200px, 30%, 300px);
+	background-color: #ccc;
+	transition: width 0.5s;
+
+	@media screen and (max-width: $screen-width-small) {
+		width: 0px;
+		position: absolute;
+		overflow-x: hidden;
+		height: 100%;
+		z-index: 100;
+
+		&_opened {
+			width: 90vw;
+		}
+	}
+}
+
+.post-list {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	background-color: #f8f8f8;
+	padding: 5px;
+
+	.post {
+		width: 200px;
+		height: 100px;
+		margin: 5px;
+		border: 1px solid #0000;
+		transition: border ease-out 0.3s;
+		cursor: pointer;
+
+		&:hover {
+			border: 1px solid #36f;
+		}
+	}
+
+	@media screen and (max-width: $screen-width-small) {
+		// width: auto;
+		transition: margin 0.5s;
+
+		&_opened {
+			margin-left: 90vw;
+		}
+	}
+}
