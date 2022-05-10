@@ -9,7 +9,21 @@
 	>
 		x
 	</button>
-	<div>testegsegesgsrges</div>
+	<div class="categories__content">
+		<h2>List of categories:</h2>
+		<div
+			class="category"
+			*ngFor="let category of mockedCateg"
+		>
+			<span class="category-item">{{ category.name }}</span>
+			<div
+				class="subcategory"
+				*ngFor="let sub of category.subCategories"
+			>
+				<span class="category-item">{{ sub.name }}</span>
+			</div>
+		</div>
+	</div>
 </aside>
 
 <main
@@ -23,12 +37,14 @@
 	>
 		Show Categories
 	</button>
-	<mat-card
-		matRipple
-		class="post"
-		*ngFor="let post of mockedPosts"
-	>
-		<mat-card-title>{{ post.title }}</mat-card-title>
-		<mat-card-content>{{ post.content | contentShortner }}</mat-card-content>
-	</mat-card>
+	<div class="post-list__content">
+		<mat-card
+			matRipple
+			class="post"
+			*ngFor="let post of mockedPosts"
+		>
+			<mat-card-title>{{ post.title }}</mat-card-title>
+			<mat-card-content>{{ post.content | contentShortner }}</mat-card-content>
+		</mat-card>
+	</div>
 </main>

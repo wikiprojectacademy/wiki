@@ -8,6 +8,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ContentShortnerPipe } from './pipes/content-shortner.pipe';
+import { MatTreeModule } from '@angular/material/tree';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { FlatTreeControl } from '@angular/cdk/tree';
 
 @NgModule({
 	declarations: [MainComponent, ContentShortnerPipe],
@@ -16,7 +19,10 @@ import { ContentShortnerPipe } from './pipes/content-shortner.pipe';
 		MainRoutingModule,
 		MatCardModule,
 		MatRippleModule,
-		MatButtonModule
+		MatButtonModule,
+		MatTreeModule
+		// FlatTreeControl
+		// NestedTreeControl
 	]
 })
 export class MainModule {}

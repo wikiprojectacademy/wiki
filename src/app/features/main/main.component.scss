@@ -1,5 +1,7 @@
 @import '../../../styles/variable.scss';
 
+$sidebar-open-duration: 0.3s;
+
 :host {
 	display: flex;
 	height: 100%;
@@ -19,9 +21,13 @@
 }
 
 .categories {
-	width: clamp(200px, 30%, 300px);
-	background-color: #ccc;
-	transition: width 0.5s;
+	width: clamp(250px, 30%, 300px);
+	flex-grow: 1;
+	background-color: #eee;
+	border-right: 1px solid #ccc;
+	// padding: 5px;
+	// box-sizing: border-box;
+	transition: width $sidebar-open-duration;
 
 	@media screen and (max-width: $screen-width-small) {
 		width: 0px;
@@ -34,33 +40,77 @@
 			width: 90vw;
 		}
 	}
+
+	.categories__content {
+		width: 300px;
+		width: clamp(150px, 25vw, 250px);
+		padding: 20px;
+
+		.category-item {
+			cursor: pointer;
+			padding: 5px;
+			border-radius: 7px;
+			transition: background 0.2s;
+			&:hover {
+				background-color: #0001;
+			}
+			&:active {
+				background-color: #0002;
+			}
+		}
+
+		.subcategory {
+			margin-left: 20px;
+		}
+	}
 }
 
 .post-list {
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
-	flex-wrap: wrap;
 	background-color: #f8f8f8;
+	gap: 10px;
 	padding: 5px;
+	transition: margin $sidebar-open-duration;
 
-	.post {
-		width: 200px;
-		height: 100px;
-		margin: 5px;
-		border: 1px solid #0000;
-		transition: border ease-out 0.3s;
-		cursor: pointer;
+	.post-list__content {
+		display: flex;
+		flex-wrap: wrap;
 
-		&:hover {
-			border: 1px solid #36f;
+		gap: 7px;
+
+		@media screen and (max-width: $screen-width-small) {
+			flex-direction: column;
+		}
+		.post {
+			// width: 400px;
+			width: auto;
+			height: 130px;
+			flex-basis: 300px;
+			flex-grow: 1;
+			// margin: 5px;
+			transition: transform ease-out 0.1s;
+			box-sizing: border-box;
+			cursor: pointer;
+
+			&:hover {
+				// border: 1px solid #ccc;
+				transform: translateY(-2px);
+			}
+			&:active {
+				transform: translateY(0px);
+			}
+			@media screen and (max-width: $screen-width-small) {
+				width: 100%;
+				flex-basis: unset;
+				// height: clamp(20vh, 100px, 40vh);
+				height: 120px;
+			}
 		}
 	}
 
 	@media screen and (max-width: $screen-width-small) {
-		// width: auto;
-		transition: margin 0.5s;
-
 		&_opened {
 			margin-left: 90vw;
 		}
