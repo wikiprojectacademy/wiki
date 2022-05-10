@@ -1,7 +1,11 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	// width: 70vw;
+	width: 70vw;
+	button {
+		width: 20vw;
+		margin: 0 auto;
+	}
 }
 
 form {

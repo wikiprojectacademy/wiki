@@ -1,10 +1,31 @@
 <div class="container">
-	<p>About Me</p>
-	<mat-form-field appearance="fill">
+	<!-- <p>About Me</p> -->
+	<div class="container__name">
+		<article>
+			<h2>First Name</h2>
+			<p>Data.firstName</p>
+		</article>
+		<article>
+			<h2>Second Name</h2>
+			<p>Data.secondName</p>
+		</article>
+	</div>
+	<article>
+		<h2>Email</h2>
+		<p>Data.email</p>
+	</article>
+	<article>
+		<h2>Password</h2>
+		<p>{{ password | passwordHide }}</p>
+	</article>
+	<article>
+		<h2>Role</h2>
+		<p>Data.Role</p>
+	</article>
+	<!-- <mat-form-field appearance="fill">
 		<mat-label>First Name</mat-label>
 		<input
 			matInput
-			placeholder="Your first name"
 			value="Data.firstname"
 			readonly
 		/>
@@ -13,7 +34,6 @@
 		<mat-label>Last Name</mat-label>
 		<input
 			matInput
-			placeholder="Your last name"
 			value="Data.lastname"
 			readonly
 		/>
@@ -22,7 +42,6 @@
 		<mat-label>Email</mat-label>
 		<input
 			matInput
-			placeholder="Your email"
 			value="Data.email"
 			readonly
 		/>
@@ -31,9 +50,8 @@
 		<mat-label>Password</mat-label>
 		<input
 			matInput
-			placeholder="Password"
 			value="Data.password"
 			readonly
 		/>
-	</mat-form-field>
+	</mat-form-field> -->
 </div>

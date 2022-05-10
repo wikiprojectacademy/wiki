@@ -10,9 +10,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PasswordHidePipe } from './pipes/password-hide.pipe';
 
 @NgModule({
-	declarations: [ProfilePageComponent, AboutMeComponent, EditProfileComponent],
+	declarations: [
+		ProfilePageComponent,
+		AboutMeComponent,
+		EditProfileComponent,
+		PasswordHidePipe
+	],
 
 	imports: [
 		ProfileRoutingModule,

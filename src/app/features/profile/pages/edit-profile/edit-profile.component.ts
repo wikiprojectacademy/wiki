@@ -16,13 +16,13 @@ export class EditProfileComponent implements OnInit {
 		this.changeProfileForm = new FormGroup({
 			firstName: new FormControl('Data.firstName', [
 				Validators.required,
-				Validators.minLength(2)
-				// Validators.maxLength(25)
+				Validators.minLength(2),
+				Validators.maxLength(25)
 			]),
 			lastName: new FormControl('Data.lastName', [
 				Validators.required,
-				Validators.minLength(2)
-				// Validators.maxLength(25)
+				Validators.minLength(2),
+				Validators.maxLength(25)
 			]),
 			email: new FormControl('Data.email', [
 				Validators.required,
@@ -30,8 +30,8 @@ export class EditProfileComponent implements OnInit {
 			]),
 			password: new FormControl('Data.password', [
 				Validators.required,
-				Validators.pattern(PASSWORD_REGEXP)
-				// Validators.maxLength(25)
+				Validators.pattern(PASSWORD_REGEXP),
+				Validators.maxLength(25)
 			])
 		});
 	}
@@ -41,8 +41,8 @@ export class EditProfileComponent implements OnInit {
 			return 'Required field';
 		} else if (this.changeProfileForm.hasError('minlength', inputField)) {
 			return 'Minimum length is 2 characters';
-			// } else if (this.changeProfileForm.hasError('maxlength', inputField)) {
-			// 	return 'Maximum length is 25 characters';
+		} else if (this.changeProfileForm.hasError('maxlength', inputField)) {
+			return 'Maximum length is 25 characters';
 		} else if (this.changeProfileForm.hasError('email', inputField)) {
 			return 'Not a valid email';
 		} else if (this.changeProfileForm.hasError('pattern', inputField)) {
