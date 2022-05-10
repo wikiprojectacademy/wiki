@@ -49,10 +49,10 @@ export class MainComponent implements OnInit {
 			subCategories: [{ id: '1-2', name: 'Test nested' }]
 		},
 		{
-			name: 'Cateteteat',
+			name: 'Program',
 			subCategories: [
-				{ id: '1-2', name: 'Test nested' },
-				{ id: '1-2', name: 'Test nested2' }
+				{ id: '1-2', name: 'Front' },
+				{ id: '1-2', name: 'Back' }
 			]
 		},
 		{
@@ -60,13 +60,13 @@ export class MainComponent implements OnInit {
 			subCategories: []
 		},
 		{
-			name: 'Test Name',
+			name: 'Food',
 			subCategories: [
-				{ id: '1-2', name: 'Test nested' },
-				{ id: '1-2', name: 'Noooo' },
-				{ id: '1-2', name: 'Tfdsfsefed2' },
-				{ id: '1-2', name: '14314c 41341341' },
-				{ id: '1-2', name: 'Front' }
+				{ id: '1-2', name: 'Fruit' },
+				{ id: '1-2', name: 'Vegetables' },
+				{ id: '1-2', name: 'Bread' },
+				{ id: '1-2', name: 'Meat' },
+				{ id: '1-2', name: 'Something else' }
 			]
 		}
 	];

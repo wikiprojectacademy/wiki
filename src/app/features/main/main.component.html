@@ -1,7 +1,4 @@
-<aside
-	class="categories"
-	[class.categories_opened]="isOpened"
->
+<nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
 	<button
 		mat-button
 		(click)="isOpened = false"
@@ -9,6 +6,7 @@
 	>
 		x
 	</button>
+
 	<div class="categories__content">
 		<h2>List of categories:</h2>
 		<div
@@ -24,12 +22,9 @@
 			</div>
 		</div>
 	</div>
-</aside>
+</nav>
 
-<main
-	class="post-list"
-	[class.post-list_opened]="isOpened"
->
+<main [ngClass]="isOpened ? 'post-list post-list_opened' : ' post-list'">
 	<button
 		mat-button
 		(click)="isOpened = true"
