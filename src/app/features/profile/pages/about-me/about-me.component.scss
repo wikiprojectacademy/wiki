@@ -1,10 +1,11 @@
+$border-color: #808080;
+
 .container {
 	display: flex;
 	flex-direction: column;
-	width: 50vw;
 	h2 {
 		font-size: 1em;
-		color: #808080;
+		color: $border-color;
 		margin-bottom: 0;
 	}
 }
@@ -17,39 +18,31 @@
 		margin-right: 2.3vw;
 	}
 	article p {
-		width: 23vw;
+		width: 23.1vw;
 	}
 }
 
 .container p {
-	border: 0.1em solid #808080;
+	border: 0.1vw solid $border-color;
 	padding: 0.3vw;
 	margin-bottom: 0;
 }
 
 @media (max-width: 500px) {
-	.container {
-		width: 80vw;
-		h2 {
-			color: red;
-		}
+	h2 {
+		color: $border-color;
 	}
 	.container__name {
-		article:first-child {
-			margin-right: 2.3vw;
-		}
 		article p {
-			width: 38vw;
+			width: 40vw;
 		}
 	}
 }
 
 @media (max-width: 300px) {
-	.container {
-		h2 {
-			color: green;
-			font-size: 0.8em;
-		}
+	h2 {
+		color: $border-color;
+		font-size: 0.8em;
 	}
 	.container__name {
 		article p {
