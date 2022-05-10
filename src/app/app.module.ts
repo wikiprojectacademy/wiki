@@ -13,9 +13,14 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { HeaderComponent } from '@core/components/header/header.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MainComponent } from './features/main/main/main.component';
+
+/**************************************** */
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-	declarations: [AppComponent, HeaderComponent],
+	declarations: [AppComponent, HeaderComponent, MainComponent],
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,
@@ -24,6 +29,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 		AuthorizationModule,
 		MatToolbarModule,
 		MatSnackBarModule,
+		MatButtonModule,
+		MatIconModule,
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideAuth(() => getAuth()),
 		provideFirestore(() => getFirestore())

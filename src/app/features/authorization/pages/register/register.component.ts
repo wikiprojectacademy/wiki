@@ -48,7 +48,7 @@ export class RegisterComponent {
 		// console.log('Auth with google');
 	}
 
-	getNameErrorMessage(inputField: string): string | undefined {
+	getNameErrorMessage(inputField: string): string {
 		if (this.registerForm.hasError('required', inputField)) {
 			return 'You must enter a value';
 		}
@@ -62,6 +62,6 @@ export class RegisterComponent {
 			return 'The	password must contain minimum six	characters, at least one letter and one number';
 		}
 
-		return;
+		return '';
 	}
 }

@@ -38,7 +38,7 @@ export class LoginComponent {
 		// console.log('Auth with google');
 	}
 
-	getErrorMessage(inputField: string): string | undefined {
+	getErrorMessage(inputField: string): string {
 		if (this.loginForm.hasError('required', inputField)) {
 			return 'You must enter a value';
 		}
@@ -49,6 +49,6 @@ export class LoginComponent {
 			return 'The	password must contain minimum six	characters, at least one letter and one number';
 		}
 
-		return;
+		return '';
 	}
 }

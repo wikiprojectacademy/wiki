@@ -1,0 +1,11 @@
+@import 'variable';
+
+.container {
+	padding: 0 15px;
+	background-color: $mainColor;
+	height: 100%;
+
+	.test {
+		display: block;
+	}
+}
