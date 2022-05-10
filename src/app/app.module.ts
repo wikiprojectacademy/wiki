@@ -14,20 +14,20 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { HeaderComponent } from '@core/components/header/header.component';
 import { MainModule } from './features/main/main.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MainComponent } from './features/main/main/main.component';
 
 /**************************************** */
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-	declarations: [AppComponent, HeaderComponent, MainComponent],
+	declarations: [AppComponent, HeaderComponent],
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,
 		AppRoutingModule,
 		CoreModule,
 		AuthorizationModule,
+		MainModule,
 		MatToolbarModule,
 		MainModule,
 		MatSnackBarModule,
