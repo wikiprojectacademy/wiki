@@ -12,6 +12,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { HeaderComponent } from '@core/components/header/header.component';
+import { MainModule } from './features/main/main.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MainComponent } from './features/main/main/main.component';
 
@@ -28,6 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
 		CoreModule,
 		AuthorizationModule,
 		MatToolbarModule,
+		MainModule,
 		MatSnackBarModule,
 		MatButtonModule,
 		MatIconModule,
