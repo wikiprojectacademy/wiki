@@ -12,6 +12,8 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { HeaderComponent } from '@core/components/header/header.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
 	declarations: [AppComponent, HeaderComponent],
@@ -22,6 +24,8 @@ import { HeaderComponent } from '@core/components/header/header.component';
 		CoreModule,
 		AuthorizationModule,
 		MatToolbarModule,
+		MatButtonModule,
+		MatIconModule,
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideAuth(() => getAuth()),
 		provideFirestore(() => getFirestore())

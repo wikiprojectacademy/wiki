@@ -1,1 +1,50 @@
-<mat-toolbar> </mat-toolbar>
+<mat-toolbar
+	class="header"
+	role="heading"
+	color="primary"
+>
+	<div
+		class="logo__wrapper"
+		routerLink="/"
+	>
+		<img
+			src="../../../../assets/icons/logo_dark.svg"
+			alt=""
+		/>
+		Wiki
+	</div>
+	<nav class="navigation">
+		<button mat-button>Add your link here</button>
+		<button mat-button>Or here</button>
+		<button mat-button>Link Place 3</button>
+		<button mat-button>Link Place 4</button>
+		<button mat-button>Link Place 5</button>
+	</nav>
+	<div class="authorization__wrapper">
+		<!-- if not loged in -->
+		<div
+			class="authorization__log-reg"
+			*ngIf="!isLoggedIn"
+		>
+			<button
+				mat-button
+				routerLink="/authorization/login"
+			>
+				Log in
+			</button>
+			<button
+				mat-button
+				routerLink="/authorization/register"
+			>
+				Sing up
+			</button>
+		</div>
+
+		<div
+			class="authorization__log-out"
+			*ngIf="isLoggedIn"
+		>
+			<button mat-button>Log out</button>
+		</div>
+	</div>
+</mat-toolbar>
