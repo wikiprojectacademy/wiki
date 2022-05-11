@@ -1,0 +1,13 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.router__wrapper {
+	border: 3px solid #0f0;
+	flex-grow: 1;
+}
+
+.header {
+}

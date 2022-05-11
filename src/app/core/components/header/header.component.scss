@@ -1,12 +1,22 @@
 .header {
-	.logo__wrapper {
-		display: flex;
-		align-items: center;
-		user-select: none;
-		cursor: pointer;
-		// background-color: #f00;
-	}
 	display: flex;
 	justify-content: space-between;
 	// align-items: center;
+	// justify-content: center;
+	// @include flex-center();
+
+	.navigation {
+		display: flex;
+		// align-items: center;
+		// @include flex-center();
+
+		.logo__wrapper {
+			display: flex;
+			align-items: center;
+			margin-right: 10px;
+
+			user-select: none;
+			cursor: pointer;
+		}
+	}
 }
