@@ -43,6 +43,7 @@
 				<input
 					matInput
 					formControlName="email"
+					type="email"
 				/>
 				<mat-error
 					*ngIf="
@@ -59,6 +60,7 @@
 				<input
 					matInput
 					formControlName="password"
+					type="password"
 					[type]="isPasswordHidden ? 'password' : 'text'"
 				/>
 				<button

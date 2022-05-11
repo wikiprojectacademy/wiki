@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { GOOGLE_ICON } from '../../../../../assets/icons/googleIcon';
-import { PASSWORD_REGEXP } from '../../models/passwordRegExp';
+import { GOOGLE_ICON } from 'src/assets/icons/googleIcon';
+import { passwordValidation } from '@shared/validators/validations';
+import { AuthorizationService } from '../../services/authorization.service';
 
 @Component({
 	selector: 'app-register',
@@ -14,7 +16,12 @@ export class RegisterComponent {
 	public registerForm: FormGroup;
 	public isPasswordHidden: boolean = true;
 
-	constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+	constructor(
+		private iconRegistry: MatIconRegistry,
+		private sanitizer: DomSanitizer,
+		private router: Router,
+		private authService: AuthorizationService
+	) {
 		iconRegistry.addSvgIconLiteral(
 			'google',
 			sanitizer.bypassSecurityTrustHtml(GOOGLE_ICON)
@@ -32,20 +39,30 @@ export class RegisterComponent {
 				Validators.maxLength(25)
 			]),
 			email: new FormControl(null, [Validators.required, Validators.email]),
-			password: new FormControl(null, [
-				Validators.required,
-				Validators.pattern(PASSWORD_REGEXP)
-			])
+			password: new FormControl(null, [Validators.required, passwordValidation])
 		});
 	}
 
 	onSubmit() {
-		// console.log('registerForm: ', this.registerForm.value);
-		this.registerForm.reset();
+		this.authService.registerUser(this.registerForm.value).then(result => {
+			if (result?.isValid === false) {
+				console.log('result.message: ', result.message);
+			} else {
+				this.registerForm.reset();
+				this.router.navigate(['/main']);
+			}
+		});
 	}
 
 	onGoogleAuth() {
-		// console.log('Auth with google');
+		this.authService.registerUserWithGoogle().then(result => {
+			if (result?.isValid === false) {
+				console.log('result.message: ', result.message);
+			} else {
+				this.registerForm.reset();
+				this.router.navigate(['/main']);
+			}
+		});
 	}
 
 	getNameErrorMessage(inputField: string): string {

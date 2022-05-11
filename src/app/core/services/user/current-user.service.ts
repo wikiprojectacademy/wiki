@@ -22,9 +22,13 @@ export class CurrentUserService {
 				});
 				this.isUserLogin$.next(false);
 			} else {
+				// todo get users data from firestore database
+				// and add it to currentUser$ value
+
+				// temporarily...
 				this.currentUser$.next({
 					id: user.uid,
-					email: user.email || undefined,
+					email: user.email,
 					firstName: 'firstName',
 					lastName: 'lastName',
 					password: 'password',
