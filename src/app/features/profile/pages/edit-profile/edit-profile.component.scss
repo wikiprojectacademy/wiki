@@ -1,14 +1,13 @@
-.container {
+.form-group {
 	display: flex;
 	flex-direction: column;
 	width: 70vw;
+	form {
+		display: flex;
+		flex-direction: column;
+	}
 	button {
 		width: 20vw;
 		margin: 0 auto;
 	}
-}
-
-form {
-	display: flex;
-	flex-direction: column;
 }

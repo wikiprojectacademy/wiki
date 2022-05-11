@@ -10,7 +10,7 @@ import { passwordValidation } from '@shared/validators/validations';
 	styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent implements OnInit {
-	changeProfileForm: any;
+	changeProfileForm: FormGroup;
 	isPasswordHidden: boolean = true;
 
 	user: IUser = {

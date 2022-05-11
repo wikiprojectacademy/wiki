@@ -1,6 +1,7 @@
+@import './src/styles/variable.scss';
 $border-color: #808080;
 
-.container {
+.user-info {
 	display: flex;
 	flex-direction: column;
 	h2 {
@@ -10,7 +11,7 @@ $border-color: #808080;
 	}
 }
 
-.container__name {
+.user-info__name {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
@@ -22,31 +23,27 @@ $border-color: #808080;
 	}
 }
 
-.container p {
+.user-info p {
 	border: 0.1vw solid $border-color;
 	padding: 0.3vw;
 	margin-bottom: 0;
 }
 
-@media (max-width: 500px) {
-	h2 {
-		color: $border-color;
-	}
-	.container__name {
+@media (max-width: $screen-width-small) {
+	.user-info__name {
 		article p {
 			width: 40vw;
 		}
 	}
 }
 
-@media (max-width: 300px) {
+@media (max-width: $screen-width-mobile) {
 	h2 {
-		color: $border-color;
 		font-size: 0.8em;
 	}
-	.container__name {
+	.user-info__name {
 		article p {
-			font-size: 0.7em;
+			font-size: 0.9em;
 		}
 	}
 }
