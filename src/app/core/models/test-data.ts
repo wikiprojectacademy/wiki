@@ -25,11 +25,3 @@ const features: ICategory = {
 	availableRolesToView: [],
 	subCategories: []
 };
-
-const post: IPost = {
-	id: '0',
-	title: 'Guards',
-	contentHTML: '<div><span>content</span></div>',
-	category: features,
-	createdAt: new Date()
-};

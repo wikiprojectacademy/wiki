@@ -1,4 +1,3 @@
-import { ICategory } from '@core/models/Category';
 import { ISubCategory } from '@core/models/SubCategory';
 
 /**
@@ -9,7 +8,7 @@ export interface IPost {
 	id?: string;
 	title: string;
 	contentHTML: string;
-	category: ICategory;
+	categoryId: string; // Id of category
 	createdAt: Date;
 	subCategory?: ISubCategory;
 }
