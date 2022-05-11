@@ -1,0 +1,97 @@
+.user-add {
+	position: relative;
+	margin: 5vw auto 0;
+	width: 80vw;
+
+	border-radius: 23px;
+	background: #ffffff;
+	box-shadow: -5px -5px 19px #f5f5f5, 5px 5px 19px #ffffff;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: -40px;
+		left: -40px;
+		z-index: -1;
+		height: 100px;
+		width: 100px;
+		background: rgba(15, 74, 255, 0.48);
+		border-radius: 16px;
+		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+		transform: rotate(15deg);
+		animation: move-up 3s ease-in infinite alternate-reverse;
+	}
+
+	&:after {
+		content: '';
+		position: absolute;
+		bottom: -40px;
+		right: -40px;
+		z-index: -1;
+		height: 100px;
+		width: 100px;
+		background: rgb(245, 8, 8, 0.48);
+		border-radius: 16px;
+		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+		transform: rotate(-15deg);
+		animation: move-down 3s ease-in infinite alternate-reverse;
+	}
+
+	h1 {
+		z-index: 5;
+		padding: 20px 25px 0;
+	}
+}
+
+.container {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+
+	img {
+		position: relative;
+		height: 25vw;
+		max-height: 300px;
+		top: -5vw;
+		border-radius: 25%;
+	}
+}
+
+form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	justify-items: stretch;
+	padding-bottom: 5%;
+}
+
+mat-form-field {
+	padding: 0 10px;
+	margin-top: 10px;
+
+	&:nth-child(3) {
+		grid-column: 1/3;
+	}
+	&:nth-child(4) {
+		justify-self: center;
+		align-self: center;
+		grid-column: 1/3;
+	}
+}
+
+button {
+	justify-self: center;
+	width: 80%;
+}
+
+@keyframes move-up {
+	to {
+		transform: translateY(-10px) rotate(-20deg);
+	}
+}
+
+@keyframes move-down {
+	to {
+		transform: translateY(10px) rotate(20deg);
+	}
+}

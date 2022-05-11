@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { IRole } from '@core/models/Role';
+import { IUser } from '@core/models/User';
+
 import { PASSWORD_REGEXP } from 'src/app/features/authorization/models/passwordRegExp';
 @Component({
 	selector: 'app-edit-profile',
@@ -10,7 +14,30 @@ export class EditProfileComponent implements OnInit {
 	changeProfileForm: any;
 	isPasswordHidden: boolean = true;
 
-	constructor() {}
+	usser: IUser = {
+		id: 2,
+		firstName: 'Ivan',
+		lastName: 'Ivanov',
+		email: 'ivanivanov@gmail.com',
+		password: 'rgfhfgh323fd',
+		role: {
+			id: '1',
+			type: 'guest',
+			availableCategoriesToView: [],
+			permissions: []
+		}
+	};
+
+	// firstName: string = 'Ivan';
+	// lastName: string = 'Ivanov';
+	// email: string = 'ivanivanov@gmail.com'
+	// password: string = 'rgfhfgh32';
+	// role: string = 'user';
+
+	constructor() {
+		// private user: IUser
+		// this.user
+	}
 
 	ngOnInit(): void {
 		this.changeProfileForm = new FormGroup({
@@ -52,5 +79,6 @@ export class EditProfileComponent implements OnInit {
 
 	changeProfile() {
 		console.log(this.changeProfileForm.value);
+		console.log(this.usser);
 	}
 }

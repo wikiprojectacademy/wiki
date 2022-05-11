@@ -3,23 +3,23 @@
 	<div class="container__name">
 		<article>
 			<h2>First Name</h2>
-			<p>Data.firstName</p>
+			<p>{{ usser.firstName }}</p>
 		</article>
 		<article>
 			<h2>Second Name</h2>
-			<p>Data.secondName</p>
+			<p>{{ usser.lastName }}</p>
 		</article>
 	</div>
 	<article>
 		<h2>Email</h2>
-		<p>Data.email</p>
+		<p>{{ usser.email }}</p>
 	</article>
-	<article>
+	<!-- <article>
 		<h2>Password</h2>
-		<p>{{ password | passwordHide }}</p>
-	</article>
+		<p>{{ usser.password | passwordHide }}</p>
+	</article> -->
 	<article>
 		<h2>Role</h2>
-		<p>Data.Role</p>
+		<p>{{ usser.role.type }}</p>
 	</article>
 </div>

@@ -1,0 +1,74 @@
+<div class="user-add">
+	<h1>Edit User Account</h1>
+	<div class="container">
+		<form [formGroup]="form">
+			<mat-form-field appearance="outline">
+				<mat-label>Enter your first name</mat-label>
+				<input
+					matInput
+					placeholder="John"
+					formControlName="firstName"
+				/>
+				<mat-error *ngIf="form.controls['firstName'].invalid"
+					>First name must be at least 2 characters long and at most
+					25</mat-error
+				>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Enter your last name</mat-label>
+				<input
+					matInput
+					placeholder="Smith"
+					formControlName="lastName"
+				/>
+				<mat-error *ngIf="form.controls['lastName'].invalid"
+					>Last name must be at least 2 characters long and at most
+					25</mat-error
+				>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Enter your email</mat-label>
+				<input
+					matInput
+					placeholder="pat@example.com"
+					formControlName="email"
+				/>
+				<mat-error *ngIf="form.controls['email'].invalid"
+					>Enter the correct email</mat-error
+				>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline">
+				<mat-select formControlName="role">
+					<mat-option
+						*ngFor="let role of roles"
+						[value]="role.id"
+					>
+						{{ role.name }}
+					</mat-option>
+				</mat-select>
+				<mat-label>Role</mat-label>
+			</mat-form-field>
+
+			<button
+				mat-raised-button
+				color="primary"
+				(click)="editUser()"
+			>
+				Edit
+			</button>
+			<button
+				mat-raised-button
+				routerLink="/user/list"
+			>
+				Cancel
+			</button>
+		</form>
+		<img
+			src="../assets/images/user-add-logo.PNG"
+			alt="user logo"
+		/>
+	</div>
+</div>

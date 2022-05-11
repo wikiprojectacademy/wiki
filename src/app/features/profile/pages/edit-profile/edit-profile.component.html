@@ -10,7 +10,8 @@
 				matInput
 				formControlName="firstName"
 				placeholder="Your first name"
-				value="Data.firstname"
+				type="string"
+				[(ngModel)]="usser.firstName"
 			/>
 			<mat-error
 				*ngIf="
@@ -26,7 +27,8 @@
 				matInput
 				formControlName="lastName"
 				placeholder="Your last name"
-				value="Data.lastname"
+				type="string"
+				[(ngModel)]="usser.lastName"
 			/>
 			<mat-error
 				*ngIf="
@@ -43,6 +45,8 @@
 				formControlName="email"
 				placeholder="Your email"
 				value="Data.email"
+				type="string"
+				[(ngModel)]="usser.email"
 			/>
 			<mat-error
 				*ngIf="
@@ -58,7 +62,7 @@
 				matInput
 				formControlName="password"
 				placeholder="Enter tour password"
-				value="Data.password"
+				[(ngModel)]="usser.password"
 				[type]="isPasswordHidden ? 'password' : 'text'"
 				[attr.aria-label]="'Hide password'"
 				[attr.aria-pressed]="isPasswordHidden"
