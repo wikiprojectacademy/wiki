@@ -14,7 +14,7 @@ export class CurrentUserService {
 
 	constructor(private afAuth: AngularFireAuth) {
 		this.afAuth.user.subscribe(user => {
-			console.log('curUser: ', user);
+			// console.log('curUser: ', user);
 			if (!user) {
 				this.currentUser$.next({
 					id: '1',
