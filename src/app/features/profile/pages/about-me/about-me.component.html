@@ -1,25 +1,21 @@
-<p>About Me</p>
+<p>Hello {{ user.role.type | titlecase }}</p>
 <div class="container">
 	<div class="container__name">
 		<article>
 			<h2>First Name</h2>
-			<p>{{ usser.firstName }}</p>
+			<p>{{ user.firstName }}</p>
 		</article>
 		<article>
 			<h2>Second Name</h2>
-			<p>{{ usser.lastName }}</p>
+			<p>{{ user.lastName }}</p>
 		</article>
 	</div>
 	<article>
 		<h2>Email</h2>
-		<p>{{ usser.email }}</p>
+		<p>{{ user.email }}</p>
 	</article>
-	<!-- <article>
-		<h2>Password</h2>
-		<p>{{ usser.password | passwordHide }}</p>
-	</article> -->
 	<article>
 		<h2>Role</h2>
-		<p>{{ usser.role.type }}</p>
+		<p>{{ user.role.type | titlecase }}</p>
 	</article>
 </div>

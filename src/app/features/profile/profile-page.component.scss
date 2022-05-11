@@ -6,6 +6,8 @@
 	flex-wrap: wrap;
 	height: 100%;
 }
-button {
-	margin-right: 2vw;
+.buttons {
+	button:first-child {
+		margin: 0 2vw;
+	}
 }

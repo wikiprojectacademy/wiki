@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { IRole } from '@core/models/Role';
 import { IUser } from '@core/models/User';
+import { passwordValidation } from '@shared/validators/validations';
 
-import { PASSWORD_REGEXP } from 'src/app/features/authorization/models/passwordRegExp';
 @Component({
 	selector: 'app-edit-profile',
 	templateUrl: './edit-profile.component.html',
@@ -14,7 +13,7 @@ export class EditProfileComponent implements OnInit {
 	changeProfileForm: any;
 	isPasswordHidden: boolean = true;
 
-	usser: IUser = {
+	user: IUser = {
 		id: 2,
 		firstName: 'Ivan',
 		lastName: 'Ivanov',
@@ -22,42 +21,33 @@ export class EditProfileComponent implements OnInit {
 		password: 'rgfhfgh323fd',
 		role: {
 			id: '1',
-			type: 'guest',
+			type: 'user',
 			availableCategoriesToView: [],
 			permissions: []
 		}
 	};
 
-	// firstName: string = 'Ivan';
-	// lastName: string = 'Ivanov';
-	// email: string = 'ivanivanov@gmail.com'
-	// password: string = 'rgfhfgh32';
-	// role: string = 'user';
-
-	constructor() {
-		// private user: IUser
-		// this.user
-	}
+	constructor() {}
 
 	ngOnInit(): void {
 		this.changeProfileForm = new FormGroup({
-			firstName: new FormControl('Data.firstName', [
+			firstName: new FormControl(`${this.user.firstName}`, [
 				Validators.required,
 				Validators.minLength(2),
 				Validators.maxLength(25)
 			]),
-			lastName: new FormControl('Data.lastName', [
+			lastName: new FormControl(`${this.user.lastName}`, [
 				Validators.required,
 				Validators.minLength(2),
 				Validators.maxLength(25)
 			]),
-			email: new FormControl('Data.email', [
+			email: new FormControl(`${this.user.email}`, [
 				Validators.required,
 				Validators.email
 			]),
-			password: new FormControl('Data.password', [
+			password: new FormControl(`${this.user.password}`, [
 				Validators.required,
-				Validators.pattern(PASSWORD_REGEXP),
+				passwordValidation,
 				Validators.maxLength(25)
 			])
 		});
@@ -74,11 +64,11 @@ export class EditProfileComponent implements OnInit {
 			return 'Not a valid email';
 		} else if (this.changeProfileForm.hasError('pattern', inputField)) {
 			return 'The	password must contain minimum six	characters, at least one letter and one number';
-		} else return;
+		} else return '';
 	}
 
 	changeProfile() {
-		console.log(this.changeProfileForm.value);
-		console.log(this.usser);
+		// console.log(this.changeProfileForm.value);
+		// console.log(this.user);
 	}
 }

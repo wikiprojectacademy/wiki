@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import { CurrentUserService } from '../../core/services/user/current-user.service';
-// import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-profile-page',

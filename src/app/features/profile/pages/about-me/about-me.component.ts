@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
-import { IRole } from '@core/models/Role';
 import { IUser } from '@core/models/User';
 
 @Component({
@@ -9,7 +7,7 @@ import { IUser } from '@core/models/User';
 	styleUrls: ['./about-me.component.scss']
 })
 export class AboutMeComponent implements OnInit {
-	usser: IUser = {
+	user: IUser = {
 		id: 2,
 		firstName: 'Ivan',
 		lastName: 'Ivanov',
@@ -17,7 +15,7 @@ export class AboutMeComponent implements OnInit {
 		password: 'rgfhfgh32',
 		role: {
 			id: '1',
-			type: 'guest',
+			type: 'user',
 			availableCategoriesToView: [],
 			permissions: []
 		}
