@@ -1,0 +1,92 @@
+<div class="form-group">
+	<p>Edit Profile</p>
+	<form
+		(ngSubmit)="changeProfile()"
+		[formGroup]="changeProfileForm"
+	>
+		<mat-form-field appearance="fill">
+			<mat-label>First Name</mat-label>
+			<input
+				matInput
+				formControlName="firstName"
+				placeholder="Your first name"
+				type="string"
+			/>
+			<mat-error
+				*ngIf="
+					changeProfileForm.get('firstName')?.invalid &&
+					changeProfileForm.get('firstName')?.touched
+				"
+				>{{ getNameErrorMessage('firstName') }}
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Last Name</mat-label>
+			<input
+				matInput
+				formControlName="lastName"
+				placeholder="Your last name"
+				type="string"
+			/>
+			<mat-error
+				*ngIf="
+					changeProfileForm.get('lastName')?.invalid &&
+					changeProfileForm.get('lastName')?.touched
+				"
+				>{{ getNameErrorMessage('lastName') }}</mat-error
+			>
+		</mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Email</mat-label>
+			<input
+				matInput
+				formControlName="email"
+				placeholder="Your email"
+				type="string"
+			/>
+			<mat-error
+				*ngIf="
+					changeProfileForm.get('email')?.invalid &&
+					changeProfileForm.get('email')?.touched
+				"
+				>{{ getNameErrorMessage('email') }}</mat-error
+			>
+		</mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Password</mat-label>
+			<input
+				matInput
+				formControlName="password"
+				placeholder="Enter your password"
+				[type]="isPasswordHidden ? 'password' : 'text'"
+				[attr.aria-label]="'Hide password'"
+				[attr.aria-pressed]="isPasswordHidden"
+			/>
+			<mat-error
+				*ngIf="
+					changeProfileForm.get('password')?.invalid &&
+					changeProfileForm.get('password')?.touched
+				"
+				>{{ getNameErrorMessage('password') }}</mat-error
+			>
+			<button
+				mat-icon-button
+				matSuffix
+				(click)="isPasswordHidden = !isPasswordHidden"
+			>
+				<mat-icon>{{
+					isPasswordHidden ? 'visibility_off' : 'visibility'
+				}}</mat-icon>
+			</button>
+		</mat-form-field>
+
+		<button
+			mat-raised-button
+			color="primary"
+			type="submit"
+			[disabled]="changeProfileForm.invalid"
+		>
+			Save
+		</button>
+	</form>
+</div>

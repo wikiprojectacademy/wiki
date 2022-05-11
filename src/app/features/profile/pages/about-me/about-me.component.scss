@@ -1,0 +1,49 @@
+@import './src/styles/variable.scss';
+$border-color: #808080;
+
+.user-info {
+	display: flex;
+	flex-direction: column;
+	h2 {
+		font-size: 1em;
+		color: $border-color;
+		margin-bottom: 0;
+	}
+}
+
+.user-info__name {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	article:first-child {
+		margin-right: 2.3vw;
+	}
+	article p {
+		width: 23.1vw;
+	}
+}
+
+.user-info p {
+	border: 0.1vw solid $border-color;
+	padding: 0.3vw;
+	margin-bottom: 0;
+}
+
+@media (max-width: $screen-width-small) {
+	.user-info__name {
+		article p {
+			width: 40vw;
+		}
+	}
+}
+
+@media (max-width: $screen-width-mobile) {
+	h2 {
+		font-size: 0.8em;
+	}
+	.user-info__name {
+		article p {
+			font-size: 0.9em;
+		}
+	}
+}

@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@core/core.module';
 import { AuthorizationModule } from './features/authorization/authorization.module';
+import { ProfileModule } from './features/profile/profile-page.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -24,6 +25,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 		CoreModule,
 		AuthorizationModule,
 		MatToolbarModule,
+		ProfileModule,
 		MainModule,
 		MatSnackBarModule,
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
