@@ -1,11 +1,13 @@
 export const environment = {
 	firebase: {
-		apiKey: 'AIzaSyBWGXKc-xhEHabeAbTBDSXWcT0WFIlM5m8',
-		authDomain: 'is-wiki-auth.firebaseapp.com',
-		projectId: 'is-wiki-auth',
-		storageBucket: 'is-wiki-auth.appspot.com',
-		messagingSenderId: '679450817564',
-		appId: '1:679450817564:web:73e1d390276eeedca89bd9'
+		projectId: 'wiki-project-d5644',
+		appId: '1:923657900032:web:ff70e28bf7190f393408e5',
+		storageBucket: 'wiki-project-d5644.appspot.com',
+		locationId: 'europe-central2',
+		apiKey: 'AIzaSyC01z_rWrunkcIuXIe5hbRYl09egEKzR8w',
+		authDomain: 'wiki-project-d5644.firebaseapp.com',
+		messagingSenderId: '923657900032',
+		measurementId: 'G-H6BHSF19B5'
 	},
 	production: true
 };
