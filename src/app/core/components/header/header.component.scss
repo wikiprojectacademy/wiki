@@ -1,14 +1,10 @@
 .header {
 	display: flex;
 	justify-content: space-between;
-	// align-items: center;
-	// justify-content: center;
-	// @include flex-center();
+	box-shadow: 0 2px 3px #0003;
 
 	.navigation {
 		display: flex;
-		// align-items: center;
-		// @include flex-center();
 
 		.logo__wrapper {
 			display: flex;
