@@ -3,15 +3,15 @@ import { IRole } from '@core/models/Role';
 import { IPost } from '@core/models/Post';
 import { ICategory } from '@core/models/Category';
 
-const role: IRole = {
+export const role: IRole = {
 	id: '1',
 	type: 'guest',
 	availableCategoriesToView: [],
 	permissions: []
 };
 
-const defaultData: IUser = {
-	id: 0,
+export const defaultData: IUser = {
+	id: '0',
 	email: 'test@mail.com',
 	firstName: 'test',
 	lastName: 'secondName',
@@ -19,14 +19,14 @@ const defaultData: IUser = {
 	role: role
 };
 
-const features: ICategory = {
+export const features: ICategory = {
 	name: 'Features',
 	createdBy: '0',
 	availableRolesToView: [],
 	subCategories: []
 };
 
-const post: IPost = {
+export const post: IPost = {
 	id: '0',
 	title: 'Guards',
 	contentHTML: '<div><span>content</span></div>',

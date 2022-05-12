@@ -8,7 +8,7 @@ import { IUser } from '@core/models/User';
 })
 export class AboutMeComponent implements OnInit {
 	user: IUser = {
-		id: 2,
+		id: '2',
 		firstName: 'Ivan',
 		lastName: 'Ivanov',
 		email: 'ivanivanov@gmail.com',
