@@ -1,13 +1,10 @@
-<!-- <mat-toolbar
-	class="header"
-	role="heading"
-	color="primary"
-> -->
 <mat-toolbar
 	class="header"
 	color="primary"
+	role="heading"
 >
 	<nav class="navigation">
+		<!-- LOGO -->
 		<div
 			class="logo__wrapper"
 			routerLink="/"
@@ -18,37 +15,23 @@
 			/>
 			Wiki
 		</div>
-		<button mat-button>Add your link here</button>
-		<button mat-button>Or here</button>
-		<button mat-button>Link Place 3</button>
-		<button mat-button>Link Place 4</button>
-		<button mat-button>Link Place 5</button>
-	</nav>
-	<div class="authorization__wrapper">
-		<!-- if not loged in -->
-		<div
-			class="authorization__log-reg"
-			*ngIf="!isLoggedIn"
-		>
-			<button
-				mat-button
-				routerLink="/authorization/login"
-			>
-				Log in
-			</button>
-			<button
-				mat-button
-				routerLink="/authorization/register"
-			>
-				Sing up
-			</button>
+
+		<!-- MENU FOR SMALL SCREENS -->
+		<div class="navigation-menu">
+			<mat-icon>expand_more</mat-icon>
+			<app-navigation-bar
+				class="navigation-buttons__small"
+			></app-navigation-bar>
 		</div>
 
-		<div
-			class="authorization__log-out"
-			*ngIf="isLoggedIn"
-		>
-			<button mat-button>Log out</button>
-		</div>
+		<!-- MENU FOR BIG SCREENS -->
+		<!-- <div class="navigation-buttons"> -->
+		<app-navigation-bar class="navigation-buttons"></app-navigation-bar>
+		<!-- </div> -->
+	</nav>
+
+	<!-- LOG IN/ LOG OUT -->
+	<div class="authorization__wrapper">
+		<app-authorization-bar [isLoggedIn]="isLoggedIn"></app-authorization-bar>
 	</div>
 </mat-toolbar>

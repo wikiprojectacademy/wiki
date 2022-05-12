@@ -1,0 +1,18 @@
+<div *ngIf="isLoggedIn">
+	<button mat-button>Log out</button>
+</div>
+
+<div *ngIf="!isLoggedIn">
+	<button
+		mat-button
+		routerLink="/authorization/login"
+	>
+		Log in
+	</button>
+	<button
+		mat-button
+		routerLink="/authorization/register"
+	>
+		Sing up
+	</button>
+</div>
