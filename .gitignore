@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Firebase environment files
+src/environments/**
+
 # Compiled output
 /dist
 /tmp
@@ -45,3 +48,4 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+

@@ -16,6 +16,10 @@ import { HeaderComponent } from '@core/components/header/header.component';
 import { MainModule } from './features/main/main.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+/**************************************** */
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
 	declarations: [AppComponent, HeaderComponent],
 	imports: [
@@ -24,10 +28,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 		AppRoutingModule,
 		CoreModule,
 		AuthorizationModule,
+		MainModule,
 		MatToolbarModule,
 		ProfileModule,
 		MainModule,
 		MatSnackBarModule,
+		MatButtonModule,
+		MatIconModule,
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideAuth(() => getAuth()),
 		provideFirestore(() => getFirestore())

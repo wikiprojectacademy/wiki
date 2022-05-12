@@ -1,1 +1,31 @@
-<mat-toolbar> </mat-toolbar>
+<mat-toolbar>
+	<div *ngIf="currentUserService.isUserLogin$ | async; else login">
+		<button
+			mat-raised-button
+			color="primary"
+			(click)="logout()"
+		>
+			<mat-icon>logout</mat-icon>
+			<span>Logout</span>
+		</button>
+	</div>
+
+	<ng-template #login>
+		<button
+			mat-raised-button
+			color="primary"
+			routerLink="/login"
+		>
+			<mat-icon>login</mat-icon>
+			<span>Login</span>
+		</button>
+		<button
+			mat-raised-button
+			color="primary"
+			routerLink="/register"
+		>
+			<mat-icon>person_add</mat-icon>
+			<span>Register</span>
+		</button>
+	</ng-template>
+</mat-toolbar>
