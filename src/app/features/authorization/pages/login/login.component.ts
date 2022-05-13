@@ -6,6 +6,7 @@ import { GOOGLE_ICON } from 'src/assets/icons/googleIcon';
 import { passwordValidation } from '@shared/validators/validations';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '../../services/authorization.service';
+import { SnackBarService } from '@shared/services/snackbar.service';
 
 @Component({
 	selector: 'app-login',
@@ -14,13 +15,15 @@ import { AuthorizationService } from '../../services/authorization.service';
 })
 export class LoginComponent {
 	public loginForm: FormGroup;
-	public hide: boolean = true;
+	public isPasswordHidden: boolean = true;
+	public isLoading: boolean = false;
 
 	constructor(
 		private iconRegistry: MatIconRegistry,
 		private sanitizer: DomSanitizer,
 		private router: Router,
-		private authService: AuthorizationService
+		private authService: AuthorizationService,
+		private snack: SnackBarService
 	) {
 		iconRegistry.addSvgIconLiteral(
 			'google',
@@ -34,13 +37,18 @@ export class LoginComponent {
 	}
 
 	onSubmit() {
+		this.isLoading = true;
 		this.authService
 			.loginUser(this.loginForm.value.email, this.loginForm.value.password)
 			.then(result => {
+				this.isLoading = false;
+
 				if (result?.isValid === false) {
-					console.log('result.message: ', result.message);
+					// console.log('result.message: ', result.message);
+					this.snack.openSnackBar(result.message);
 				} else {
 					this.loginForm.reset();
+					this.isLoading = false;
 					this.router.navigate(['/main']);
 				}
 			});
@@ -49,9 +57,9 @@ export class LoginComponent {
 	onGoogleAuth() {
 		this.authService.registerUserWithGoogle().then(result => {
 			if (result?.isValid === false) {
-				console.log('result.message: ', result.message);
+				// console.log('result.message: ', result.message);
+				this.snack.openSnackBar(result.message);
 			} else {
-				this.loginForm.reset();
 				this.router.navigate(['/main']);
 			}
 		});

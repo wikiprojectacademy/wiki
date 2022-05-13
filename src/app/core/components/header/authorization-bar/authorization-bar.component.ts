@@ -9,7 +9,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class AuthorizationBarComponent implements OnInit {
 	constructor(private afAuth: AngularFireAuth) {}
 
-	@Input() isLoggedIn: boolean = false;
+	@Input() isLoggedIn: boolean;
 
 	ngOnInit(): void {}
 
