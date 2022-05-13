@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
 import { ISubCategory } from '@core/models/SubCategory';
 import { Observable } from 'rxjs';
+import { subCategories } from '@core/services/initial-data';
 
 /**
  * Small example of usage Firebase CRUD service for operations with categories
@@ -26,21 +27,38 @@ export class CategoryFirebaseService extends FirebaseCrudService<
 		return this.getDocSnapshot(id);
 	}
 
+	getSubCategories(id: string) {
+		return this.getSubCollection(id);
+	}
+
 	getStreamCategories(): Observable<ICategory[]> {
 		return this.getCollection();
+	}
+
+	getStreamSubCategories(
+		parentId: string,
+		subCollectionId: string
+	): Observable<ISubCategory> {
+		return this.getDocFromSubCollection(parentId, subCollectionId);
 	}
 
 	getCategories() {
 		this.getCollection().subscribe(categories => console.log(categories));
 	}
 
-	addCategory(category: ICategory) {
-		this.addDocWithAutoId(category).then(() => {
-			console.log('category added');
-		});
+	async addCategory(category: ICategory) {
+		return await this.addDocWithAutoId(category)
+			.then(createdID => {
+				return Promise.resolve(createdID);
+			})
+			.catch(error => console.error(error));
 	}
 
-	addSubcategory(categoryId: string, subCategory: ISubCategory) {
+	addCategoryWithId(id: string, category: ICategory) {
+		this.addDoc(id, category);
+	}
+
+	addSubCategory(categoryId: string, subCategory: ISubCategory) {
 		this.addDocToSubCollection(categoryId, subCategory);
 	}
 }
