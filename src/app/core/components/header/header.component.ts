@@ -8,6 +8,7 @@ import { CurrentUserService } from '@core/services/user/current-user.service';
 	styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+	isLoggedIn: boolean = false;
 	constructor(
 		private afAuth: AngularFireAuth,
 		public currentUserService: CurrentUserService

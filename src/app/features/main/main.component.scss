@@ -4,11 +4,6 @@ $sidebar-open-duration: 0.3s;
 
 :host {
 	display: flex;
-	height: 100%;
-
-	// @media screen and (max-width: $screen-width-small) {
-	// 	overflow-x: hidden;
-	// }
 }
 
 .small-screen-element {
