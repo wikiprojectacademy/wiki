@@ -4,7 +4,7 @@ import {
 	AngularFirestoreCollection,
 	QuerySnapshot
 } from '@angular/fire/compat/firestore';
-import { Observable, take } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore/document/document';
 import {
 	Action,
@@ -94,13 +94,31 @@ export abstract class FirebaseCrudService<T, ID, S>
 	}
 
 	/**
+	 * Return an observable of document, from sub collection of parent document
+	 * @param parentDocumentId id of document in parent/main collection
+	 * @param subCollectionDocumentId id of document in sub collection
+	 */
+	getDocFromSubCollection(
+		parentDocumentId: ID,
+		subCollectionDocumentId: ID
+	): Observable<S> {
+		const docReference: AngularFirestoreDocument<T> = this.firebase
+			.collection<T>(`${this.base}`)
+			.doc<T>(`${parentDocumentId}`);
+		const collectionReference: AngularFirestoreCollection<S> =
+			docReference.collection(this.sub);
+
+		return collectionReference.doc(`${subCollectionDocumentId}`).valueChanges();
+	}
+
+	/**
 	 * Return sub collection of document by parent id
 	 * @param id Identifier of parent document
 	 */
 	getSubCollection(id: ID): Observable<S[]> {
-		const docReference: AngularFirestoreDocument<T> = this.firebase.doc<T>(
-			`${this.base}/${id}`
-		);
+		const docReference: AngularFirestoreDocument<T> = this.firebase
+			.collection<T>(`${this.base}`)
+			.doc<T>(`${id}`);
 		return docReference.collection<S>(this.sub).valueChanges();
 	}
 
@@ -110,14 +128,14 @@ export abstract class FirebaseCrudService<T, ID, S>
 	 * @param content object to write
 	 */
 	addDocToSubCollection(id: ID, content: any): Promise<void> {
-		const docReference: AngularFirestoreDocument<T> = this.firebase.doc<T>(
-			`${this.base}/${id}`
-		);
+		const docReference: AngularFirestoreDocument<T> = this.firebase
+			.collection<T>(`${this.base}`)
+			.doc<T>(`${id}`);
 		return docReference
 			.collection(this.sub)
 			.add(content)
 			.then(document => {
-				console.log('Document was added');
+				console.log('Document in sub collection was added');
 			});
 	}
 
@@ -141,6 +159,24 @@ export abstract class FirebaseCrudService<T, ID, S>
 		const collectionReference: AngularFirestoreCollection<T> =
 			this.firebase.collection<T>(this.base);
 		return collectionReference.valueChanges({ idField: 'id' }).pipe(take(1));
+	}
+
+	/**
+	 * Similar to getCollectionShapshot(), but return live updates, and append for
+	 * each document his id, that allow to us query sub documents, or change existed
+	 */
+	getCollectionWithIds(): Observable<T[]> {
+		const collectionReference: AngularFirestoreCollection<T> =
+			this.firebase.collection<T>(this.base);
+		return collectionReference.snapshotChanges().pipe(
+			map(documents => {
+				return documents.map(doc => {
+					const data = doc.payload.doc.data();
+					const id = doc.payload.doc.id;
+					return { id, ...data };
+				});
+			})
+		);
 	}
 
 	/**
