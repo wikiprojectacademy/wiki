@@ -1,45 +1,49 @@
-<nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
-	<button
-		mat-button
-		(click)="isOpened = false"
-		class="small-screen-element"
-	>
-		x
-	</button>
-
-	<div class="categories__content">
-		<h2>List of categories:</h2>
-		<div
-			class="category"
-			*ngFor="let category of mockedCateg"
+<div class="main-container">
+	<nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
+		<button
+			mat-button
+			(click)="isOpened = false"
+			class="small-screen-element"
 		>
-			<span class="category-item">{{ category.name }}</span>
+			x
+		</button>
+
+		<div class="categories__content">
+			<h2>List of categories:</h2>
 			<div
-				class="subcategory"
-				*ngFor="let sub of category.subCategories"
+				class="category"
+				*ngFor="let category of mockedCateg"
 			>
-				<span class="category-item">{{ sub.name }}</span>
+				<span class="category-item">{{ category.name }}</span>
+				<div
+					class="subcategory"
+					*ngFor="let sub of category.subCategories"
+				>
+					<span class="category-item">{{ sub.name }}</span>
+				</div>
 			</div>
 		</div>
-	</div>
-</nav>
+	</nav>
 
-<main [ngClass]="isOpened ? 'post-list post-list_opened' : ' post-list'">
-	<button
-		mat-button
-		(click)="isOpened = true"
-		class="small-screen-element"
-	>
-		Show Categories
-	</button>
-	<div class="post-list__content">
-		<mat-card
-			matRipple
-			class="post"
-			*ngFor="let post of mockedPosts"
+	<main [ngClass]="isOpened ? 'post-list post-list_opened' : ' post-list'">
+		<button
+			mat-button
+			(click)="isOpened = true"
+			class="small-screen-element"
 		>
-			<mat-card-title>{{ post.title }}</mat-card-title>
-			<mat-card-content>{{ post.content | contentShortner }}</mat-card-content>
-		</mat-card>
-	</div>
-</main>
+			Show Categories
+		</button>
+		<div class="post-list__content">
+			<mat-card
+				matRipple
+				class="post"
+				*ngFor="let post of mockedPosts"
+			>
+				<mat-card-title>{{ post.title }}</mat-card-title>
+				<mat-card-content>{{
+					post.content | contentShortner
+				}}</mat-card-content>
+			</mat-card>
+		</div>
+	</main>
+</div>

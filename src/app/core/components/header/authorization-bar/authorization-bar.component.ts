@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
 	selector: 'app-authorization-bar',
@@ -6,9 +7,13 @@ import { Component, Input, OnInit } from '@angular/core';
 	styleUrls: ['./authorization-bar.component.scss']
 })
 export class AuthorizationBarComponent implements OnInit {
-	constructor() {}
+	constructor(private afAuth: AngularFireAuth) {}
 
 	@Input() isLoggedIn: boolean = false;
 
 	ngOnInit(): void {}
+
+	logout() {
+		this.afAuth.signOut();
+	}
 }
