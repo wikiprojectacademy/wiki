@@ -10,7 +10,7 @@ export interface ICategory {
 	id?: string;
 	name: string;
 	createdBy: string; // Id of user who is created category
-	subCategories: string[]; // Id's of subcategories
-	availableRolesToView?: IRole[]; // Id's of roles, for which this category posts available for view,
+	subCategories?: string[]; // Id's of subcategories
+	availableRolesToView?: string[]; // Id's of roles, for which this category posts available for view,
 	// Value should be fetched from junction collection: 'junction_role_category'
 }
