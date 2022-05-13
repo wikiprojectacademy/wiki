@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { IUser } from '@core/models/User';
 import { passwordValidation } from '@shared/validators/validations';
-import { DataService } from '@core/services/data.service';
+import { DataService } from 'src/app/features/profile/service/data.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 export class EditProfileComponent implements OnInit {
 	changeProfileForm: any;
 	isPasswordHidden: boolean = true;
+
 	usser: Observable<IUser>;
 	// user: IUser = {
 	// 	id: 2,

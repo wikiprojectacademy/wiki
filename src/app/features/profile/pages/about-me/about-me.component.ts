@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IUser } from '@core/models/User';
-import { DataService } from '@core/services/data.service';
+
 import { Observable } from 'rxjs';
+import { DataService } from '../../service/data.service';
 
 @Component({
 	selector: 'app-about-me',

@@ -10,6 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileGuard } from './service/profile.guard';
+import { DataService } from './service/data.service';
 
 @NgModule({
 	declarations: [ProfilePageComponent, AboutMeComponent, EditProfileComponent],
@@ -23,7 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 		MatIconModule,
 		BrowserModule
 	],
-
+	providers: [ProfileGuard, DataService],
 	exports: [ProfilePageComponent]
 })
 export class ProfileModule {}

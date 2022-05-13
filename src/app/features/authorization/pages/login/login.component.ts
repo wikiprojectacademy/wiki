@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { GOOGLE_ICON } from '../../../../../assets/icons/googleIcon';
-import { PASSWORD_REGEXP } from '../../models/passwordRegExp';
+import { GOOGLE_ICON } from 'src/assets/icons/googleIcon';
+import { passwordValidation } from '@shared/validators/validations';
+import { Router } from '@angular/router';
+import { AuthorizationService } from '../../services/authorization.service';
 
 @Component({
 	selector: 'app-login',
@@ -14,7 +16,12 @@ export class LoginComponent {
 	public loginForm: FormGroup;
 	public hide: boolean = true;
 
-	constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+	constructor(
+		private iconRegistry: MatIconRegistry,
+		private sanitizer: DomSanitizer,
+		private router: Router,
+		private authService: AuthorizationService
+	) {
 		iconRegistry.addSvgIconLiteral(
 			'google',
 			sanitizer.bypassSecurityTrustHtml(GOOGLE_ICON)
@@ -22,23 +29,35 @@ export class LoginComponent {
 
 		this.loginForm = new FormGroup({
 			email: new FormControl(null, [Validators.required, Validators.email]),
-			password: new FormControl(null, [
-				Validators.required,
-				Validators.pattern(PASSWORD_REGEXP)
-			])
+			password: new FormControl(null, [Validators.required, passwordValidation])
 		});
 	}
 
 	onSubmit() {
-		// console.log('loginForm: ', this.loginForm.value);
-		this.loginForm.reset();
+		this.authService
+			.loginUser(this.loginForm.value.email, this.loginForm.value.password)
+			.then(result => {
+				if (result?.isValid === false) {
+					console.log('result.message: ', result.message);
+				} else {
+					this.loginForm.reset();
+					this.router.navigate(['/main']);
+				}
+			});
 	}
 
 	onGoogleAuth() {
-		// console.log('Auth with google');
+		this.authService.registerUserWithGoogle().then(result => {
+			if (result?.isValid === false) {
+				console.log('result.message: ', result.message);
+			} else {
+				this.loginForm.reset();
+				this.router.navigate(['/main']);
+			}
+		});
 	}
 
-	getErrorMessage(inputField: string): string | undefined {
+	getErrorMessage(inputField: string): string {
 		if (this.loginForm.hasError('required', inputField)) {
 			return 'You must enter a value';
 		}
@@ -49,6 +68,6 @@ export class LoginComponent {
 			return 'The	password must contain minimum six	characters, at least one letter and one number';
 		}
 
-		return;
+		return '';
 	}
 }
