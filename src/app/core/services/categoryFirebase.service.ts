@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
 import { ISubCategory } from '@core/models/SubCategory';
 import { Observable } from 'rxjs';
+import { subCategories } from '@core/services/initial-data';
 
 /**
  * Small example of usage Firebase CRUD service for operations with categories
