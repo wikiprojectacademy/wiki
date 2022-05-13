@@ -1,1 +1,37 @@
-<mat-toolbar> </mat-toolbar>
+<mat-toolbar
+	class="header"
+	color="primary"
+	role="heading"
+>
+	<nav class="navigation">
+		<!-- LOGO -->
+		<div
+			class="logo__wrapper"
+			routerLink="/"
+		>
+			<img
+				src="../../../../assets/icons/logo_dark.svg"
+				alt=""
+			/>
+			Wiki
+		</div>
+
+		<!-- MENU FOR SMALL SCREENS -->
+		<div class="navigation-menu">
+			<mat-icon>expand_more</mat-icon>
+			<app-navigation-bar
+				class="navigation-buttons__small"
+			></app-navigation-bar>
+		</div>
+
+		<!-- MENU FOR BIG SCREENS -->
+		<!-- <div class="navigation-buttons"> -->
+		<app-navigation-bar class="navigation-buttons"></app-navigation-bar>
+		<!-- </div> -->
+	</nav>
+
+	<!-- LOG IN/ LOG OUT -->
+	<div class="authorization__wrapper">
+		<app-authorization-bar [isLoggedIn]="isLoggedIn"></app-authorization-bar>
+	</div>
+</mat-toolbar>

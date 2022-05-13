@@ -14,7 +14,7 @@ export class EditProfileComponent implements OnInit {
 	isPasswordHidden: boolean = true;
 
 	user: IUser = {
-		id: 2,
+		id: '2',
 		firstName: 'Ivan',
 		lastName: 'Ivanov',
 		email: 'ivanivanov@gmail.com',

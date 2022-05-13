@@ -1,0 +1,67 @@
+@import '../../../../styles/variable.scss';
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	box-shadow: 0 2px 3px #0003;
+
+	.navigation {
+		display: flex;
+
+		.logo__wrapper {
+			display: flex;
+			align-items: center;
+			margin-right: 10px;
+
+			user-select: none;
+			cursor: pointer;
+		}
+
+		.navigation-buttons {
+			display: flex;
+			align-items: center;
+
+			&__small {
+				display: none;
+				position: absolute;
+				display: flex;
+				flex-direction: column;
+				// transition: opacity 0.2s;
+				transition: opacity 0.1s;
+				top: 40px;
+
+				opacity: 0;
+				background-color: #333;
+				border-radius: 5px;
+			}
+		}
+
+		.navigation-menu {
+			display: none;
+			position: relative;
+			overflow: hidden;
+			// transition: overflow 200ms 200ms;
+			// background-color: #f00;
+
+			&:hover {
+				overflow: visible;
+				.navigation-buttons__small {
+					opacity: 1;
+				}
+			}
+		}
+
+		@media screen and (max-width: $screen-width-medium) {
+			.navigation-menu {
+				display: inline;
+				display: flex;
+				// justify-content: center;
+				align-items: center;
+			}
+
+			.navigation-buttons {
+				display: none;
+			}
+		}
+	}
+}
