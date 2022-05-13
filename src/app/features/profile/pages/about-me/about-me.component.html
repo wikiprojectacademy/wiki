@@ -1,21 +1,24 @@
-<p>Hello {{ user.role.type | titlecase }}</p>
+<p>Hello {{ usser.role.type | titlecase }}</p>
 <div class="user-info">
 	<div class="user-info__name">
 		<article>
 			<h2>First Name</h2>
-			<p>{{ user.firstName }}</p>
+			<p>{{ usser.firstName }}</p>
 		</article>
 		<article>
 			<h2>Second Name</h2>
-			<p>{{ user.lastName }}</p>
+			<p>{{ usser.lastName }}</p>
 		</article>
 	</div>
 	<article>
 		<h2>Email</h2>
-		<p>{{ user.email }}</p>
+		<p>{{ usser.email }}</p>
 	</article>
 	<article>
 		<h2>Role</h2>
-		<p>{{ user.role.type | titlecase }}</p>
+		<p>{{ usser.role.type | titlecase }}</p>
 	</article>
 </div>
+<!-- -->
+<button (click)="logData()"></button>
+<!-- <button (click)="setData()"></button> -->

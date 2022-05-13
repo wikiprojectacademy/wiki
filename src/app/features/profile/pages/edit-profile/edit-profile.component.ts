@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { IUser } from '@core/models/User';
 import { passwordValidation } from '@shared/validators/validations';
+import { DataService } from '@core/services/data.service';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-edit-profile',
@@ -10,24 +12,26 @@ import { passwordValidation } from '@shared/validators/validations';
 	styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent implements OnInit {
-	changeProfileForm: FormGroup;
+	changeProfileForm: any;
 	isPasswordHidden: boolean = true;
-
-	user: IUser = {
-		id: 2,
-		firstName: 'Ivan',
-		lastName: 'Ivanov',
-		email: 'ivanivanov@gmail.com',
-		password: 'rgfhfgh323fd',
-		role: {
-			id: '1',
-			type: 'user',
-			availableCategoriesToView: [],
-			permissions: []
-		}
-	};
-
-	constructor() {}
+	usser: Observable<IUser>;
+	// user: IUser = {
+	// 	id: 2,
+	// 	firstName: 'Ivan',
+	// 	lastName: 'Ivanov',
+	// 	email: 'ivanivanov@gmail.com',
+	// 	password: 'rgfhfgh323fd',
+	// 	role: {
+	// 		id: '1',
+	// 		type: 'user',
+	// 		availableCategoriesToView: [],
+	// 		permissions: []
+	// 	}
+	// };
+	user: IUser;
+	constructor(private dataService: DataService) {
+		this.usser = dataService.getUser('d5lRYhxnFibepXPUlCEp');
+	}
 
 	ngOnInit(): void {
 		this.changeProfileForm = new FormGroup({
@@ -51,8 +55,13 @@ export class EditProfileComponent implements OnInit {
 				Validators.maxLength(25)
 			])
 		});
+
+		// this.usser.subscribe((data: IUser) => (this.user = data));
 	}
 
+	// 	getData()  {
+	// this.usser.subscribe((data: IUser) => (this.user = data));
+	// }
 	getNameErrorMessage(inputField: string) {
 		if (this.changeProfileForm.hasError('required', inputField)) {
 			return 'Required field';
@@ -68,6 +77,10 @@ export class EditProfileComponent implements OnInit {
 	}
 
 	changeProfile() {
+		this.dataService.updateUser(
+			'd5lRYhxnFibepXPUlCEp',
+			this.changeProfileForm.value
+		);
 		// console.log(this.changeProfileForm.value);
 		// console.log(this.user);
 	}

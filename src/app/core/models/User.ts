@@ -7,7 +7,7 @@ import { IRole } from '@core/models/Role';
  * name, email and password.
  */
 export interface IUser {
-	id: number;
+	id?: number;
 	roleId?: string;
 	role?: IRole;
 	firstName?: string;
