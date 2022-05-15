@@ -4,5 +4,5 @@ export interface IUserModel {
 	lastName: string;
 	email: string;
 	password: string;
-	role: string;
+	roleId: string;
 }
