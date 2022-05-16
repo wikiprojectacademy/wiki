@@ -1,6 +1,3 @@
-import { ICategory } from '@core/models/Category';
-import { IPermission } from '@core/models/Permission';
-
 /**
  * Main models to describe Role entity
  * Relation between Role to Permission -> One to Many
@@ -8,7 +5,10 @@ import { IPermission } from '@core/models/Permission';
  */
 export interface IRole {
 	id?: string;
-	type: 'admin' | 'user' | 'guest';
-	permissions: IPermission[];
-	availableCategoriesToView: ICategory[];
+	name?: string; // moderator, super admin, editor
+	hasUsers: boolean;
+	canModifyCategory: boolean;
+	canModifyPost: boolean;
+	availableCategoriesToView?: string[]; // Value should be fetched from junction collection: 'junction_role_category'
+	// It should return all records, where roleId === to current roleId
 }
