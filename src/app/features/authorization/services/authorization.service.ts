@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { IUser } from '@core/models/User';
 import firebase from 'firebase/compat/app';
+import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
+import UserCredential = firebase.auth.UserCredential;
+import { CurrentUserService } from '@core/services/user/current-user.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,14 +15,12 @@ export class AuthorizationService {
 	registerUser(user: IUser): Promise<any> {
 		return this.afAuth
 			.createUserWithEmailAndPassword(user.email, user.password)
-			.then(result => {
+			.then((result: UserCredential) => {
 				result.user.updateProfile({
 					displayName: user.firstName + ' ' + user.lastName,
 					photoURL:
 						'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
 				});
-				console.log('resultUser: ', result);
-				// add user to Firestore
 			})
 			.catch(error => {
 				// console.log('Auth Service: register error', error);

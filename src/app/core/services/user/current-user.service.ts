@@ -21,7 +21,7 @@ export class CurrentUserService {
 				});
 				this.isUserLogin$.next(false);
 			} else {
-				// todo get users data from firestore database
+				// TODO: get users data from firestore database
 				// and add it to currentUser$ value
 
 				// temporarily...

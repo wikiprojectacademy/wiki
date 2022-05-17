@@ -78,10 +78,12 @@ export class RoleListComponent implements OnInit, AfterViewInit {
 		if (element.hasUsers) {
 			return 'This role cannot delete because have users';
 		}
+		return '';
 	}
 	getTooltipTextForEdit(element): string {
 		if (element.id === '0') {
 			return 'Super Admin role cannot edit';
 		}
+		return '';
 	}
 }
