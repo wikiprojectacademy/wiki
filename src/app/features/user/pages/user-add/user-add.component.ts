@@ -12,7 +12,7 @@ import { SnackBarService } from '@shared/services/snackbar.service';
 import { RoleService } from '../../../role/services/role.service';
 
 @Component({
-	selector: 'app-role-add',
+	selector: 'app-user-add',
 	templateUrl: './user-add.component.html',
 	styleUrls: ['./user-add.component.scss']
 })

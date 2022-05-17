@@ -18,9 +18,9 @@
 		<ng-container matColumnDef="firstName">
 			<th
 				mat-header-cell
-				*matHeaderCellDef
 				mat-sort-header="firstName"
 				sortActionDescription="Sort by first name"
+				*matHeaderCellDef
 			>
 				First Name
 			</th>
@@ -35,9 +35,9 @@
 		<ng-container matColumnDef="lastName">
 			<th
 				mat-header-cell
-				*matHeaderCellDef
 				mat-sort-header="lastName"
 				sortActionDescription="Sort by last name"
+				*matHeaderCellDef
 			>
 				Last Name
 			</th>
@@ -52,9 +52,9 @@
 		<ng-container matColumnDef="email">
 			<th
 				mat-header-cell
-				*matHeaderCellDef
 				mat-sort-header="email"
 				sortActionDescription="Sort by email"
+				*matHeaderCellDef
 			>
 				Email
 			</th>
@@ -69,9 +69,9 @@
 		<ng-container matColumnDef="roleId">
 			<th
 				mat-header-cell
-				*matHeaderCellDef
 				mat-sort-header="roleId"
 				sortActionDescription="Sort by role"
+				*matHeaderCellDef
 			>
 				Role
 			</th>
@@ -79,7 +79,7 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				{{ getRoleName(element.roleId) }}
+				{{ element.roleId }}
 			</td>
 		</ng-container>
 
