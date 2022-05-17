@@ -41,7 +41,7 @@
 			</mat-form-field>
 
 			<mat-form-field appearance="outline">
-				<mat-select formControlName="role">
+				<mat-select formControlName="roleId">
 					<mat-option
 						*ngFor="let role of roles"
 						[value]="role.id"
@@ -61,7 +61,7 @@
 			</button>
 			<button
 				mat-raised-button
-				routerLink="/user/list"
+				routerLink="/user"
 			>
 				Cancel
 			</button>

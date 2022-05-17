@@ -1,12 +1,13 @@
-<button
-	mat-raised-button
-	color="primary"
-	routerLink="../add"
-	routerLinkActive="active"
->
-	Add new user
-</button>
-
+<div class="add-btn">
+	<button
+		mat-raised-button
+		color="primary"
+		routerLink="add"
+		routerLinkActive="active"
+	>
+		Add new user
+	</button>
+</div>
 <div class="mat-elevation-z8">
 	<table
 		mat-table
@@ -65,11 +66,11 @@
 			</td>
 		</ng-container>
 
-		<ng-container matColumnDef="role">
+		<ng-container matColumnDef="roleId">
 			<th
 				mat-header-cell
 				*matHeaderCellDef
-				mat-sort-header="role"
+				mat-sort-header="roleId"
 				sortActionDescription="Sort by role"
 			>
 				Role
@@ -78,7 +79,7 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				{{ element.role }}
+				{{ getRoleName(element.roleId) }}
 			</td>
 		</ng-container>
 
@@ -91,24 +92,40 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				<button
-					mat-mini-fab
-					color="primary"
-					matTooltip="Edit user {{ element.firstName }}	{{ element.lastName }}"
-					routerLink="/user/edit/{{ element.id }}"
+				<span
+					[matTooltip]="
+						element.id === '0' ? 'Super Admin user cannot edit' : ''
+					"
 				>
-					<mat-icon>edit</mat-icon>
-				</button>
-				<button
-					mat-mini-fab
-					color="warn"
-					matTooltip="Delete user {{ element.firstName }}	{{ element.lastName }}"
-					(click)="onDelete(element.id)"
+					<button
+						mat-mini-fab
+						color="primary"
+						[disabled]="element.id === '0'"
+						matTooltip="Edit user {{ element.firstName }}	{{ element.lastName }}"
+						routerLink="/user/edit/{{ element.id }}"
+					>
+						<mat-icon>edit</mat-icon>
+					</button>
+				</span>
+				<span
+					[matTooltip]="
+						element.id === '0' ? 'Super Admin user cannot delete' : ''
+					"
 				>
-					<mat-icon>delete</mat-icon>
-				</button>
-			</td></ng-container
-		>
+					<button
+						mat-mini-fab
+						color="warn"
+						[disabled]="element.id === '0'"
+						matTooltip="Delete user {{ element.firstName }}	{{
+							element.lastName
+						}}"
+						(click)="onDelete(element.id)"
+					>
+						<mat-icon>delete</mat-icon>
+					</button>
+				</span>
+			</td>
+		</ng-container>
 
 		<tr
 			mat-header-row
