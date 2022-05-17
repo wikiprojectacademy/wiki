@@ -13,6 +13,7 @@ import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { UserGuard } from './services/user.guard';
 
 @NgModule({
 	declarations: [UserListComponent, UserAddComponent, UserEditComponent],
@@ -28,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 		ReactiveFormsModule,
 		MatInputModule,
 		MatSelectModule
-	]
+	],
+	providers: [UserGuard]
 })
 export class UserModule {}

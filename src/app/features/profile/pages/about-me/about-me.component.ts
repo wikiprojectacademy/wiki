@@ -10,15 +10,6 @@ import { DataService } from '../../service/data.service';
 })
 export class AboutMeComponent implements OnInit {
 	user: IUser;
-	// user: IUser = {
-	// 	id: '3',
-	// 	firstName: 'Ivan',
-	// 	lastName: 'Ivanov',
-	// 	email: 'ivanivanov@gmail.com',
-	// 	password: 'rgfhfgh32',
-	// 	roleId: '1'
-	// };
-
 
 	constructor(private dataService: DataService) {}
 

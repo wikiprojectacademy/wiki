@@ -5,6 +5,7 @@ import { passwordValidation } from '@shared/validators/validations';
 import { DataService } from 'src/app/features/profile/service/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
+import { CurrentUserService } from '@core/services/user/current-user.service';
 
 @Component({
 	selector: 'app-edit-profile',
@@ -14,7 +15,6 @@ import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
 export class EditProfileComponent implements OnInit {
 	isPasswordHidden: boolean = true;
 	user: IUser;
-	// subscription: Subscription;
 
 	changeProfileForm: FormGroup = new FormGroup({
 		firstName: new FormControl('', [
@@ -34,57 +34,22 @@ export class EditProfileComponent implements OnInit {
 			Validators.maxLength(25)
 		])
 	});
-	// user: IUser = {
-	// 	id: '3',
-	// 	firstName: 'Ivan',
-	// 	lastName: 'Ivanov',
-	// 	email: 'ivanivanov@gmail.com',
-	// 	password: 'rgfhfgh323fd',
-	// 	roleId: '1'
-	// };
 
-	constructor(private dataService: DataService, public dialog: MatDialog) {}
+	constructor(
+		private dataService: DataService,
+		public dialog: MatDialog,
+		private currentUserService: CurrentUserService
+	) {}
 
 	ngOnInit(): void {
-		// this.dataService
-		// 	.getUser('d5lRYhxnFibepXPUlCEp')
-		// 	.subscribe((data: IUser) => (this.user = data));
-
 		this.dataService
-			// .getUser(`${this.user.id}`)
-			.getUser('d5lRYhxnFibepXPUlCEp')
-			.subscribe(
-				(data: IUser) => {
-					this.user = data;
-					this.changeProfileForm.patchValue(this.user);
-					// this.getUserById();
-				}
-				// (error: any) => console.error('Observer got an error: ' + error),
-				// () => console.log('Done getting user')
-			);
-
-		// this.dataService
-		// 	// .getUser(`${this.user.id}`)
-		// 	.getUser('d5lRYhxnFibepXPUlCEp')
-		// 	.subscribe((data: IUser) => {
-		// 		this.user = data;
-		// 		this.changeProfileForm.patchValue(this.user);
-		// 		// this.getUserById();
-		// 	});
-
-		// this.subscription = this.dataService
-		// 	// .getUser(`${this.user.id}`)
-		// 	.getUser('d5lRYhxnFibepXPUlCEp')
-		// 	.subscribe(data => {
-		// 		this.user = data;
-		// 		this.getUserById();
-		// 	});
+			.getUser(`${this.currentUserService.user.id}`)
+			.subscribe((data: IUser) => {
+				console.log('getUser');
+				this.user = data;
+				this.changeProfileForm.patchValue(this.user);
+			});
 	}
-
-	// getUserById(): void {
-	// 	this.changeProfileForm.patchValue(this.user);
-	// }
-
 	// getData() {
 	// 	this.changeProfileForm.patchValue({
 	// 		firstName: this.user.firstName,
@@ -109,23 +74,30 @@ export class EditProfileComponent implements OnInit {
 		} else return '';
 	}
 
-	changeProfile() {
-		this.dataService.updateUser(
-			// `${this.user.id}`,
-			'd5lRYhxnFibepXPUlCEp',
-			this.changeProfileForm.value
-		);
-		console.log(this.changeProfileForm.value);
-		// console.log(this.user);
-	}
+	// changeProfile() {
+	// this.dataService.updateUser(
+	// 	`${this.currentUserService.user.id}`,
+	// 	// 'd5lRYhxnFibepXPUlCEp',
+	// 	this.changeProfileForm.value
+	// );
+	// console.log(this.changeProfileForm.value);
+	// console.log(this.user);
+	// }
 
 	submitResult() {
-		this.dataService.updateUser(
-			// `${this.user.id}`,
-			'd5lRYhxnFibepXPUlCEp',
-			this.changeProfileForm.value
-		);
-		this.dialog.open(SubmitDialogComponent);
+		this.dataService
+			.updateUser(
+				`${this.currentUserService.user.id}`,
+				this.changeProfileForm.value
+			)
+			.then(
+				() => {
+					console.log(`updateUser`);
+					this.dialog.open(SubmitDialogComponent);
+					// this.changeProfileForm.markAsPristine();
+				},
+				() => console.log('error')
+			);
 		this.changeProfileForm.markAsPristine();
 	}
 }

@@ -12,8 +12,8 @@ export class CurrentUserService {
 	username = 'Example';
 
 	user: IUser | any = {
-		isLoggedIn: true,
-		role: { type: 'user', permissions: ['fasd', 'dsad'] }
+		id: 'd5lRYhxnFibepXPUlCEp',
+		role: { name: 'user', permissions: ['fasd', 'dsad'] }
 	};
 
 	public currentUser$ = new Subject<IUser>();
@@ -25,12 +25,13 @@ export class CurrentUserService {
 			if (!user) {
 				this.currentUser$.next({
 					id: '1',
-					role: { name: 'guest', 
-// permissions: [],
-	hasUsers: false,
-	canModifyCategory: false,
-	canModifyPost: false,
-},
+					role: {
+						name: 'guest',
+						// permissions: [],
+						hasUsers: false,
+						canModifyCategory: false,
+						canModifyPost: false
+					},
 					roleId: '0'
 				});
 				this.isUserLogin$.next(false);
@@ -45,12 +46,12 @@ export class CurrentUserService {
 					firstName: 'firstName',
 					lastName: 'lastName',
 					password: 'password',
-					role: { 
-	name: 'user', 
-	hasUsers: false,
-	canModifyCategory: false,
-	canModifyPost: false,
-},
+					role: {
+						name: 'user',
+						hasUsers: false,
+						canModifyCategory: false,
+						canModifyPost: false
+					},
 					roleId: '1'
 				});
 				this.isUserLogin$.next(true);

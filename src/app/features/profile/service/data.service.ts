@@ -11,26 +11,11 @@ export class DataService extends FirebaseCrudService<IUser, string, IRole> {
 		super('users', 'role', _firebase);
 	}
 
-	getUser(id: string): Observable<IUser | {}> {
+	getUser(id: string): Observable<IUser> {
 		return this.getDocSnapshot(id);
-		// .pipe(
-		// catchError(this.handleError)
-		// 	catchError((error: any) => {
-		// 		console.log(error);
-		// 		return of({
-		// 			id: '12',
-		// 			email: 'predchyshin',
-		// 			role: { type: 'user' }
-		// 		});
-		// 	})
-		// );
 	}
 
-	updateUser(id: string, content: IUser) {
+	updateUser(id: string, content: IUser): Promise<IUser | void> {
 		return this.updateDoc(id, content);
 	}
-
-	// private handleError(error: any): Observable<never> {
-	// 	return throwError(() => error)
-	// }
 }
