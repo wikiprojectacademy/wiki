@@ -31,7 +31,7 @@
 		</div>
 	</nav>
 
-	<main [ngClass]="isOpened ? 'post-list post-list_opened' : ' post-list'">
+	<main [ngClass]="isOpened ? 'post-list post-list_opened' : 'post-list'">
 		<button
 			mat-button
 			(click)="isOpened = true"
@@ -39,6 +39,11 @@
 		>
 			Show Categories
 		</button>
+		<!-- ************ for tests **************** -->
+		<div>
+			<pre>{{ user | json }}</pre>
+		</div>
+		<!-- ************ for tests **************** -->
 		<div class="post-list__content">
 			<mat-card
 				matRipple

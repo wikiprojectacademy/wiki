@@ -13,4 +13,5 @@ export interface IUser {
 	email?: string;
 	password?: string;
 	roleId?: string;
+	role?: any; //for tests
 }

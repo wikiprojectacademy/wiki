@@ -24,15 +24,8 @@ export class CurrentUserService {
 			// console.log('curUser: ', user);
 			if (!user) {
 				this.currentUser$.next({
-					id: '1',
-					role: {
-						name: 'guest',
-						// permissions: [],
-						hasUsers: false,
-						canModifyCategory: false,
-						canModifyPost: false
-					},
-					roleId: '0'
+					roleId: '0',
+					role: { name: 'guest' }
 				});
 				this.isUserLogin$.next(false);
 			} else {
