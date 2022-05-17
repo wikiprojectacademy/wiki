@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 import { IUserModel } from '../models/user.model';
+import { Observable } from 'rxjs';
+import { IUser } from '@core/models/User';
+import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
+import { IRole } from '@core/models/Role';
+import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 import { SnackBarService } from '@shared/services/snackbar.service';
 import { RoleService } from '../../role/services/role.service';
 
@@ -132,16 +137,22 @@ export class UserService {
 	];
 
 	constructor(
-		private snackBService: SnackBarService,
-		private roleService: RoleService
+		private userFirebaseService: UserFirebaseService,
+		private roleFirebaseService: RoleFirebaseService,
+    private snackBService: SnackBarService,
+    private roleService: RoleService
 	) {}
 
-	getUsers(): IUserModel[] {
-		return this.users;
+	getUsers(): Observable<IUser[]> {
+		return this.userFirebaseService.getUsers$();
 	}
 
-	getUserById(id): IUserModel {
-		return this.users.filter(item => item.id === id)[0];
+	getUserById(id: string): Observable<IUser> {
+		return this.userFirebaseService.getUserData(id);
+	}
+
+	getUserRole(roleId: string): Observable<IRole> {
+		return this.roleFirebaseService.getRole(roleId);
 	}
 
 	addUser(user): void {
@@ -151,12 +162,8 @@ export class UserService {
 
 	editUser(user): void {
 		if (user.id !== '0') {
-			this.users = this.users.map(item => {
-				if (item.id === user.id) {
-					return { ...item, ...user };
-				}
-				return item;
-			});
+      const { id, ...withoutId } = user;
+      this.userFirebaseService.updateUser(user.id, withoutId);
 			let roleId = user.roleId;
 			let hasUser = this.users.filter(function (item) {
 				return item.roleId === roleId;

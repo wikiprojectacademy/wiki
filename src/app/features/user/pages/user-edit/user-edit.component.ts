@@ -2,20 +2,22 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { IUserModel } from '../../models/user.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '@shared/services/snackbar.service';
-import { RoleService } from '../../../role/services/role.service';
+import { IUser } from '@core/models/User';
+import { IRole } from '@core/models/Role';
+import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 
 @Component({
-	selector: 'app-role-edit',
+	selector: 'app-user-edit',
 	templateUrl: './user-edit.component.html',
 	styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit, OnDestroy {
-	public user: IUserModel;
+	public user$: Observable<IUser>;
 	public form: FormGroup;
-	public roles = [];
+	public roles$: Observable<IRole[]>;
 	private routeSub: Subscription;
 
 	constructor(
@@ -24,9 +26,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
 		private router: Router,
 		private route: ActivatedRoute,
 		private snackBService: SnackBarService,
-		private roleService: RoleService
+		private rolesFirebaseService: RoleFirebaseService
 	) {
-		this.getRoles();
 		this.form = formBuilder.group({
 			id: [],
 			firstName: [
@@ -43,18 +44,17 @@ export class UserEditComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.roles$ = this.rolesFirebaseService.getRoles();
 		this.routeSub = this.route.params.subscribe(params => {
 			this.getUserById(params['id']);
 		});
 	}
 
 	getUserById(id: string): void {
-		this.user = this.userService.getUserById(id);
-		this.form.patchValue(this.user);
-	}
-
-	getRoles(): void {
-		this.roles = this.roleService.getRolesOption();
+		this.user$ = this.userService.getUserById(id);
+		this.user$.subscribe(user => {
+			this.form.patchValue({ id, ...user });
+		});
 	}
 
 	editUser(): void {
