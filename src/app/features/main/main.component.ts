@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IUser } from '@core/models/User';
+import { CurrentUserService } from '@core/services/user/current-user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-main',
 	templateUrl: './main.component.html',
 	styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
 	mockedPosts = [
 		{ title: 'title number one', content: 'test content' },
 		{ title: 'SUPER TITLE', content: 'test content medium medium test test' },
@@ -71,7 +74,21 @@ export class MainComponent implements OnInit {
 		}
 	];
 
-	constructor() {}
+	// for tests *****************************************
+	public user: IUser;
+	private subscription?: Subscription;
 
-	ngOnInit(): void {}
+	constructor(private userSrv: CurrentUserService) {}
+
+	ngOnInit(): void {
+		this.subscription = this.userSrv.currentUser$.subscribe(curUser => {
+			this.user = curUser;
+		});
+	}
+
+	ngOnDestroy(): void {
+		if (this.subscription) {
+			this.subscription.unsubscribe();
+		}
+	}
 }

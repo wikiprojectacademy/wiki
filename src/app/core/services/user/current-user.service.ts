@@ -16,8 +16,8 @@ export class CurrentUserService {
 			// console.log('curUser: ', user);
 			if (!user) {
 				this.currentUser$.next({
-					id: '1',
-					roleId: '0'
+					roleId: '0',
+					role: { name: 'guest' }
 				});
 				this.isUserLogin$.next(false);
 			} else {
@@ -31,7 +31,8 @@ export class CurrentUserService {
 					firstName: 'firstName',
 					lastName: 'lastName',
 					password: 'password',
-					roleId: '1'
+					roleId: '1',
+					role: { name: 'user' }
 				});
 				this.isUserLogin$.next(true);
 			}
