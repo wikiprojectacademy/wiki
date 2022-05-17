@@ -1,0 +1,46 @@
+:host {
+	width: 100%;
+	background-color: #eee;
+}
+
+header {
+	display: flex;
+	padding: 5px;
+
+	h1 {
+		flex-grow: 1;
+		text-align: center;
+		height: 100%;
+	}
+}
+
+.categories__wrapper {
+	padding: 0 15px;
+
+	.category {
+		display: flex;
+		margin-bottom: 7px;
+		cursor: pointer;
+		transition: transform 0.1s;
+
+		&:hover {
+			transform: translateY(-2px);
+		}
+		&:active {
+			transform: translateY(0px);
+		}
+
+		.labels,
+		content {
+			width: 50%;
+			& * {
+				margin: 0;
+			}
+		}
+
+		.common-label {
+			opacity: 0.8;
+			font-weight: bold;
+		}
+	}
+}

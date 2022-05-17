@@ -16,6 +16,13 @@ const routes: Routes = [
 		path: 'user',
 		loadChildren: () =>
 			import('./features/user/user.module').then(m => m.UserModule)
+	},
+	{
+		path: 'edit-categories',
+		loadChildren: () =>
+			import('./features/categories-edit/categories-edit.module').then(
+				m => m.CategoriesEditModule
+			)
 	}
 ];
 

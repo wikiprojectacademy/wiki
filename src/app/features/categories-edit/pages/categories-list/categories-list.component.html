@@ -1,0 +1,44 @@
+<header>
+	<button
+		mat-button
+		routerLink="/main"
+	>
+		<mat-icon>arrow_back</mat-icon>
+	</button>
+
+	<h1>Categories list</h1>
+
+	<button
+		mat-button
+		routerLink="./edit/new"
+	>
+		<mat-icon>add</mat-icon>
+	</button>
+</header>
+
+<div class="categories__wrapper">
+	<div *ngFor="let cat of categories">
+		<mat-card
+			matRipple
+			class="category"
+			[routerLink]="['./edit/' + cat.id]"
+		>
+			<div class="labels">
+				<mat-card-title class="category-label"> {{ cat.name }} </mat-card-title>
+				<mat-card-subtitle>
+					{{ cat.subCategories | subcategoriesNameLister }}
+				</mat-card-subtitle>
+			</div>
+
+			<div class="content">
+				<span class="common-label">Created by:</span>
+				{{ cat.createdBy }}
+				<br />
+				<span class="common-label">Roles:</span>
+				<span *ngFor="let role of cat.availableRolesToView">
+					{{ role.type }}
+				</span>
+			</div>
+		</mat-card>
+	</div>
+</div>
