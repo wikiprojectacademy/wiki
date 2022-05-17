@@ -14,17 +14,12 @@ export class EditProfileComponent implements OnInit {
 	isPasswordHidden: boolean = true;
 
 	user: IUser = {
-		id: '2',
+		id: '3',
 		firstName: 'Ivan',
 		lastName: 'Ivanov',
 		email: 'ivanivanov@gmail.com',
 		password: 'rgfhfgh323fd',
-		role: {
-			id: '1',
-			type: 'user',
-			availableCategoriesToView: [],
-			permissions: []
-		}
+		roleId: '1'
 	};
 
 	constructor() {}

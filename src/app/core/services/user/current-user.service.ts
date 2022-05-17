@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { IUser } from '@core/models/User';
-import { role } from '@core/models/test-data';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,7 +17,7 @@ export class CurrentUserService {
 			if (!user) {
 				this.currentUser$.next({
 					id: '1',
-					role
+					roleId: '0'
 				});
 				this.isUserLogin$.next(false);
 			} else {
@@ -32,7 +31,7 @@ export class CurrentUserService {
 					firstName: 'firstName',
 					lastName: 'lastName',
 					password: 'password',
-					role
+					roleId: '1'
 				});
 				this.isUserLogin$.next(true);
 			}

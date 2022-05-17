@@ -22,9 +22,9 @@ export class AuthorizationService {
 				// add user to Firestore
 			})
 			.catch(error => {
-				console.log('Auth Service: register error', error);
-				console.log('error code', error.code);
-				console.log('error', error);
+				// console.log('Auth Service: register error', error);
+				// console.log('error code', error.code);
+				// console.log('error', error);
 				return error.code ? { isValid: false, message: error.message } : error;
 			});
 	}

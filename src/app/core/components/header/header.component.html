@@ -32,6 +32,8 @@
 
 	<!-- LOG IN/ LOG OUT -->
 	<div class="authorization__wrapper">
-		<app-authorization-bar [isLoggedIn]="isLoggedIn"></app-authorization-bar>
+		<app-authorization-bar
+			[isLoggedIn]="currentUserService.isUserLogin$ | async"
+		></app-authorization-bar>
 	</div>
 </mat-toolbar>
