@@ -34,6 +34,14 @@ export class EditProfileComponent implements OnInit {
 			Validators.maxLength(25)
 		])
 	});
+	// user: IUser = {
+	// 	id: '3',
+	// 	firstName: 'Ivan',
+	// 	lastName: 'Ivanov',
+	// 	email: 'ivanivanov@gmail.com',
+	// 	password: 'rgfhfgh323fd',
+	// 	roleId: '1'
+	// };
 
 	constructor(private dataService: DataService, public dialog: MatDialog) {}
 

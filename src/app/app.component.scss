@@ -1,17 +1,5 @@
-:host {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-}
-
 .header-component {
 	position: sticky;
 	top: 0px;
 	z-index: 1000;
-	flex: 0 1 auto;
-}
-
-.router__wrapper {
-	display: flex;
-	flex-grow: 1;
 }

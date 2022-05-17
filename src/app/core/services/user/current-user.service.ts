@@ -3,7 +3,7 @@ import { IUser } from '@core/models/User';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { role } from '@core/models/test-data';
+// import { role } from '@core/models/test-data';
 
 @Injectable({
 	providedIn: 'root'
@@ -25,7 +25,13 @@ export class CurrentUserService {
 			if (!user) {
 				this.currentUser$.next({
 					id: '1',
-					role: { type: 'guest', permissions: [] }
+					role: { name: 'guest', 
+// permissions: [],
+	hasUsers: false,
+	canModifyCategory: false,
+	canModifyPost: false,
+},
+					roleId: '0'
 				});
 				this.isUserLogin$.next(false);
 			} else {
@@ -39,7 +45,13 @@ export class CurrentUserService {
 					firstName: 'firstName',
 					lastName: 'lastName',
 					password: 'password',
-					role: { type: 'user', permissions: [] }
+					role: { 
+	name: 'user', 
+	hasUsers: false,
+	canModifyCategory: false,
+	canModifyPost: false,
+},
+					roleId: '1'
 				});
 				this.isUserLogin$.next(true);
 			}

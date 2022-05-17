@@ -14,10 +14,6 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { AuthorizationModule } from './features/authorization/authorization.module';
 import { MainModule } from './features/main/main.module';
 
-/**************************************** */
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-
 @NgModule({
 	declarations: [AppComponent],
 	imports: [
@@ -28,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 		AuthorizationModule,
 		// ProfileModule,
 		MainModule,
+
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideAuth(() => getAuth()),
 		provideFirestore(() => getFirestore())

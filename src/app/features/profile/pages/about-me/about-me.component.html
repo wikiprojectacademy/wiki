@@ -1,8 +1,9 @@
 <div class="user-image">
 	<img src="../assets/images/profile-user.png" />
-	<p>Hello {{ user?.role.type | titlecase }}</p>
+	<p>Hello {{ user?.role.name | titlecase }}</p>
 	<!-- <p>Hello {{ user?.role.type }}</p> -->
 </div>
+<!-- <p>Hello {{ user.roleId }}</p> -->
 <div class="user-info">
 	<div class="user-info__name">
 		<article>
@@ -20,7 +21,8 @@
 	</article>
 	<article>
 		<h2>Role</h2>
-		<p>{{ user?.role.type }}</p>
+		<p>{{ user?.role.name }}</p>
+		<!-- <p>{{ user.roleId }}</p> -->
 	</article>
 </div>
 <!-- <button (click)="logData()"></button> -->

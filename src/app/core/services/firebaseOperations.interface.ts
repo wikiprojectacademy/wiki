@@ -16,9 +16,14 @@ export interface FirebaseOperations<T, ID, S> {
 	updateDoc(id: ID, content: Partial<T>): Promise<void>;
 	deleteDoc(id: ID): Promise<void>;
 	getCollection(): Observable<T[]>;
-	getSubCollection(id: ID): Observable<S[]>;
+	getCollectionWithIds(): Observable<T[]>;
 	getCollectionSnapshot(): Observable<T[]>;
 	getCollectionStateChanges(): Observable<DocumentChangeAction<T>[]>;
+	getSubCollection(id: ID): Observable<S[]>;
+	getDocFromSubCollection(
+		parentDocumentId: ID,
+		subCollectionDocumentId: ID
+	): Observable<S>;
 	getDocumentsWhere(
 		fieldName: string,
 		operationStr: WhereFilterOp,
