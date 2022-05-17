@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { SnackBarService } from '@shared/services/snackbar.service';
+import { RoleService } from '../../../role/services/role.service';
 
 @Component({
 	selector: 'app-user',
@@ -18,7 +19,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
 		'firstName',
 		'lastName',
 		'email',
-		'role',
+		'roleId',
 		'id'
 	];
 	public dataSource: MatTableDataSource<IUserModel>;
@@ -26,7 +27,8 @@ export class UserListComponent implements OnInit, AfterViewInit {
 	constructor(
 		private userService: UserService,
 		private liveAnnouncer: LiveAnnouncer,
-		private snackBService: SnackBarService
+		private snackBService: SnackBarService,
+		private roleService: RoleService
 	) {
 		this.getUsers();
 	}
@@ -44,6 +46,10 @@ export class UserListComponent implements OnInit, AfterViewInit {
 		this.dataSource = new MatTableDataSource<IUserModel>(this.users);
 	}
 
+	getRoleName(id: string): string {
+		return this.roleService.getRoleById(id).name;
+	}
+
 	announceSortChange(sortState: Sort): void {
 		if (sortState.direction) {
 			this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
@@ -55,6 +61,5 @@ export class UserListComponent implements OnInit, AfterViewInit {
 	onDelete(id: string): void {
 		this.userService.deleteUser(id);
 		this.getUsers();
-		this.snackBService.openSnackBar('User account deleted', '', 1000);
 	}
 }

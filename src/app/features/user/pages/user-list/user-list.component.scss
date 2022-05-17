@@ -1,0 +1,16 @@
+:host {
+	width: 100%;
+}
+
+.add-btn {
+	display: flex;
+	flex-direction: row-reverse;
+	margin: 15px;
+}
+table {
+	width: 100%;
+}
+
+th.mat-sort-header-sorted {
+	color: black;
+}

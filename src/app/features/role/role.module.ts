@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserListComponent } from './pages/user-list/user-list.component';
-import { UserRoutingModule } from './user-routing.module';
+import { RoleListComponent } from './pages/role-list/role-list.component';
+import { RoleRoutingModule } from './role-routing.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UserAddComponent } from './pages/user-add/user-add.component';
-import { UserEditComponent } from './pages/user-edit/user-edit.component';
+import { RoleAddComponent } from './pages/role-add/role-add.component';
+import { RoleEditComponent } from './pages/role-edit/role-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { UserGuard } from './services/user.guard';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
-	declarations: [UserListComponent, UserAddComponent, UserEditComponent],
+	declarations: [RoleListComponent, RoleAddComponent, RoleEditComponent],
 	imports: [
 		CommonModule,
-		UserRoutingModule,
+		RoleRoutingModule,
 		MatTableModule,
 		MatPaginatorModule,
 		MatSortModule,
@@ -28,8 +28,8 @@ import { UserGuard } from './services/user.guard';
 		MatTooltipModule,
 		ReactiveFormsModule,
 		MatInputModule,
-		MatSelectModule
-	],
-	providers: [UserGuard]
+		MatSelectModule,
+		MatCheckboxModule
+	]
 })
-export class UserModule {}
+export class RoleModule {}

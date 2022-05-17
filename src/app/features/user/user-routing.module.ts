@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserListComponent } from './components/user-list/user-list.component';
-import { UserAddComponent } from './components/user-add/user-add.component';
-import { UserEditComponent } from './components/user-edit/user-edit.component';
+
+import { UserListComponent } from './pages/user-list/user-list.component';
+import { UserAddComponent } from './pages/user-add/user-add.component';
+import { UserEditComponent } from './pages/user-edit/user-edit.component';
 import { UserGuard } from './services/user.guard';
 
 const routes: Routes = [
@@ -10,7 +11,7 @@ const routes: Routes = [
 		path: '',
 		canActivate: [UserGuard],
 		children: [
-			{ path: 'list', component: UserListComponent },
+			{ path: '', component: UserListComponent, pathMatch: 'full' },
 			{ path: 'add', component: UserAddComponent },
 			{ path: 'edit/:id', component: UserEditComponent }
 		]
