@@ -5,14 +5,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { SnackBarService } from '@shared/services/snackbar.service';
-import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
-import { forkJoin, Observable, of, switchMap, take, tap } from 'rxjs';
+import { forkJoin, Observable, switchMap, take, tap } from 'rxjs';
 import { IUser } from '@core/models/User';
-import { updateCurrentUser } from '@angular/fire/auth';
-import { concat, zip } from 'rxjs/operators';
 import { IRole } from '@core/models/Role';
-import { RoleService } from '../../../role/services/role.service';
 
 @Component({
 	selector: 'app-user',
@@ -35,10 +30,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
 	constructor(
 		private userService: UserService,
-		private liveAnnouncer: LiveAnnouncer,
-		private snackBService: SnackBarService,
-		private userFirebaseService: UserFirebaseService
-		private roleService: RoleService
+		private liveAnnouncer: LiveAnnouncer
 	) {
 		this.getUsers();
 	}
@@ -47,7 +39,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
 	ngAfterViewInit() {
 		this.roles$.subscribe((roles: IRole[]) => {
-			console.log(roles);
 			this.usersModel?.map(user => {
 				const roleId = user.roleId;
 				const role = roles.find(item => item.id === roleId);
@@ -77,10 +68,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
 				return forkJoin(rolesArray$);
 			})
 		);
-	}
-
-	getRoleName(id: string): string {
-		return this.roleService.getRoleById(id).name;
 	}
 
 	announceSortChange(sortState: Sort): void {

@@ -139,8 +139,8 @@ export class UserService {
 	constructor(
 		private userFirebaseService: UserFirebaseService,
 		private roleFirebaseService: RoleFirebaseService,
-    private snackBService: SnackBarService,
-    private roleService: RoleService
+		private snackBService: SnackBarService,
+		private roleService: RoleService
 	) {}
 
 	getUsers(): Observable<IUser[]> {
@@ -162,8 +162,8 @@ export class UserService {
 
 	editUser(user): void {
 		if (user.id !== '0') {
-      const { id, ...withoutId } = user;
-      this.userFirebaseService.updateUser(user.id, withoutId);
+			const { id, ...withoutId } = user;
+			this.userFirebaseService.updateUser(user.id, withoutId);
 			let roleId = user.roleId;
 			let hasUser = this.users.filter(function (item) {
 				return item.roleId === roleId;
@@ -182,15 +182,15 @@ export class UserService {
 
 	deleteUser(id: string): void {
 		if (id !== '0') {
-			let roleId = this.getUserById(id).roleId;
+			//let roleId = this.getUserById(id).roleId;
 			this.users = this.users.filter(function (item) {
 				return item.id !== id;
 			});
 			let hasUser = this.users.filter(function (item) {
-				return item.roleId === roleId;
+				//	return item.roleId === roleId;
 			});
 			if (!hasUser.length) {
-				this.roleService.updateHasUser(roleId);
+				//this.roleService.updateHasUser(roleId);
 			}
 			this.snackBService.openSnackBar('User account deleted', '', 1000);
 		} else {
