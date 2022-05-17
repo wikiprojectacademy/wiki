@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
 import { IUser } from '@core/models/User';
 import { passwordValidation } from '@shared/validators/validations';
 import { DataService } from 'src/app/features/profile/service/data.service';
-import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
 
 @Component({
 	selector: 'app-edit-profile',
@@ -12,57 +12,81 @@ import { Observable } from 'rxjs';
 	styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent implements OnInit {
-	changeProfileForm: any;
 	isPasswordHidden: boolean = true;
-
-	usser: Observable<IUser>;
-	// user: IUser = {
-	// 	id: 2,
-	// 	firstName: 'Ivan',
-	// 	lastName: 'Ivanov',
-	// 	email: 'ivanivanov@gmail.com',
-	// 	password: 'rgfhfgh323fd',
-	// 	role: {
-	// 		id: '1',
-	// 		type: 'user',
-	// 		availableCategoriesToView: [],
-	// 		permissions: []
-	// 	}
-	// };
 	user: IUser;
-	constructor(private dataService: DataService) {
-		this.usser = dataService.getUser('d5lRYhxnFibepXPUlCEp');
-	}
+	// subscription: Subscription;
+
+	changeProfileForm: FormGroup = new FormGroup({
+		firstName: new FormControl('', [
+			Validators.required,
+			Validators.minLength(2),
+			Validators.maxLength(25)
+		]),
+		lastName: new FormControl('', [
+			Validators.required,
+			Validators.minLength(2),
+			Validators.maxLength(25)
+		]),
+		email: new FormControl('', [Validators.required, Validators.email]),
+		password: new FormControl('', [
+			Validators.required,
+			passwordValidation,
+			Validators.maxLength(25)
+		])
+	});
+
+	constructor(private dataService: DataService, public dialog: MatDialog) {}
 
 	ngOnInit(): void {
-		this.changeProfileForm = new FormGroup({
-			firstName: new FormControl(`${this.user.firstName}`, [
-				Validators.required,
-				Validators.minLength(2),
-				Validators.maxLength(25)
-			]),
-			lastName: new FormControl(`${this.user.lastName}`, [
-				Validators.required,
-				Validators.minLength(2),
-				Validators.maxLength(25)
-			]),
-			email: new FormControl(`${this.user.email}`, [
-				Validators.required,
-				Validators.email
-			]),
-			password: new FormControl(`${this.user.password}`, [
-				Validators.required,
-				passwordValidation,
-				Validators.maxLength(25)
-			])
-		});
+		// this.dataService
+		// 	.getUser('d5lRYhxnFibepXPUlCEp')
+		// 	.subscribe((data: IUser) => (this.user = data));
 
-		// this.usser.subscribe((data: IUser) => (this.user = data));
+		this.dataService
+			// .getUser(`${this.user.id}`)
+			.getUser('d5lRYhxnFibepXPUlCEp')
+			.subscribe(
+				(data: IUser) => {
+					this.user = data;
+					this.changeProfileForm.patchValue(this.user);
+					// this.getUserById();
+				}
+				// (error: any) => console.error('Observer got an error: ' + error),
+				// () => console.log('Done getting user')
+			);
+
+		// this.dataService
+		// 	// .getUser(`${this.user.id}`)
+		// 	.getUser('d5lRYhxnFibepXPUlCEp')
+		// 	.subscribe((data: IUser) => {
+		// 		this.user = data;
+		// 		this.changeProfileForm.patchValue(this.user);
+		// 		// this.getUserById();
+		// 	});
+
+		// this.subscription = this.dataService
+		// 	// .getUser(`${this.user.id}`)
+		// 	.getUser('d5lRYhxnFibepXPUlCEp')
+		// 	.subscribe(data => {
+		// 		this.user = data;
+		// 		this.getUserById();
+		// 	});
 	}
 
-	// 	getData()  {
-	// this.usser.subscribe((data: IUser) => (this.user = data));
+	// getUserById(): void {
+	// 	this.changeProfileForm.patchValue(this.user);
 	// }
+
+	// getData() {
+	// 	this.changeProfileForm.patchValue({
+	// 		firstName: this.user.firstName,
+	// 		lastName: this.user.lastName,
+	// 		email: this.user.email,
+	// 		password: this.user.password
+	// 	});
+	// 	// console.log(this.user);
+	// }
+
 	getNameErrorMessage(inputField: string) {
 		if (this.changeProfileForm.hasError('required', inputField)) {
 			return 'Required field';
@@ -79,10 +103,21 @@ export class EditProfileComponent implements OnInit {
 
 	changeProfile() {
 		this.dataService.updateUser(
+			// `${this.user.id}`,
 			'd5lRYhxnFibepXPUlCEp',
 			this.changeProfileForm.value
 		);
-		// console.log(this.changeProfileForm.value);
+		console.log(this.changeProfileForm.value);
 		// console.log(this.user);
+	}
+
+	submitResult() {
+		this.dataService.updateUser(
+			// `${this.user.id}`,
+			'd5lRYhxnFibepXPUlCEp',
+			this.changeProfileForm.value
+		);
+		this.dialog.open(SubmitDialogComponent);
+		this.changeProfileForm.markAsPristine();
 	}
 }

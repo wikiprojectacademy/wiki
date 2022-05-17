@@ -1,13 +1,26 @@
-.container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	flex-wrap: wrap;
-	height: 100%;
-}
+@import 'variable.scss';
 .buttons {
 	button:first-child {
-		margin: 0 2vw;
+		margin: 2vw 2vw 0vw 2vw;
+	}
+	button {
+		max-width: 120px;
+		width: 23vw;
+		padding: 0;
+	}
+}
+
+.content {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+}
+
+@media (max-width: $screen-width-mobile) {
+	button {
+		width: 12vw;
+		font-size: 0.8em;
 	}
 }

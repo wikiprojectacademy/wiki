@@ -1,24 +1,26 @@
-<p>Hello {{ usser.role.type | titlecase }}</p>
+<div class="user-image">
+	<img src="../assets/images/profile-user.png" />
+	<p>Hello {{ user?.role.type | titlecase }}</p>
+	<!-- <p>Hello {{ user?.role.type }}</p> -->
+</div>
 <div class="user-info">
 	<div class="user-info__name">
 		<article>
-			<h2>First Name</h2>
-			<p>{{ usser.firstName }}</p>
+			<h2>Name</h2>
+			<p>{{ user?.firstName }}</p>
 		</article>
 		<article>
-			<h2>Second Name</h2>
-			<p>{{ usser.lastName }}</p>
+			<h2>Surname</h2>
+			<p>{{ user?.lastName }}</p>
 		</article>
 	</div>
 	<article>
 		<h2>Email</h2>
-		<p>{{ usser.email }}</p>
+		<p>{{ user?.email }}</p>
 	</article>
 	<article>
 		<h2>Role</h2>
-		<p>{{ usser.role.type | titlecase }}</p>
+		<p>{{ user?.role.type }}</p>
 	</article>
 </div>
-<!-- -->
-<button (click)="logData()"></button>
-<!-- <button (click)="setData()"></button> -->
+<!-- <button (click)="logData()"></button> -->

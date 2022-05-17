@@ -5,24 +5,32 @@ import { IUser } from '@core/models/User';
 import { Observable } from 'rxjs';
 import { FirebaseCrudService } from '../../../core/services/firebaseCrud.service';
 
-// @Injectable({
-// 	providedIn: 'root'
-// })
-
 @Injectable()
 export class DataService extends FirebaseCrudService<IUser, string, IRole> {
 	constructor(protected _firebase: AngularFirestore) {
 		super('users', 'role', _firebase);
 	}
 
-	// getUser(id: string): Observable<IUser>{
-	// return this.getDocSnapshot(id);
-	// }
-	//
-	getUser(id: string) {
+	getUser(id: string): Observable<IUser | {}> {
 		return this.getDocSnapshot(id);
+		// .pipe(
+		// catchError(this.handleError)
+		// 	catchError((error: any) => {
+		// 		console.log(error);
+		// 		return of({
+		// 			id: '12',
+		// 			email: 'predchyshin',
+		// 			role: { type: 'user' }
+		// 		});
+		// 	})
+		// );
 	}
+
 	updateUser(id: string, content: IUser) {
 		return this.updateDoc(id, content);
 	}
+
+	// private handleError(error: any): Observable<never> {
+	// 	return throwError(() => error)
+	// }
 }

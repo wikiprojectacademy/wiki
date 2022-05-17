@@ -34,10 +34,8 @@ export class CurrentUserService {
 
 				// temporarily...
 				this.currentUser$.next({
-					// id: user.uid,
-					// email: user.email,
-					id: '1',
-					email: 'ivanianov@gmail.com',
+					id: user.uid,
+					email: user.email,
 					firstName: 'firstName',
 					lastName: 'lastName',
 					password: 'password',

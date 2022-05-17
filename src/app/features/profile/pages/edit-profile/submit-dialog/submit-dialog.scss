@@ -1,0 +1,20 @@
+::ng-deep .mat-dialog-container {
+	position: relative;
+}
+.dialog-title {
+	.close-button {
+		position: absolute;
+		right: 7px;
+		padding: 0;
+		min-width: auto;
+	}
+	h2 {
+		margin: 10px 0;
+	}
+}
+
+.close-button {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}

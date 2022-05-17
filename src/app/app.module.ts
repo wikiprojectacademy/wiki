@@ -10,7 +10,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 // Pages
-import { ProfileModule } from './features/profile/profile-page.module';
+// import { ProfileModule } from './features/profile/profile-page.module';
 import { AuthorizationModule } from './features/authorization/authorization.module';
 import { MainModule } from './features/main/main.module';
 
@@ -26,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 		AppRoutingModule,
 		CoreModule,
 		AuthorizationModule,
-		ProfileModule,
+		// ProfileModule,
 		MainModule,
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideAuth(() => getAuth()),

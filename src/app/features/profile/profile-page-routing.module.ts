@@ -6,10 +6,11 @@ import { ProfilePageComponent } from './profile-page.component';
 import { ProfileGuard } from './service/profile.guard';
 
 const routes: Routes = [
-	{ path: 'profile', redirectTo: '/profile/about', pathMatch: 'full' },
+	{ path: '', redirectTo: '/profile/about', pathMatch: 'full' },
 	{
-		path: 'profile',
+		path: '',
 		component: ProfilePageComponent,
+		// canActivateChild: [ProfileGuard],
 		canActivate: [ProfileGuard],
 		children: [
 			{ path: 'about', component: AboutMeComponent },
