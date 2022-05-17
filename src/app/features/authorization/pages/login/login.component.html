@@ -27,17 +27,19 @@
 					matInput
 					formControlName="password"
 					type="password"
-					[type]="hide ? 'password' : 'text'"
+					[type]="isPasswordHidden ? 'password' : 'text'"
 				/>
 				<button
 					type="button"
 					mat-icon-button
 					matSuffix
-					(click)="hide = !hide"
+					(click)="isPasswordHidden = !isPasswordHidden"
 					[attr.aria-label]="'Hide password'"
-					[attr.aria-pressed]="hide"
+					[attr.aria-pressed]="isPasswordHidden"
 				>
-					<mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+					<mat-icon>{{
+						isPasswordHidden ? 'visibility_off' : 'visibility'
+					}}</mat-icon>
 				</button>
 				<mat-error
 					*ngIf="
@@ -92,4 +94,6 @@
 			></span
 		>
 	</div>
+
+	<app-load-spinner [isLoading]="isLoading"></app-load-spinner>
 </div>

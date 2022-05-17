@@ -8,9 +8,9 @@ import { IRole } from '@core/models/Role';
  */
 export interface IUser {
 	id: string;
-	role: IRole;
 	firstName?: string;
 	lastName?: string;
 	email?: string;
 	password?: string;
+	roleId?: string;
 }

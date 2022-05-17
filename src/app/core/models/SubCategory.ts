@@ -7,5 +7,6 @@ import { IRole } from '@core/models/Role';
 export interface ISubCategory {
 	id?: string;
 	name: string;
-	availableRolesToView?: IRole[];
+	availableRolesToView?: IRole[]; // Inherited from Category
+	// Value should be fetched from junction collection: 'junction_role_category'
 }

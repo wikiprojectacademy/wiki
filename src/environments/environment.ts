@@ -5,7 +5,7 @@
 export const environment = {
 	production: false,
 	firebase: {
-	projectId: 'wiki-project-d5644',
+		projectId: 'wiki-project-d5644',
 		appId: '1:923657900032:web:ff70e28bf7190f393408e5',
 		storageBucket: 'wiki-project-d5644.appspot.com',
 		locationId: 'europe-central2',

@@ -6,6 +6,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { GOOGLE_ICON } from 'src/assets/icons/googleIcon';
 import { passwordValidation } from '@shared/validators/validations';
 import { AuthorizationService } from '../../services/authorization.service';
+import { SnackBarService } from '@shared/services/snackbar.service';
 
 @Component({
 	selector: 'app-register',
@@ -15,12 +16,14 @@ import { AuthorizationService } from '../../services/authorization.service';
 export class RegisterComponent {
 	public registerForm: FormGroup;
 	public isPasswordHidden: boolean = true;
+	public isLoading: boolean = false;
 
 	constructor(
 		private iconRegistry: MatIconRegistry,
 		private sanitizer: DomSanitizer,
 		private router: Router,
-		private authService: AuthorizationService
+		private authService: AuthorizationService,
+		private snack: SnackBarService
 	) {
 		iconRegistry.addSvgIconLiteral(
 			'google',
@@ -44,11 +47,16 @@ export class RegisterComponent {
 	}
 
 	onSubmit() {
+		this.isLoading = true;
 		this.authService.registerUser(this.registerForm.value).then(result => {
+			this.isLoading = false;
+
 			if (result?.isValid === false) {
-				console.log('result.message: ', result.message);
+				// console.log('result.message: ', result.message);
+				this.snack.openSnackBar(result.message);
 			} else {
 				this.registerForm.reset();
+				this.isLoading = false;
 				this.router.navigate(['/main']);
 			}
 		});
@@ -57,9 +65,9 @@ export class RegisterComponent {
 	onGoogleAuth() {
 		this.authService.registerUserWithGoogle().then(result => {
 			if (result?.isValid === false) {
-				console.log('result.message: ', result.message);
+				// console.log('result.message: ', result.message);
+				this.snack.openSnackBar(result.message);
 			} else {
-				this.registerForm.reset();
 				this.router.navigate(['/main']);
 			}
 		});

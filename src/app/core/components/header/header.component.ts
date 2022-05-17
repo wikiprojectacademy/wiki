@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { CurrentUserService } from '@core/services/user/current-user.service';
 
 @Component({
@@ -8,13 +7,5 @@ import { CurrentUserService } from '@core/services/user/current-user.service';
 	styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-	isLoggedIn: boolean = false;
-	constructor(
-		private afAuth: AngularFireAuth,
-		public currentUserService: CurrentUserService
-	) {}
-
-	logout() {
-		this.afAuth.signOut();
-	}
+	constructor(public currentUserService: CurrentUserService) {}
 }
