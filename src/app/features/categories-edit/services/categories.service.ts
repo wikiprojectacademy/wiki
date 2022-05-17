@@ -12,59 +12,29 @@ export class CategoryService {
 			id: 'test',
 			name: 'Fruits',
 			createdBy: 'hz',
-			subCategories: [
-				{ name: 'Banana' },
-				{ name: 'Cherry' },
-				{ name: 'Avocado' }
-			],
+			subCategories: ['id1', 'id2'],
 			availableRolesToView: []
 		},
 		{
 			id: '12',
 			name: 'test name 2',
 			createdBy: 'hz',
-			subCategories: [{ name: 'test name sub2' }, { name: 'test name sub3' }],
-			availableRolesToView: [
-				{
-					id: 'role1',
-					type: 'admin',
-					permissions: null,
-					availableCategoriesToView: null
-				},
-				{
-					id: 'role2',
-					type: 'user',
-					permissions: null,
-					availableCategoriesToView: null
-				}
-			]
+			subCategories: [],
+			availableRolesToView: ['id1']
 		},
 		{
 			id: 'agsgseg',
 			name: 'Programing',
 			createdBy: 'hz',
-			subCategories: [{ name: 'JavaScript' }, { name: 'C++' }, { name: 'SQL' }],
+			subCategories: [],
 			availableRolesToView: []
 		},
 		{
 			id: 'testo',
 			name: 'test name 4',
 			createdBy: 'hz',
-			subCategories: [{ name: 'test name sub 0' }],
-			availableRolesToView: [
-				{
-					id: 'role1',
-					type: 'user',
-					permissions: null,
-					availableCategoriesToView: null
-				},
-				{
-					id: 'role2',
-					type: 'guest',
-					permissions: null,
-					availableCategoriesToView: null
-				}
-			]
+			subCategories: [],
+			availableRolesToView: []
 		}
 	];
 

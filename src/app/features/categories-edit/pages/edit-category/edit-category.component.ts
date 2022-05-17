@@ -53,13 +53,13 @@ export class EditCategoryComponent implements OnInit {
 
 		if (this.category.availableRolesToView.length) {
 			this.category.availableRolesToView.map(role =>
-				this.rolesArray.push(new FormControl(role.type))
+				this.rolesArray.push(new FormControl(role))
 			);
 		}
 
 		if (this.category.subCategories.length) {
 			this.category.subCategories.map(sub =>
-				this.subCategoriesArray.push(new FormControl(sub.name))
+				this.subCategoriesArray.push(new FormControl(sub))
 			);
 		}
 	}
