@@ -29,7 +29,6 @@ import { IRoleCategoryPair } from '@core/models/RoleCategoryPair';
 export class FirebaseStorageService {
 	private usersCollection: AngularFirestoreCollection<IUser>;
 	users: Observable<IUser[]>;
-	isLoading: boolean;
 	isDatabaseInitialized: boolean;
 
 	constructor(
@@ -49,17 +48,17 @@ export class FirebaseStorageService {
 	}
 
 	initDB(): void {
-		this.isLoading = true;
 		Promise.all([
 			this.initRoles(),
 			this.initUsers(),
 			this.initCategories(),
 			this.initPosts(),
 			this.initRoleCategoryRelations()
-		]).then(() => {
-			this.isLoading = false;
-			console.log('DB initialized');
-		});
+		])
+			.then(() => {
+				console.log('DB initialized');
+			})
+			.catch(error => console.error(error));
 	}
 
 	initCategories(): Promise<void[]>[] {
