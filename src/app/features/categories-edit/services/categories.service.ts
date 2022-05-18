@@ -26,14 +26,14 @@ export class CategoryService {
 			id: 'agsgseg',
 			name: 'Programing',
 			createdBy: 'hz',
-			subCategories: [],
-			availableRolesToView: []
+			subCategories: ['ffffff', 'lore ipsum'],
+			availableRolesToView: ['aaaaaaa']
 		},
 		{
 			id: 'testo',
 			name: 'test name 4',
 			createdBy: 'hz',
-			subCategories: [],
+			subCategories: ['test', 'test2', 'test3', 'test4'],
 			availableRolesToView: []
 		}
 	];

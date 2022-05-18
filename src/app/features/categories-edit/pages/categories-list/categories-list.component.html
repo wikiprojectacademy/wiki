@@ -26,7 +26,7 @@
 			<div class="labels">
 				<mat-card-title class="category-label"> {{ cat.name }} </mat-card-title>
 				<mat-card-subtitle>
-					{{ cat.subCategories | subcategoriesNameLister }}
+					{{ cat.subCategories.join(', ') }}
 				</mat-card-subtitle>
 			</div>
 
@@ -35,9 +35,10 @@
 				{{ cat.createdBy }}
 				<br />
 				<span class="common-label">Roles:</span>
-				<span *ngFor="let role of cat.availableRolesToView">
-					{{ role.type }}
-				</span>
+				<!-- <span *ngFor="let role of cat.availableRolesToView">
+					{{ role }}
+				</span> -->
+				{{ cat.availableRolesToView.join(', ') }}
 			</div>
 		</mat-card>
 	</div>

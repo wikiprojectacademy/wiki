@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ICategory } from '@core/models/Category';
+import { SnackBarService } from '@shared/services/snackbar.service';
 import { CategoryService } from '../../services/categories.service';
 
 @Component({
@@ -38,7 +39,8 @@ export class EditCategoryComponent implements OnInit {
 
 	constructor(
 		private route: ActivatedRoute,
-		private categoryService: CategoryService
+		private categoryService: CategoryService,
+		private snackbarService: SnackBarService
 	) {
 		let id = this.route.snapshot.paramMap.get('id');
 		if (id !== 'new') {
@@ -46,20 +48,20 @@ export class EditCategoryComponent implements OnInit {
 		}
 
 		this.form = new FormGroup({
-			name: new FormControl(this.category.name),
+			name: new FormControl(this.category.name, Validators.required),
 			subCategories: new FormArray([]),
 			roles: new FormArray([])
 		});
 
 		if (this.category.availableRolesToView.length) {
 			this.category.availableRolesToView.map(role =>
-				this.rolesArray.push(new FormControl(role))
+				this.rolesArray.push(new FormControl(role, Validators.required))
 			);
 		}
 
 		if (this.category.subCategories.length) {
 			this.category.subCategories.map(sub =>
-				this.subCategoriesArray.push(new FormControl(sub))
+				this.subCategoriesArray.push(new FormControl(sub, Validators.required))
 			);
 		}
 	}
@@ -69,11 +71,11 @@ export class EditCategoryComponent implements OnInit {
 	ngOnInit(): void {}
 
 	addSubcategoryContoll() {
-		this.subCategoriesArray.push(new FormControl(''));
+		this.subCategoriesArray.push(new FormControl('', Validators.required));
 	}
 
 	addRoleContoll() {
-		this.rolesArray.push(new FormControl(''));
+		this.rolesArray.push(new FormControl('', Validators.required));
 	}
 
 	removeRoleControll(index) {
@@ -85,6 +87,7 @@ export class EditCategoryComponent implements OnInit {
 	}
 
 	onSubmit() {
+		this.snackbarService.openSnackBar('Sended to console!');
 		const result = this.form.value;
 		this.category = {
 			...this.category,

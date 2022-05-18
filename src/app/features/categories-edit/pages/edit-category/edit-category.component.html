@@ -22,7 +22,7 @@
 					placeholder="Enter name of category here"
 					formControlName="name"
 				/>
-				<mat-error>aaaa</mat-error>
+				<mat-error>This is required field.</mat-error>
 			</mat-form-field>
 
 			<section formArrayName="subCategories">
@@ -34,9 +34,10 @@
 					<mat-form-field appearance="fill">
 						<input
 							matInput
-							placeholder="Subcat"
+							placeholder="Subcategory name"
 							[formControlName]="i"
 						/>
+						<mat-error>Not need it? Delete it.</mat-error>
 					</mat-form-field>
 					<button
 						type="button"
@@ -68,6 +69,7 @@
 						<mat-select
 							formControlName="roles"
 							[formControlName]="i"
+							placeholder="Role name"
 						>
 							<mat-option
 								*ngFor="let role of roles"
@@ -75,6 +77,7 @@
 								>{{ role.type }}</mat-option
 							>
 						</mat-select>
+						<mat-error>Not need it? Delete it.</mat-error>
 					</mat-form-field>
 					<button
 						type="button"
