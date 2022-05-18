@@ -1,4 +1,4 @@
-import { FirebaseCrudService } from '@core/services/firebaseCrud.service';
+import { FirebaseCrudService } from '@core/services/firebase/firebase-api/firebaseCrud.service';
 import { ICategory } from '@core/models/Category';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
@@ -54,7 +54,7 @@ export class CategoryFirebaseService extends FirebaseCrudService<
 	}
 
 	addCategoryWithId(id: string, category: ICategory) {
-		this.addDoc(id, category);
+		return this.addDoc(id, category);
 	}
 
 	addSubCategory(categoryId: string, subCategory: ISubCategory) {

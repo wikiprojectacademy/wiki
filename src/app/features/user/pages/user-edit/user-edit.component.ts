@@ -2,9 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { IUserModel } from '../../models/user.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '@shared/services/snackbar.service';
+import { IUser } from '@core/models/User';
+import { IRole } from '@core/models/Role';
+import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 
 @Component({
 	selector: 'app-user-edit',
@@ -12,14 +15,9 @@ import { SnackBarService } from '@shared/services/snackbar.service';
 	styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit, OnDestroy {
-	public user: IUserModel;
+	public user$: Observable<IUser>;
 	public form: FormGroup;
-	//todo will change after role module added
-	public roles = [
-		{ id: 'superAdmin', name: 'superAdmin' },
-		{ id: 'admin', name: 'admin' },
-		{ id: 'user', name: 'user' }
-	];
+	public roles$: Observable<IRole[]>;
 	private routeSub: Subscription;
 
 	constructor(
@@ -27,7 +25,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
 		private formBuilder: FormBuilder,
 		private router: Router,
 		private route: ActivatedRoute,
-		private snackBService: SnackBarService
+		private snackBService: SnackBarService,
+		private rolesFirebaseService: RoleFirebaseService
 	) {
 		this.form = formBuilder.group({
 			id: [],
@@ -40,25 +39,28 @@ export class UserEditComponent implements OnInit, OnDestroy {
 				[Validators.required, Validators.minLength(2), Validators.maxLength(25)]
 			],
 			email: ['', [Validators.required, Validators.email]],
-			role: ['']
+			roleId: ['']
 		});
 	}
 
 	ngOnInit(): void {
+		this.roles$ = this.rolesFirebaseService.getRoles();
 		this.routeSub = this.route.params.subscribe(params => {
 			this.getUserById(params['id']);
 		});
 	}
 
 	getUserById(id: string): void {
-		this.user = this.userService.getUserById(id);
-		this.form.patchValue(this.user);
+		this.user$ = this.userService.getUserById(id);
+		this.user$.subscribe(user => {
+			this.form.patchValue({ id, ...user });
+		});
 	}
 
 	editUser(): void {
 		if (this.form.valid) {
 			this.userService.editUser(this.form.value);
-			this.router.navigate(['/user/list']);
+			this.router.navigate(['/user']);
 		} else {
 			this.snackBService.openSnackBar(
 				'To edit a user, you must correctly fill in all required fields'

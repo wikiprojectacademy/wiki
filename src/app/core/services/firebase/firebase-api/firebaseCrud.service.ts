@@ -1,4 +1,4 @@
-import { FirebaseOperations } from '@core/services/firebaseOperations.interface';
+import { FirebaseOperations } from '@core/services/firebase/firebase-api/firebaseOperations.interface';
 import {
 	AngularFirestore,
 	AngularFirestoreCollection,
@@ -42,7 +42,7 @@ export abstract class FirebaseCrudService<T, ID, S>
 		const docReference: AngularFirestoreDocument<T> = this.firebase.doc<T>(
 			`${this.base}/${id}`
 		);
-		return docReference.valueChanges();
+		return docReference.valueChanges({ idField: 'id' });
 	}
 
 	/**

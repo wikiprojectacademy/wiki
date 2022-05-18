@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FirebaseStorageService } from '@core/services/firebase/firebase-init/firebaseStorage.service';
 
 @Component({
 	selector: 'app-main',
@@ -71,7 +72,17 @@ export class MainComponent implements OnInit {
 		}
 	];
 
-	constructor() {}
+	isDatabaseInitialized: boolean;
 
-	ngOnInit(): void {}
+	constructor(private firebaseStorage: FirebaseStorageService) {}
+
+	ngOnInit(): void {
+		this.firebaseStorage.isDBInitialized().subscribe(users => {
+			this.isDatabaseInitialized = users.length > 2;
+		});
+	}
+
+	initDB() {
+		this.firebaseStorage.initDB();
+	}
 }

@@ -7,18 +7,25 @@
 	>
 		x
 	</button>
-
+	<button
+		mat-raised-button
+		[disabled]="isDatabaseInitialized"
+		(click)="initDB()"
+	>
+		Init database
+	</button>
 	<div class="categories__content">
-		<h2>
-			List of categories:
-			<button
-				mat-button
-				routerLink="/edit-categories"
-			>
-				<mat-icon>edit_note</mat-icon>
-				Edit
-			</button>
-		</h2>
+		<h2>List of categories:</h2>
+		<button
+			mat-button
+			routerLink="/edit-categories"
+		>
+			<mat-icon>edit_note</mat-icon>
+			Edit
+		</button>
+
+		<!-- </button> -->
+		<!-- </h2> -->
 		<div
 			class="category"
 			*ngFor="let category of mockedCateg"
