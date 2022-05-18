@@ -1,7 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IUser } from '@core/models/User';
-import { CurrentUserService } from '@core/services/user/current-user.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { FirebaseStorageService } from '@core/services/firebase/firebase-init/firebaseStorage.service';
 
 @Component({
 	selector: 'app-main',
@@ -74,21 +72,17 @@ export class MainComponent implements OnInit, OnDestroy {
 		}
 	];
 
-	// for tests *****************************************
-	public user: IUser;
-	private subscription?: Subscription;
+	isDatabaseInitialized: boolean;
 
-	constructor(private userSrv: CurrentUserService) {}
+	constructor(private firebaseStorage: FirebaseStorageService) {}
 
 	ngOnInit(): void {
-		this.subscription = this.userSrv.currentUser$.subscribe(curUser => {
-			this.user = curUser;
+		this.firebaseStorage.isDBInitialized().subscribe(users => {
+			this.isDatabaseInitialized = users.length > 2;
 		});
 	}
 
-	ngOnDestroy(): void {
-		if (this.subscription) {
-			this.subscription.unsubscribe();
-		}
+	initDB() {
+		this.firebaseStorage.initDB();
 	}
 }

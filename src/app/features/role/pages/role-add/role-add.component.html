@@ -1,0 +1,68 @@
+<div class="user-add">
+	<h1>Create new role</h1>
+	<div class="container">
+		<form [formGroup]="form">
+			<div class="role__form-element">
+				<mat-form-field appearance="outline">
+					<mat-label>Enter role name</mat-label>
+					<input
+						matInput
+						placeholder="User"
+						formControlName="name"
+					/>
+					<mat-error *ngIf="form.controls['name'].invalid"
+						>First name must be at least 2 characters long and at most
+						25</mat-error
+					>
+				</mat-form-field>
+			</div>
+
+			<div class="role__form-element">
+				<mat-checkbox formControlName="modificationCategory"
+					>Can modify categories</mat-checkbox
+				>
+			</div>
+
+			<div class="role__form-element">
+				<mat-checkbox formControlName="modificationPost"
+					>Can modify posts</mat-checkbox
+				>
+			</div>
+
+			<div class="role__form-element">
+				<mat-form-field appearance="outline">
+					<mat-label>Available categories to view</mat-label>
+					<mat-select
+						formControlName="availableCategoryIdsToView"
+						multiple
+					>
+						<mat-option
+							[value]="category.id"
+							*ngFor="let category of categories"
+							>{{ category.name }}</mat-option
+						>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="role__form-element role__btn-wrap">
+				<button
+					mat-raised-button
+					color="primary"
+					(click)="addRole()"
+				>
+					Add
+				</button>
+				<button
+					mat-raised-button
+					routerLink="/role"
+				>
+					Close
+				</button>
+			</div>
+		</form>
+		<img
+			src="../assets/images/user-add-logo.PNG"
+			alt="user logo"
+		/>
+	</div>
+</div>

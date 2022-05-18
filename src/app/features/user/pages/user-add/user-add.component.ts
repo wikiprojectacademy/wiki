@@ -9,6 +9,7 @@ import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { passwordValidation } from '@shared/validators/validations';
 import { SnackBarService } from '@shared/services/snackbar.service';
+import { RoleService } from '../../../role/services/role.service';
 
 @Component({
 	selector: 'app-user-add',
@@ -17,21 +18,18 @@ import { SnackBarService } from '@shared/services/snackbar.service';
 })
 export class UserAddComponent {
 	public form: FormGroup;
-	isHide: boolean = true;
-	isConfirmHide: boolean = true;
-	//todo will change after added role module
-	public roles = [
-		{ id: 'superAdmin', name: 'superAdmin' },
-		{ id: 'admin', name: 'admin' },
-		{ id: 'user', name: 'user' }
-	];
+	public isHide: boolean = true;
+	public isConfirmHide: boolean = true;
+	public roles = [];
 
 	constructor(
 		private formBuilder: FormBuilder,
 		private userService: UserService,
 		private router: Router,
-		private snackBService: SnackBarService
+		private snackBService: SnackBarService,
+		private roleService: RoleService
 	) {
+		this.getRoles();
 		this.form = formBuilder.group({
 			firstName: [
 				'',
@@ -57,7 +55,7 @@ export class UserAddComponent {
 					control => this.validatePasswords(control, 'password2')
 				]
 			],
-			role: ['']
+			roleId: ['']
 		});
 	}
 
@@ -67,6 +65,10 @@ export class UserAddComponent {
 
 	get confirmPassword(): AbstractControl {
 		return this.form.get('confirmPassword');
+	}
+
+	getRoles(): void {
+		this.roles = this.roleService.getRolesOption();
 	}
 
 	validatePasswords(control: AbstractControl, name: string) {
@@ -101,7 +103,7 @@ export class UserAddComponent {
 	addUser(): void {
 		if (this.form.valid) {
 			this.userService.addUser(this.form.value);
-			this.router.navigate(['/user/list']);
+			this.router.navigate(['/user']);
 		} else {
 			this.snackBService.openSnackBar(
 				'To create a user, you must correctly fill in all required fields'

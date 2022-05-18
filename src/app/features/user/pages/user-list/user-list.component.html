@@ -1,12 +1,13 @@
-<button
-	mat-raised-button
-	color="primary"
-	routerLink="../add"
-	routerLinkActive="active"
->
-	Add new user
-</button>
-
+<div class="add-btn">
+	<button
+		mat-raised-button
+		color="primary"
+		routerLink="add"
+		routerLinkActive="active"
+	>
+		Add new user
+	</button>
+</div>
 <div class="mat-elevation-z8">
 	<table
 		mat-table
@@ -17,9 +18,9 @@
 		<ng-container matColumnDef="firstName">
 			<th
 				mat-header-cell
-				*matHeaderCellDef
 				mat-sort-header="firstName"
 				sortActionDescription="Sort by first name"
+				*matHeaderCellDef
 			>
 				First Name
 			</th>
@@ -34,9 +35,9 @@
 		<ng-container matColumnDef="lastName">
 			<th
 				mat-header-cell
-				*matHeaderCellDef
 				mat-sort-header="lastName"
 				sortActionDescription="Sort by last name"
+				*matHeaderCellDef
 			>
 				Last Name
 			</th>
@@ -51,9 +52,9 @@
 		<ng-container matColumnDef="email">
 			<th
 				mat-header-cell
-				*matHeaderCellDef
 				mat-sort-header="email"
 				sortActionDescription="Sort by email"
+				*matHeaderCellDef
 			>
 				Email
 			</th>
@@ -65,12 +66,12 @@
 			</td>
 		</ng-container>
 
-		<ng-container matColumnDef="role">
+		<ng-container matColumnDef="roleId">
 			<th
 				mat-header-cell
-				*matHeaderCellDef
-				mat-sort-header="role"
+				mat-sort-header="roleId"
 				sortActionDescription="Sort by role"
+				*matHeaderCellDef
 			>
 				Role
 			</th>
@@ -78,7 +79,7 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				{{ element.role }}
+				{{ element.roleId }}
 			</td>
 		</ng-container>
 
@@ -91,24 +92,40 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				<button
-					mat-mini-fab
-					color="primary"
-					matTooltip="Edit user {{ element.firstName }}	{{ element.lastName }}"
-					routerLink="/user/edit/{{ element.id }}"
+				<span
+					[matTooltip]="
+						element.id === '0' ? 'Super Admin user cannot edit' : ''
+					"
 				>
-					<mat-icon>edit</mat-icon>
-				</button>
-				<button
-					mat-mini-fab
-					color="warn"
-					matTooltip="Delete user {{ element.firstName }}	{{ element.lastName }}"
-					(click)="onDelete(element.id)"
+					<button
+						mat-mini-fab
+						color="primary"
+						[disabled]="element.id === '0'"
+						matTooltip="Edit user {{ element.firstName }}	{{ element.lastName }}"
+						routerLink="/user/edit/{{ element.id }}"
+					>
+						<mat-icon>edit</mat-icon>
+					</button>
+				</span>
+				<span
+					[matTooltip]="
+						element.id === '0' ? 'Super Admin user cannot delete' : ''
+					"
 				>
-					<mat-icon>delete</mat-icon>
-				</button>
-			</td></ng-container
-		>
+					<button
+						mat-mini-fab
+						color="warn"
+						[disabled]="element.id === '0'"
+						matTooltip="Delete user {{ element.firstName }}	{{
+							element.lastName
+						}}"
+						(click)="onDelete(element.id)"
+					>
+						<mat-icon>delete</mat-icon>
+					</button>
+				</span>
+			</td>
+		</ng-container>
 
 		<tr
 			mat-header-row

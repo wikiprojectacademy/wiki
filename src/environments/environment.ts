@@ -5,14 +5,12 @@
 export const environment = {
 	production: false,
 	firebase: {
-		projectId: 'wiki-project-d5644',
-		appId: '1:923657900032:web:ff70e28bf7190f393408e5',
-		storageBucket: 'wiki-project-d5644.appspot.com',
-		locationId: 'europe-central2',
-		apiKey: 'AIzaSyC01z_rWrunkcIuXIe5hbRYl09egEKzR8w',
-		authDomain: 'wiki-project-d5644.firebaseapp.com',
-		messagingSenderId: '923657900032',
-		measurementId: 'G-H6BHSF19B5'
+		apiKey: 'AIzaSyAW7Nn9EFtOzzpLf5HMlqFGEfdGEkklgF4',
+		authDomain: 'wiki-3fc1f.firebaseapp.com',
+		projectId: 'wiki-3fc1f',
+		storageBucket: 'wiki-3fc1f.appspot.com',
+		messagingSenderId: '667380241142',
+		appId: '1:667380241142:web:f9190dd857f4f322a492d7'
 	}
 };
 
