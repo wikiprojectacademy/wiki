@@ -20,6 +20,13 @@ export const environment = {
 		// authDomain: 'wiki-project-d5644.firebaseapp.com',
 		// messagingSenderId: '923657900032',
 		// measurementId: 'G-H6BHSF19B5'
+
+		// apiKey: 'AIzaSyAW7Nn9EFtOzzpLf5HMlqFGEfdGEkklgF4',
+		// authDomain: 'wiki-3fc1f.firebaseapp.com',
+		// projectId: 'wiki-3fc1f',
+		// storageBucket: 'wiki-3fc1f.appspot.com',
+		// messagingSenderId: '667380241142',
+		// appId: '1:667380241142:web:f9190dd857f4f322a492d7'
 	}
 };
 

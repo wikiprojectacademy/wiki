@@ -1,29 +1,24 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/user/current-user.service';
 import { SnackBarService } from '@shared/services/snackbar.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class OnlyLoggedInUserGuard implements CanActivate {
-	curRole: string;
+export class OnlyLoggedInUserGuard implements CanActivate, OnInit, OnDestroy {
+	curRoleId: string;
+	private subscription: Subscription;
 
 	constructor(
 		private currentUserService: CurrentUserService,
 		private routes: Router,
 		private snackBarService: SnackBarService
-	) {
-		this.currentUserService.currentUser$.subscribe(
-			curUser => (this.curRole = curUser.role.name)
-		);
-	}
+	) {}
 
 	canActivate() {
-		if (
-			// this.currentUserService.user.role.name !== 'guest'
-			this.curRole !== 'guest'
-		) {
+		if (this.curRoleId !== '') {
 			return true;
 		} else {
 			this.routes.navigateByUrl('/main');
@@ -33,6 +28,19 @@ export class OnlyLoggedInUserGuard implements CanActivate {
 				2000
 			);
 			return false;
+		}
+	}
+
+	ngOnInit(): void {
+		this.subscription = this.currentUserService.currentUser$.subscribe(
+			curUser => (this.curRoleId = curUser.roleId)
+		);
+	}
+
+	ngOnDestroy() {
+		console.log('Unsubscribe');
+		if (this.subscription) {
+			this.subscription.unsubscribe();
 		}
 	}
 }

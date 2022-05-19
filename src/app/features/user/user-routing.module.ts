@@ -10,7 +10,7 @@ import { UserEditComponent } from './pages/user-edit/user-edit.component';
 const routes: Routes = [
 	{
 		path: '',
-		// canActivate: [OnlyLoggedInUserGuard, OnlySuperAdminRoleGuard],
+		// canActivate: [OnlySuperAdminRoleGuard],
 		children: [
 			{ path: '', component: UserListComponent, pathMatch: 'full' },
 			{ path: 'add', component: UserAddComponent },

@@ -21,8 +21,6 @@ import { MainModule } from './features/main/main.module';
 		BrowserAnimationsModule,
 		AppRoutingModule,
 		CoreModule,
-		AuthorizationModule,
-		// ProfileModule,
 		MainModule,
 
 		provideFirebaseApp(() => initializeApp(environment.firebase)),

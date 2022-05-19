@@ -1,26 +1,24 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/user/current-user.service';
 import { SnackBarService } from '@shared/services/snackbar.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class OnlySuperAdminRoleGuard implements CanActivate {
-	curRole: string;
+export class OnlySuperAdminRoleGuard implements CanActivate, OnInit, OnDestroy {
+	curRoleId: string;
+	private subscription: Subscription;
 
 	constructor(
 		private currentUserService: CurrentUserService,
 		private routes: Router,
 		private snackBarService: SnackBarService
-	) {
-		this.currentUserService.currentUser$.subscribe(
-			curUser => (this.curRole = curUser.role.name)
-		);
-	}
+	) {}
 
 	canActivate() {
-		if (this.curRole == 'superAdmin') {
+		if (this.curRoleId == '0') {
 			return true;
 		} else {
 			this.routes.navigateByUrl('/main');
@@ -30,7 +28,19 @@ export class OnlySuperAdminRoleGuard implements CanActivate {
 				2000
 			);
 			return false;
-			// return true;
+		}
+	}
+
+	ngOnInit(): void {
+		this.subscription = this.currentUserService.currentUser$.subscribe(
+			curUser => (this.curRoleId = curUser.roleId)
+		);
+	}
+
+	ngOnDestroy() {
+		console.log('Unsubscribe');
+		if (this.subscription) {
+			this.subscription.unsubscribe();
 		}
 	}
 }
