@@ -1,0 +1,125 @@
+<header>
+	<button
+		mat-button
+		routerLink="/edit-categories"
+	>
+		<mat-icon>arrow_back</mat-icon>
+	</button>
+	<h1 *ngIf="category.id != 'new'">Edit category</h1>
+	<h1 *ngIf="category.id == 'new'">Add category</h1>
+</header>
+
+<div class="form__wrapper">
+	<mat-card class="form-card">
+		<form
+			[formGroup]="form"
+			(ngSubmit)="onSubmit()"
+		>
+			<mat-card-title> Name: </mat-card-title>
+			<mat-form-field appearance="fill">
+				<input
+					matInput
+					placeholder="Enter name of category here"
+					formControlName="name"
+				/>
+				<mat-error>This is required field.</mat-error>
+			</mat-form-field>
+
+			<section formArrayName="subCategories">
+				<mat-card-subtitle>Subcategories:</mat-card-subtitle>
+				<div
+					class="input-array-item"
+					*ngFor="let subCategory of subCategoriesArray.controls; let i = index"
+				>
+					<mat-form-field appearance="fill">
+						<input
+							matInput
+							placeholder="Subcategory name"
+							[formControlName]="i"
+						/>
+						<mat-error>Not need it? Delete it.</mat-error>
+					</mat-form-field>
+					<button
+						type="button"
+						class="delete-button"
+						mat-icon-button
+						(click)="removeSubcategoryControll(i)"
+					>
+						<mat-icon>delete</mat-icon>
+					</button>
+				</div>
+
+				<button
+					mat-button
+					class="add-button"
+					type="button"
+					(click)="addSubcategoryContoll()"
+				>
+					+ Add more
+				</button>
+			</section>
+
+			<section formArrayName="roles">
+				<mat-card-subtitle>Roles:</mat-card-subtitle>
+				<div
+					class="input-array-item"
+					*ngFor="let subCategory of rolesArray.controls; let i = index"
+				>
+					<mat-form-field appearance="fill">
+						<mat-select
+							formControlName="roles"
+							[formControlName]="i"
+							placeholder="Role name"
+						>
+							<mat-option
+								*ngFor="let role of roles"
+								[value]="role.type"
+								>{{ role.type }}</mat-option
+							>
+						</mat-select>
+						<mat-error>Not need it? Delete it.</mat-error>
+					</mat-form-field>
+					<button
+						type="button"
+						class="delete-button"
+						mat-icon-button
+						(click)="removeRoleControll(i)"
+					>
+						<mat-icon>delete</mat-icon>
+					</button>
+				</div>
+
+				<button
+					mat-button
+					class="add-button"
+					type="button"
+					(click)="addRoleContoll()"
+				>
+					+ Add more
+				</button>
+			</section>
+
+			<mat-card-subtitle
+				>Created by: {{ category.createdBy }}</mat-card-subtitle
+			>
+
+			<div class="button-wrapper">
+				<button
+					mat-button
+					color="primary"
+					type="button"
+					routerLink="/edit-categories"
+				>
+					Cancel
+				</button>
+				<button
+					mat-raised-button
+					color="primary"
+					type="submit"
+				>
+					Save
+				</button>
+			</div>
+		</form>
+	</mat-card>
+</div>

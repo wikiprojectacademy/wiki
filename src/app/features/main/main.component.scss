@@ -1,12 +1,21 @@
 @import '../../../styles/variable.scss';
 
 $sidebar-open-duration: 0.3s;
+:host {
+	flex-grow: 1;
+	background-color: #f00;
+	display: flex;
+
+	@media screen and (max-width: $screen-width-small) {
+		overflow-y: hidden;
+	}
+}
 
 .main-container {
 	display: flex;
-	height: 100vh;
-	margin-top: -65px;
-	padding-top: 65px;
+	// min-height: 100vh;
+	// margin-top: -65px;
+	// padding-top: 65px;
 }
 
 .small-screen-element {
@@ -20,10 +29,13 @@ $sidebar-open-duration: 0.3s;
 .categories {
 	background-color: #eee;
 	transition: width $sidebar-open-duration;
+	// height: 100%;
 
 	@media screen and (max-width: $screen-width-small) {
 		width: 0px;
-		position: absolute;
+		// position: absolute;
+		position: fixed;
+		min-height: 100%;
 		overflow-x: hidden;
 		height: 100%;
 
