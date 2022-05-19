@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IRole } from '@core/models/Role';
 import { IUser } from '@core/models/User';
+import { FirebaseCrudService } from '@core/services/firebase/firebase-api/firebaseCrud.service';
 import { Observable } from 'rxjs';
-import { FirebaseCrudService } from '../../../core/services/firebaseCrud.service';
 
 @Injectable()
 export class DataService extends FirebaseCrudService<IUser, string, IRole> {

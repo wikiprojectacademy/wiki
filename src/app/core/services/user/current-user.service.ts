@@ -13,7 +13,17 @@ export class CurrentUserService {
 
 	user: IUser | any = {
 		id: 'd5lRYhxnFibepXPUlCEp',
-		role: { name: 'user', permissions: ['fasd', 'dsad'] }
+		email: 'predch',
+		firstName: 'firstName',
+		lastName: 'lastName',
+		password: 'password',
+		role: {
+			name: 'guest',
+			hasUsers: false,
+			canModifyCategory: false,
+			canModifyPost: false
+		},
+		roleId: '1'
 	};
 
 	public currentUser$ = new Subject<IUser>();
@@ -23,9 +33,23 @@ export class CurrentUserService {
 		this.afAuth.user.subscribe(user => {
 			// console.log('curUser: ', user);
 			if (!user) {
+				// this.currentUser$.next({
+				// 	roleId: '0',
+				// 	role: { name: 'guest' }
+				// });
 				this.currentUser$.next({
-					roleId: '0',
-					role: { name: 'guest' }
+					id: 'd5lRYhxnFibepXPUlCEp',
+					email: 'predch',
+					firstName: 'firstName',
+					lastName: 'lastName',
+					password: 'password',
+					role: {
+						name: 'guest',
+						hasUsers: false,
+						canModifyCategory: false,
+						canModifyPost: false
+					},
+					roleId: '1'
 				});
 				this.isUserLogin$.next(false);
 			} else {
@@ -40,7 +64,7 @@ export class CurrentUserService {
 					lastName: 'lastName',
 					password: 'password',
 					role: {
-						name: 'user',
+						name: 'guest',
 						hasUsers: false,
 						canModifyCategory: false,
 						canModifyPost: false

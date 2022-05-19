@@ -15,6 +15,7 @@ import { CurrentUserService } from '@core/services/user/current-user.service';
 export class EditProfileComponent implements OnInit {
 	isPasswordHidden: boolean = true;
 	user: IUser;
+	userId: string;
 
 	changeProfileForm: FormGroup = new FormGroup({
 		firstName: new FormControl('', [
@@ -39,17 +40,58 @@ export class EditProfileComponent implements OnInit {
 		private dataService: DataService,
 		public dialog: MatDialog,
 		private currentUserService: CurrentUserService
-	) {}
+	) {
+		console.log(
+			this.currentUserService.currentUser$.subscribe(curUser =>
+				console.log(curUser.id)
+			)
+		);
+		this.currentUserService.currentUser$.subscribe(
+			curUser => (this.userId = curUser.id)
+		);
+		// this.currentUserService.currentUser$.subscribe(curUser => this.userId = curUser.id);
+	}
 
 	ngOnInit(): void {
-		this.dataService
-			.getUser(`${this.currentUserService.user.id}`)
-			.subscribe((data: IUser) => {
-				console.log('getUser');
-				this.user = data;
-				this.changeProfileForm.patchValue(this.user);
-			});
+		if (localStorage.getItem('curUser')) {
+			// this.user = JSON.parse(localStorage.getItem('curUser'));
+			// this.changeProfileForm.patchValue(this.user);
+
+			this.changeProfileForm.patchValue(
+				JSON.parse(localStorage.getItem('curUser'))
+			);
+			// console.log('Get data from session storage');
+		} else {
+			// console.log('Get data from fise store');
+			this.dataService
+				// .getUser(here must be id from current user)
+				.getUser('d5lRYhxnFibepXPUlCEp')
+				.subscribe((data: IUser) => {
+					this.user = data;
+					localStorage.setItem('curUser', JSON.stringify(this.user));
+					this.changeProfileForm.patchValue(this.user);
+				});
+		}
+
+		// data from firestore
+		// this.dataService
+		// 	.getUser(this.currentUserService.user.id)
+		// 	.subscribe((data: IUser) => {
+		// 		this.user = data;
+		// 		this.changeProfileForm.patchValue(this.user);
+		// 	})
+		console.log('Edit Profile onInit execute');
+
+		// data from currentUserService.currentUser$
+		// this.currentUserService.currentUser$.subscribe((curUser: IUser) => {
+		// 	this.user = curUser;
+		// 	this.changeProfileForm.patchValue(this.user);
+		// });
+
+		// data from currentUserService.user
+		// this.changeProfileForm.patchValue(this.currentUserService.user);
 	}
+
 	// getData() {
 	// 	this.changeProfileForm.patchValue({
 	// 		firstName: this.user.firstName,
@@ -85,19 +127,37 @@ export class EditProfileComponent implements OnInit {
 	// }
 
 	submitResult() {
+		// console.log(this.userId);
+		// this.dataService
+		// 	.updateUser(
+		// 	// .getUser(`${this.currentUserService.currentUser$.subscribe(curUser => {return curUser.id})}`)
+		// 		`${this.currentUserService.user.id}`,
+		// 		this.changeProfileForm.value
+		// 	)
+
+		// update user inside base
+		// 	this.dataService
+		// 		.updateUser(this.userId, this.changeProfileForm.value)
+		// 		.then(() => {
+		// 			console.log(`updateUser`);
+		// 			this.dialog.open(SubmitDialogComponent);
+		// 		});
+		// 	this.changeProfileForm.markAsPristine();
+		// }
+
+		// update user inside base
 		this.dataService
-			.updateUser(
-				`${this.currentUserService.user.id}`,
-				this.changeProfileForm.value
-			)
-			.then(
-				() => {
-					console.log(`updateUser`);
-					this.dialog.open(SubmitDialogComponent);
-					// this.changeProfileForm.markAsPristine();
-				},
-				() => console.log('error')
-			);
+			.updateUser(this.currentUserService.user.id, this.changeProfileForm.value)
+			.then(() => {
+				localStorage.removeItem('curUser');
+				// localStorage.setItem('curUser', JSON.stringify(this.user));
+				// localStorage.setItem('curUser', JSON.stringify(this.changeProfileForm.value));
+				console.log(`User updated`);
+				this.dialog.open(SubmitDialogComponent);
+			});
 		this.changeProfileForm.markAsPristine();
+
+		// update data in currentUser doesn`t work
+		// this.currentUserService.user.firstName = this.changeProfileForm.value.firstName
 	}
 }
