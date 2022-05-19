@@ -6,7 +6,7 @@ import { FirebaseStorageService } from '@core/services/firebase/firebase-init/fi
 	templateUrl: './main.component.html',
 	styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit {
 	mockedPosts = [
 		{ title: 'title number one', content: 'test content' },
 		{ title: 'SUPER TITLE', content: 'test content medium medium test test' },
