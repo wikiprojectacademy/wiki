@@ -1,5 +1,9 @@
-<p>Hello {{ user.roleId }}</p>
-<div class="user-info">
+<p>About</p>
+<div
+	class="user-info"
+	*ngIf="userSrv.currentUser$ | async as user"
+>
+	<p>Hello {{ user.firstName }}</p>
 	<div class="user-info__name">
 		<article>
 			<h2>First Name</h2>

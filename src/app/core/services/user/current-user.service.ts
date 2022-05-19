@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { map, of, shareReplay, switchMap } from 'rxjs';
 import { IUser } from '@core/models/User';
 import { UserFirebaseService } from '../firebase/firebase-entities/userFirebase.service';
 
@@ -9,25 +9,19 @@ import { UserFirebaseService } from '../firebase/firebase-entities/userFirebase.
 	providedIn: 'root'
 })
 export class CurrentUserService {
-	public currentUser$ = new Subject<IUser>();
-	public isUserLogin$ = new BehaviorSubject<boolean>(false);
+	public currentUser$ = this.afAuth.user.pipe(
+		switchMap(user =>
+			user
+				? this.userFireStore.getUserData(user.uid)
+				: of({ roleId: '' } as IUser)
+		),
+		shareReplay(1)
+	);
+
+	public isUserLogin$ = this.currentUser$.pipe(map(user => user.roleId !== ''));
 
 	constructor(
 		private afAuth: AngularFireAuth,
 		private userFireStore: UserFirebaseService
-	) {
-		this.afAuth.user.subscribe(user => {
-			if (!user) {
-				this.currentUser$.next({
-					roleId: '0'
-				});
-				this.isUserLogin$.next(false);
-			} else {
-				this.userFireStore.getUserData(user.uid).subscribe(user => {
-					this.currentUser$.next(user);
-					this.isUserLogin$.next(true);
-				});
-			}
-		});
-	}
+	) {}
 }

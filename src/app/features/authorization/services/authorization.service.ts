@@ -18,6 +18,7 @@ export class AuthorizationService {
 		return this.afAuth
 			.createUserWithEmailAndPassword(user.email, user.password)
 			.then((result: UserCredential) => {
+				console.log('result: ', result);
 				result.user.updateProfile({
 					displayName: user.firstName + ' ' + user.lastName,
 					photoURL:
