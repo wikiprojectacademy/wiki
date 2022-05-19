@@ -24,8 +24,9 @@ export class AuthorizationService {
 					photoURL:
 						'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
 				});
-				user.roleId = '1';
 				const userId = result.user.uid;
+				user.roleId = '1';
+				user.id = userId;
 				// add user to Firestore
 				this.userFireStore.addUserWithCustomId(userId, user);
 			})
