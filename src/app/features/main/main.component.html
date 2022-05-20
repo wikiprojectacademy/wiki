@@ -1,55 +1,63 @@
-<div class="main-container">
-	<nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
+<!-- <div class="main-container"> -->
+<nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
+	<button
+		mat-button
+		(click)="isOpened = false"
+		class="small-screen-element"
+	>
+		x
+	</button>
+	<button
+		mat-raised-button
+		[disabled]="isDatabaseInitialized"
+		(click)="initDB()"
+	>
+		Init database
+	</button>
+	<div class="categories__content">
+		<h2>List of categories:</h2>
 		<button
 			mat-button
-			(click)="isOpened = false"
-			class="small-screen-element"
+			routerLink="/edit-categories"
 		>
-			x
+			<mat-icon>edit_note</mat-icon>
+			Edit
 		</button>
-		<button
-			mat-raised-button
-			[disabled]="isDatabaseInitialized"
-			(click)="initDB()"
+
+		<!-- </button> -->
+		<!-- </h2> -->
+		<div
+			class="category"
+			*ngFor="let category of mockedCateg"
 		>
-			Init database
-		</button>
-		<div class="categories__content">
-			<h2>List of categories:</h2>
+			<span class="category-item">{{ category.name }}</span>
 			<div
-				class="category"
-				*ngFor="let category of mockedCateg"
+				class="subcategory"
+				*ngFor="let sub of category.subCategories"
 			>
-				<span class="category-item">{{ category.name }}</span>
-				<div
-					class="subcategory"
-					*ngFor="let sub of category.subCategories"
-				>
-					<span class="category-item">{{ sub.name }}</span>
-				</div>
+				<span class="category-item">{{ sub.name }}</span>
 			</div>
 		</div>
-	</nav>
+	</div>
+</nav>
 
-	<main [ngClass]="isOpened ? 'post-list post-list_opened' : 'post-list'">
-		<button
-			mat-button
-			(click)="isOpened = true"
-			class="small-screen-element"
+<main [ngClass]="isOpened ? 'post-list post-list_opened' : ' post-list'">
+	<button
+		mat-button
+		(click)="isOpened = true"
+		class="small-screen-element"
+	>
+		Show Categories
+	</button>
+	<div class="post-list__content">
+		<mat-card
+			matRipple
+			class="post"
+			*ngFor="let post of mockedPosts"
 		>
-			Show Categories
-		</button>
-		<div class="post-list__content">
-			<mat-card
-				matRipple
-				class="post"
-				*ngFor="let post of mockedPosts"
-			>
-				<mat-card-title>{{ post.title }}</mat-card-title>
-				<mat-card-content>{{
-					post.content | contentShortner
-				}}</mat-card-content>
-			</mat-card>
-		</div>
-	</main>
-</div>
+			<mat-card-title>{{ post.title }}</mat-card-title>
+			<mat-card-content>{{ post.content | contentShortner }}</mat-card-content>
+		</mat-card>
+	</div>
+</main>
+<!-- </div> -->

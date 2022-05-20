@@ -21,6 +21,13 @@ const routes: Routes = [
 		path: 'role',
 		loadChildren: () =>
 			import('./features/role/role.module').then(m => m.RoleModule)
+	},
+	{
+		path: 'edit-categories',
+		loadChildren: () =>
+			import('./features/categories-edit/categories-edit.module').then(
+				m => m.CategoriesEditModule
+			)
 	}
 ];
 
