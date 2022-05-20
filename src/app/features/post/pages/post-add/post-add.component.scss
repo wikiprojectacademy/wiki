@@ -1,0 +1,35 @@
+.post-add {
+	position: relative;
+	margin: 5vw auto 0;
+	width: 70vw;
+
+	border-radius: 23px;
+	background: #ffffff;
+	box-shadow: 0 1px 28px 2px rgba(97, 97, 93, 0.88);
+	padding: 32px;
+	form {
+		display: flex;
+		flex-direction: row;
+		gap: 32px;
+		.selectors {
+			display: flex;
+			flex-direction: column;
+			max-width: 300px;
+			width: 100%;
+		}
+		.NgxEditor__Wrapper {
+			width: 100%;
+			border-color: rgba(0, 0, 0, 0.12);
+			margin-top: 3px;
+		}
+	}
+	.save-button-container {
+		display: flex;
+		justify-content: flex-end;
+
+		.save-button {
+			min-width: 100px;
+			margin-top: 32px;
+		}
+	}
+}

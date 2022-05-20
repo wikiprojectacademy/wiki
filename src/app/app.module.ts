@@ -11,6 +11,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { ProfileModule } from './features/profile/profile-page.module';
 import { MainModule } from './features/main/main.module';
+import { PostModule } from './features/post/post.module';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { MainModule } from './features/main/main.module';
 		CoreModule,
 		ProfileModule,
 		MainModule,
+		PostModule,
 
 		provideFirebaseApp(() => initializeApp(environment.firebase)),
 		provideAuth(() => getAuth()),
