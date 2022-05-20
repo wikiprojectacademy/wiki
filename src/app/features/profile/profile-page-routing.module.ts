@@ -11,7 +11,7 @@ const routes: Routes = [
 	{
 		path: '',
 		component: ProfilePageComponent,
-		// canActivate: [OnlyLoggedInUserGuard],
+		canActivate: [OnlyLoggedInUserGuard],
 		children: [
 			{ path: 'about', component: AboutMeComponent },
 			{

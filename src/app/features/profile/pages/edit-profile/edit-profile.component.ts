@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IUser } from '@core/models/User';
 import { passwordValidation } from '@shared/validators/validations';
-import { DataService } from 'src/app/features/profile/service/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
 import { CurrentUserService } from '@core/services/user/current-user.service';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 
 @Component({
 	selector: 'app-edit-profile',
@@ -15,7 +16,6 @@ import { Subscription } from 'rxjs';
 })
 export class EditProfileComponent implements OnInit, OnDestroy {
 	isPasswordHidden: boolean = true;
-	user: IUser;
 	private subscription: Subscription;
 
 	changeProfileForm: FormGroup = new FormGroup({
@@ -38,19 +38,36 @@ export class EditProfileComponent implements OnInit, OnDestroy {
 	});
 
 	constructor(
-		private dataService: DataService,
+		private userFirebaseService: UserFirebaseService,
 		public dialog: MatDialog,
-		private currentUserService: CurrentUserService
+		private currentUserService: CurrentUserService,
+		private afAuth: AngularFireAuth,
+		private userFireStore: UserFirebaseService
 	) {}
 
 	ngOnInit(): void {
-		console.log('Edit Profile onInit execute');
-
-		// data from currentUserService.currentUser$
+		// Contain data from currentUser in FormGroup values
 		this.currentUserService.currentUser$.subscribe((curUser: IUser) => {
-			this.user = curUser;
-			this.changeProfileForm.patchValue(this.user);
+			this.changeProfileForm.patchValue(curUser);
 		});
+	}
+
+	submitResult() {
+		// Update current user data in firestorage by id
+		this.userFirebaseService
+			.updateUser('eqeNMsxzJFbw4odMXSk3KS7gWjv1', this.changeProfileForm.value)
+			// .updateUser(this.user.id, this.changeProfileForm.value)
+			.then(() => {
+				this.dialog.open(SubmitDialogComponent);
+			});
+		this.changeProfileForm.markAsPristine();
+
+		// Todo update user inside Auth base
+
+		// Update currentUser data inside currentUserService
+		this.currentUserService.currentUser$ = this.afAuth.user.pipe(
+			switchMap(user => this.userFireStore.getUserData(user.uid))
+		);
 	}
 
 	getNameErrorMessage(inputField: string) {
@@ -65,24 +82,6 @@ export class EditProfileComponent implements OnInit, OnDestroy {
 		} else if (this.changeProfileForm.hasError('pattern', inputField)) {
 			return 'The	password must contain minimum six	characters, at least one letter and one number';
 		} else return '';
-	}
-
-	submitResult() {
-		// update user inside firestorage
-		this.dataService
-			.updateUser('eqeNMsxzJFbw4odMXSk3KS7gWjv1', this.changeProfileForm.value)
-			// .updateUser(this.user.id, this.changeProfileForm.value)
-			.then(() => {
-				// console.log(`updateUser`);
-				this.dialog.open(SubmitDialogComponent);
-			});
-		this.changeProfileForm.markAsPristine();
-
-		// Todo update user inside Auth base
-
-		// Todo somehow update currentUser& in currentUserService
-		// because after updating data in DB
-		// and reloading page we use currentUser& data
 	}
 
 	ngOnDestroy() {

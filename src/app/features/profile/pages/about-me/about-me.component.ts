@@ -15,19 +15,15 @@ export class AboutMeComponent implements OnInit, OnDestroy {
 	constructor(private currentUserService: CurrentUserService) {}
 
 	ngOnInit(): void {
-		console.log('About me onInit execute');
-
-		// data from currentUser$
+		// Contain data from currentUser in property user
 		this.subscription = this.currentUserService.currentUser$.subscribe(
 			(curUser: IUser) => {
 				this.user = curUser;
-				console.log(this.user);
 			}
 		);
 	}
 
 	ngOnDestroy() {
-		console.log('Unsubscribe');
 		if (this.subscription) {
 			this.subscription.unsubscribe();
 		}
