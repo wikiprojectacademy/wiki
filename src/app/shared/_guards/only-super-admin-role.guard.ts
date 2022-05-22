@@ -2,21 +2,19 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/user/current-user.service';
 import { SnackBarService } from '@shared/services/snackbar.service';
-import { Subscription } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class OnlySuperAdminRoleGuard implements CanActivate, OnDestroy {
+export class OnlySuperAdminRoleGuard implements CanActivate {
 	curRoleId: string;
-	private subscription: Subscription;
 
 	constructor(
 		private currentUserService: CurrentUserService,
 		private routes: Router,
 		private snackBarService: SnackBarService
 	) {
-		this.subscription = this.currentUserService.currentUser$.subscribe(
+		this.currentUserService.currentUser$.subscribe(
 			curUser => (this.curRoleId = curUser.roleId)
 		);
 	}
@@ -34,12 +32,6 @@ export class OnlySuperAdminRoleGuard implements CanActivate, OnDestroy {
 			// );
 			// return false;
 			return true;
-		}
-	}
-
-	ngOnDestroy() {
-		if (this.subscription) {
-			this.subscription.unsubscribe();
 		}
 	}
 }
