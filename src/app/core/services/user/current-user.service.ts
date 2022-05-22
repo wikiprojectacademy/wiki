@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { map, of, shareReplay, switchMap, takeLast } from 'rxjs';
 import { IUser } from '@core/models/User';

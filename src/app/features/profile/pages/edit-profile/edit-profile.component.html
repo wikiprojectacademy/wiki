@@ -1,11 +1,8 @@
 <div class="form-group">
 	<p>Edit Profile</p>
-	<form
-		(ngSubmit)="changeProfile()"
-		[formGroup]="changeProfileForm"
-	>
+	<form [formGroup]="changeProfileForm">
 		<mat-form-field appearance="fill">
-			<mat-label>First Name</mat-label>
+			<mat-label>Name</mat-label>
 			<input
 				matInput
 				formControlName="firstName"
@@ -21,7 +18,7 @@
 			</mat-error>
 		</mat-form-field>
 		<mat-form-field appearance="fill">
-			<mat-label>Last Name</mat-label>
+			<mat-label>Surname</mat-label>
 			<input
 				matInput
 				formControlName="lastName"
@@ -84,7 +81,8 @@
 			mat-raised-button
 			color="primary"
 			type="submit"
-			[disabled]="changeProfileForm.invalid"
+			(click)="submitResult()"
+			[disabled]="changeProfileForm.invalid || !changeProfileForm.dirty"
 		>
 			Save
 		</button>
