@@ -14,6 +14,54 @@ export class AuthorizationService {
 		private userFireStore: UserFirebaseService
 	) {}
 
+	async udateUser(newUsersData: IUser, currentUsersData: IUser): Promise<any> {
+		const user = firebase.auth().currentUser;
+
+		try {
+			if (
+				currentUsersData.firstName !== newUsersData.firstName ||
+				currentUsersData.lastName !== newUsersData.lastName
+			) {
+				//update UserData
+				await user.updateProfile({
+					displayName: newUsersData.firstName + ' ' + newUsersData.lastName
+				});
+			}
+
+			if (
+				currentUsersData.email !== newUsersData.email ||
+				currentUsersData.password !== newUsersData.password
+			) {
+				//get UserCredential
+				const credential = firebase.auth.EmailAuthProvider.credential(
+					currentUsersData.email,
+					currentUsersData.password
+				);
+
+				//reauthenticate User
+				const { user: userData } = await user.reauthenticateWithCredential(
+					credential
+				);
+
+				if (currentUsersData.email !== newUsersData.email) {
+					//update UserEmail
+					await userData.updateEmail(newUsersData.email);
+				}
+
+				if (currentUsersData.password !== newUsersData.password) {
+					//update UserPassword
+					await userData.updatePassword(newUsersData.password);
+				}
+			}
+
+			//update User in Firestore
+			this.userFireStore.updateUser(user.uid, newUsersData);
+		} catch (error) {
+			console.log('error: ', error);
+			throw error;
+		}
+	}
+
 	registerUser(user: IUser): Promise<any> {
 		return this.afAuth
 			.createUserWithEmailAndPassword(user.email, user.password)
