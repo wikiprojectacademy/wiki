@@ -24,37 +24,6 @@ mat-form-field {
 	margin: 1em;
 }
 
-.or {
-	text-align: center;
-	display: block;
-	color: #a0a0a0;
-	background: white;
-	position: relative;
-	margin-bottom: 1em;
-
-	&:before {
-		position: absolute;
-		content: '';
-		left: 0;
-		top: 11px;
-		width: 100%;
-		height: 1px;
-		background: #e2e2e2;
-	}
-}
-
-.google-button-container {
-	text-align: center;
-}
-
-.orInner {
-	background: white;
-	display: inline-block;
-	z-index: 4;
-	position: relative;
-	padding: 0 12px;
-}
-
 .redirectToLogin {
 	margin-top: 1em;
 	text-align: center;
