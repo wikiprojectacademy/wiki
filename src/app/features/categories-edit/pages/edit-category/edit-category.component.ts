@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ICategory } from '@core/models/Category';
+import { ICategory as CategoryDB } from '@core/models/Category';
+import { ICategoryFull as Category } from '../../models/icategory-full';
 import { SnackBarService } from '@shared/services/snackbar.service';
 import { CategoryService } from '../../services/categories.service';
 
@@ -14,20 +15,15 @@ export class EditCategoryComponent implements OnInit {
 	// isCreateMode = false;
 	form: FormGroup;
 
-	category: ICategory = {
+	category: Category = {
 		id: 'new',
 		name: '',
 		createdBy: '',
 		subCategories: [],
-		availableRolesToView: []
+		availableRolesToView: [],
+		subCategoriesFull: [],
+		rolesFull: []
 	};
-
-	//TO DO
-	roles = [
-		{ id: '315135', type: 'admin' },
-		{ id: '2222222', type: 'user' },
-		{ id: '333333', type: 'guest' }
-	];
 
 	get subCategoriesArray() {
 		return this.form.get('subCategories') as FormArray;
@@ -37,6 +33,10 @@ export class EditCategoryComponent implements OnInit {
 		return this.form.get('roles') as FormArray;
 	}
 
+	get nameFormControl() {
+		return this.form.get('name') as FormControl;
+	}
+
 	constructor(
 		private route: ActivatedRoute,
 		private categoryService: CategoryService,
@@ -44,7 +44,10 @@ export class EditCategoryComponent implements OnInit {
 	) {
 		let id = this.route.snapshot.paramMap.get('id');
 		if (id !== 'new') {
-			this.category = this.categoryService.getCategoryById(id);
+			this.categoryService.getCategoryById(id).subscribe(cat => {
+				this.category = cat;
+				this.updateForm();
+			});
 		}
 
 		this.form = new FormGroup({
@@ -53,22 +56,32 @@ export class EditCategoryComponent implements OnInit {
 			roles: new FormArray([])
 		});
 
-		if (this.category.availableRolesToView.length) {
-			this.category.availableRolesToView.map(role =>
-				this.rolesArray.push(new FormControl(role, Validators.required))
-			);
-		}
+		// if (this.category.availableRolesToView.length) {
+		// 	this.category.availableRolesToView.map(role =>
+		// 		this.rolesArray.push(new FormControl(role, Validators.required))
+		// 	);
+		// }
 
-		if (this.category.subCategories.length) {
-			this.category.subCategories.map(sub =>
-				this.subCategoriesArray.push(new FormControl(sub, Validators.required))
-			);
-		}
+		// if (this.category.subCategoriesFull.length) {
+		// 	this.category.subCategoriesFull.map(sub =>
+		// 		this.subCategoriesArray.push(
+		// 			new FormControl(sub.name, Validators.required)
+		// 		)
+		// 	);
+		// }
 	}
 
 	// @ViewChild('form') form: NgForm;
 
 	ngOnInit(): void {}
+
+	updateForm(): void {
+		this.nameFormControl.patchValue(this.category.name);
+		// this.rolesArray.patchValue(this.category.rolesFull);
+		// this.category.rolesFull.forEach(role => {
+		// 	this.rolesArray.push(new FormControl(role.name));
+		// });
+	}
 
 	addSubcategoryContoll() {
 		this.subCategoriesArray.push(new FormControl('', Validators.required));

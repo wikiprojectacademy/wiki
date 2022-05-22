@@ -17,6 +17,40 @@ header {
 	}
 }
 
+.loader {
+	$duration: 0.5s;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 10px;
+	overflow: hidden;
+
+	background: repeating-linear-gradient(
+		30deg,
+		#bbb,
+		#bbb 10px,
+		#aaa 10px,
+		#aaa 20px
+	);
+	background-size: 200% 200%;
+	transition: height 0.2s;
+	animation: bg-move 10s linear infinite;
+
+	&__hidden {
+		height: 0;
+	}
+}
+
+@keyframes bg-move {
+	0% {
+		background-position: 0% 0%;
+	}
+	100% {
+		background-position: 100% 0%;
+	}
+}
+
 .categories__wrapper {
 	padding: 0 15px;
 	display: flex;
@@ -40,11 +74,19 @@ header {
 		}
 
 		.labels,
-		content {
+		.content {
 			width: 50%;
 			& * {
 				margin: 0;
 			}
+		}
+
+		.labels {
+			width: 70%;
+		}
+
+		.content {
+			width: 30%;
 		}
 
 		.common-label {

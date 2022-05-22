@@ -4,7 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 	name: 'subcategoriesNameLister'
 })
 export class SubcategoriesNameListerPipe implements PipeTransform {
-	transform(value: any[], ...args: unknown[]): unknown {
-		return value.map(sub => sub.name).join(', ');
+	transform(subCategories: any[]): string {
+		if (!subCategories) return ' - ';
+		return subCategories.map(sub => sub.name).join(', ');
 	}
 }

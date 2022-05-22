@@ -28,12 +28,12 @@
 		<!-- </h2> -->
 		<div
 			class="category"
-			*ngFor="let category of mockedCateg"
+			*ngFor="let category of categories"
 		>
 			<span class="category-item">{{ category.name }}</span>
 			<div
 				class="subcategory"
-				*ngFor="let sub of category.subCategories"
+				*ngFor="let sub of category.subCategoriesFull"
 			>
 				<span class="category-item">{{ sub.name }}</span>
 			</div>

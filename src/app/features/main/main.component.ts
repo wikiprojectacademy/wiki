@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseStorageService } from '@core/services/firebase/firebase-init/firebaseStorage.service';
+import { ICategoryFull as Category } from '../categories-edit/models/icategory-full';
+import { CategoryService } from '../categories-edit/services/categories.service';
 
 @Component({
 	selector: 'app-main',
@@ -72,13 +74,21 @@ export class MainComponent implements OnInit {
 		}
 	];
 
+	categories: Category[];
+
 	isDatabaseInitialized: boolean;
 
-	constructor(private firebaseStorage: FirebaseStorageService) {}
+	constructor(
+		private firebaseStorage: FirebaseStorageService,
+		private categoryService: CategoryService
+	) {}
 
 	ngOnInit(): void {
 		this.firebaseStorage.isDBInitialized().subscribe(users => {
 			this.isDatabaseInitialized = users.length > 2;
+		});
+		this.categoryService.getCategoryAll().subscribe(response => {
+			this.categories = response;
 		});
 	}
 
