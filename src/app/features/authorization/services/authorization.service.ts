@@ -38,28 +38,6 @@ export class AuthorizationService {
 			});
 	}
 
-	registerUserWithGoogle(): Promise<any> {
-		return this.afAuth
-			.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-			.then((result: UserCredential) => {
-				const { displayName, email, uid } = result.user;
-				const user = {
-					firstName: displayName.split(' ')[0],
-					lastName: displayName.split(' ')[1],
-					email,
-					roleId: '1'
-				};
-				// add user to Firestore
-				this.userFireStore.addUserWithCustomId(uid, user);
-			})
-			.catch(error => {
-				// console.log('Auth Service: register error', error);
-				// console.log('error code', error.code);
-				// console.log('error', error);
-				return error.code ? { isValid: false, message: error.message } : error;
-			});
-	}
-
 	loginUser(email: string, password: string): Promise<any> {
 		return this.afAuth
 			.signInWithEmailAndPassword(email, password)
