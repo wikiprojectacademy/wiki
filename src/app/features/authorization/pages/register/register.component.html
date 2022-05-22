@@ -96,26 +96,6 @@
 				Register
 			</button>
 		</form>
-
-		<span class="or"><span class="orInner">Or</span></span>
-
-		<!-- Continue with Google -->
-		<div class="google-button-container">
-			<button
-				class="google-button"
-				mat-raised-button
-				color="primary"
-				type="button"
-				(click)="onGoogleAuth()"
-			>
-				<mat-icon
-					svgIcon="google"
-					aria-hidden="false"
-					aria-label="Google icon"
-				></mat-icon>
-				Continue with Google
-			</button>
-		</div>
 	</mat-card>
 
 	<!-- If already register -->
@@ -124,7 +104,7 @@
 			>Already have an account?
 			<span
 				class="redirect"
-				routerLink="/login"
+				routerLink="/authorization/login"
 				>Login</span
 			></span
 		>

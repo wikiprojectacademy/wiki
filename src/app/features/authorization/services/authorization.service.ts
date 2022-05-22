@@ -14,6 +14,54 @@ export class AuthorizationService {
 		private userFireStore: UserFirebaseService
 	) {}
 
+	async udateUser(newUsersData: IUser, currentUsersData: IUser): Promise<any> {
+		const user = firebase.auth().currentUser;
+
+		try {
+			if (
+				currentUsersData.firstName !== newUsersData.firstName ||
+				currentUsersData.lastName !== newUsersData.lastName
+			) {
+				//update UserData
+				await user.updateProfile({
+					displayName: newUsersData.firstName + ' ' + newUsersData.lastName
+				});
+			}
+
+			if (
+				currentUsersData.email !== newUsersData.email ||
+				currentUsersData.password !== newUsersData.password
+			) {
+				//get UserCredential
+				const credential = firebase.auth.EmailAuthProvider.credential(
+					currentUsersData.email,
+					currentUsersData.password
+				);
+
+				//reauthenticate User
+				const { user: userData } = await user.reauthenticateWithCredential(
+					credential
+				);
+
+				if (currentUsersData.email !== newUsersData.email) {
+					//update UserEmail
+					await userData.updateEmail(newUsersData.email);
+				}
+
+				if (currentUsersData.password !== newUsersData.password) {
+					//update UserPassword
+					await userData.updatePassword(newUsersData.password);
+				}
+			}
+
+			//update User in Firestore
+			this.userFireStore.updateUser(user.uid, newUsersData);
+		} catch (error) {
+			console.log('error: ', error);
+			throw error;
+		}
+	}
+
 	registerUser(user: IUser): Promise<any> {
 		return this.afAuth
 			.createUserWithEmailAndPassword(user.email, user.password)
@@ -29,28 +77,6 @@ export class AuthorizationService {
 				user.id = userId;
 				// add user to Firestore
 				this.userFireStore.addUserWithCustomId(userId, user);
-			})
-			.catch(error => {
-				// console.log('Auth Service: register error', error);
-				// console.log('error code', error.code);
-				// console.log('error', error);
-				return error.code ? { isValid: false, message: error.message } : error;
-			});
-	}
-
-	registerUserWithGoogle(): Promise<any> {
-		return this.afAuth
-			.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-			.then((result: UserCredential) => {
-				const { displayName, email, uid } = result.user;
-				const user = {
-					firstName: displayName.split(' ')[0],
-					lastName: displayName.split(' ')[1],
-					email,
-					roleId: '1'
-				};
-				// add user to Firestore
-				this.userFireStore.addUserWithCustomId(uid, user);
 			})
 			.catch(error => {
 				// console.log('Auth Service: register error', error);
