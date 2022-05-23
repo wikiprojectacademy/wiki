@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Editor, Toolbar } from 'ngx-editor';
 import { ICategory as Category } from '@core/models/Category';
 import { CategoriesMock } from '../../mocks/post-page.mock';
-import { PostFirebaseService } from '../../services/post-firebase.service';
+import { PostFirebaseService } from '@core/services/firebase/firebase-entities/postFirebase.service';
 import { IPost } from '@core/models/Post';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -63,9 +63,13 @@ export class PostAddComponent implements OnInit {
 		this.postService.addPost(post).then(resp => {
 			if (resp) {
 				this.form.reset();
-				this.snackBar.open('Post Successfully Created');
+				this.snackBar.open('Post Successfully Created', '', {
+					duration: 5000
+				});
 			} else {
-				this.snackBar.open('Error Occurred');
+				this.snackBar.open('Error Occurred', '', {
+					duration: 5000
+				});
 			}
 		});
 	}
