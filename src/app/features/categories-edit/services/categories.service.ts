@@ -1,101 +1,41 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, Subject, Subscription, zip, map } from 'rxjs';
+import { forkJoin, Observable, Subject, tap, take } from 'rxjs';
 
 import { ICategory as CategoryDB } from '@core/models/Category';
+import { ISubCategory as SubCategoryDB } from '@core/models/SubCategory';
 import { ICategoryFull as Category } from '../models/icategory-full';
+import { IUser as UserDB } from '@core/models/User';
+import { IUserInCategory as User } from '../models/userInCategory.interface';
+import { IRole as RoleDB } from '@core/models/Role';
 
+import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 import { CategoryFirebaseService } from '@core/services/firebase/firebase-entities/categoryFirebase.service';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
-import { IRole as RoleDB } from '@core/models/Role';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class CategoryService {
-	categories: Category[];
-	singleCategory: Category;
+	private categories: Category[];
+	private singleCategory: Category;
 
-	singleCategory$ = new Subject<Category>();
-	categories$ = new Subject<Category[]>();
+	private singleCategory$ = new Subject<Category>();
+	private categories$ = new Subject<Category[]>();
 
 	constructor(
 		private categoriesFbSevice: CategoryFirebaseService,
-		private rolesFbService: RoleFirebaseService
+		private rolesFbService: RoleFirebaseService,
+		private userFbService: UserFirebaseService
 	) {}
 
 	getCategoryAll(): Observable<Category[]> {
 		this.categoriesFbSevice
 			.getStreamCategories()
-			// .pipe(
-			// 	map(categories => {
-			// 		let categoriesFull: Category[] = categories;
-			// 		categoriesFull.forEach(cat => {
-			// 			const subCategories$ = this.categoriesFbSevice.getSubCategories(
-			// 				cat.id
-			// 			);
-			// 			cat = { ...cat, subCategoriesFull: [] };
-
-			// 			subCategories$.subscribe(subCategories => {
-			// 				cat.subCategoriesFull = subCategories;
-			// 			});
-			// 		});
-			// 		return categoriesFull;
-			// 	})
-			// )
-			// .subscribe(cats => {
-			// 	this.categories = cats;
-			// 	this.categories$.next(this.categories);
-			// 	console.log(this.categories);
-			// });
-
 			.subscribe(categoriesFromDB => {
 				this.categories = categoriesFromDB;
-				this._attachDataToCategories();
-				this.categories$.next(this.categories);
+				this.attachDataToCategories();
 			});
 		return this.categories$.asObservable();
-	}
-
-	_attachDataToCategories() {
-		this.categories.forEach(category => {
-			// --- SUBCAT
-			this.categoriesFbSevice
-				.getSubCategories(category.id)
-				.subscribe(subCategories => {
-					category.subCategoriesFull = subCategories;
-					this.categories$.next(this.categories);
-				});
-
-			this.rolesFbService.getRoles().subscribe(roleDB => {
-				category.rolesFull = [];
-				category.availableRolesToView.forEach(roleId => {
-					let currentRole = roleDB.filter(role => role.id == roleId)[0];
-					if (currentRole) category.rolesFull.push(currentRole);
-				});
-			});
-
-			/*
-			 ----------
-			*/
-
-			// const roles$ = this.rolesFbService.getRoles();
-			// const subCat$ = this.categoriesFbSevice.getSubCategories(category.id);
-
-			// const subCatRolesSubsrc = zip(roles$, subCat$).subscribe(response => {
-			// 	const [roles, subCat] = response;
-			// 	category = { ...category, rolesFull: [], subCategoriesFull: [] };
-
-			// 	category.subCategoriesFull = subCat;
-
-			// 	category.availableRolesToView.forEach(roleId => {
-			// 		const currentRole = roles.filter(role => role.id == roleId)[0];
-			// 		if (currentRole) category.rolesFull.push(currentRole);
-			// 	});
-
-			// 	this.categories$.next(this.categories);
-			// 	console.log(category);
-			// });
-		});
 	}
 
 	getCategoryById(id: string): Observable<Category> {
@@ -110,27 +50,6 @@ export class CategoryService {
 		});
 		return this.singleCategory$.asObservable();
 	}
-
-	// attachRoleToCategory(category: Category): Category {
-	// 	let result = { ...category, rolesFull: [] };
-	// 	result.availableRolesToView.forEach(roleId =>nameategory} by id ${roleId}`);
-	// 		console.log(result);
-	// 	});
-	// 	return result;
-	// }
-
-	// getCategoryById(id: any): Observable<Category> {
-	// getCategoryById(id: any) {
-	// this.categoriesFbSevice.
-	// }
-
-	//
-
-	//
-
-	//
-
-	//
 
 	addCategory(category: Category): void {
 		console.table({
@@ -150,6 +69,92 @@ export class CategoryService {
 			Subcategories: category.subCategories.join(', ') || '-',
 			Roles: category.availableRolesToView.join(', ') || '-'
 		});
+	}
+
+	/**
+	 * Collect all observables and handle all of them in the end
+	 */
+	private attachDataToCategories(): void {
+		let subCategoriesArray$: Observable<SubCategoryDB[]>[] = [];
+		let rolesArray$: Observable<RoleDB>[] = [];
+		let usersArray$: Observable<UserDB>[] = [];
+
+		this.categories.forEach(category => {
+			// --- Created By ---
+			const user$ = this.userFbService.getUserData(category.createdBy);
+			usersArray$.push(this.processUser$(user$, category));
+
+			// --- Subcategories ---
+			const subCategory$ = this.categoriesFbSevice.getSubCategories(
+				category.id
+			);
+			subCategoriesArray$.push(
+				this.processSubCategories$(subCategory$, category)
+			);
+
+			// --- Avaible roles to view ---
+			category.rolesFull = []; // need to be array, not undefined
+			category.availableRolesToView.forEach(roleId => {
+				const role$ = this.rolesFbService.getRole(roleId);
+				rolesArray$.push(this.processRole$(role$, category));
+			});
+		});
+
+		// After done all of observable finally pass modified this.category to component
+		forkJoin([
+			...subCategoriesArray$,
+			...rolesArray$,
+			...usersArray$
+		]).subscribe(() => {
+			this.processDataToComponent();
+		});
+	}
+
+	private processDataToComponent(): void {
+		this.categories$.next(this.categories);
+	}
+
+	private processUser$(
+		user$: Observable<User>,
+		category: Category
+	): Observable<User> {
+		return user$.pipe(
+			tap(user => {
+				if (user) {
+					const fullName: User = {
+						// Look in IUserInCategory interface for adding new fields
+						id: user.id,
+						firstName: user.firstName,
+						lastName: user.lastName
+					};
+					category.createdByFull = fullName;
+				}
+			}),
+			take(1)
+		);
+	}
+
+	private processSubCategories$(
+		subCategories$: Observable<SubCategoryDB[]>,
+		category: Category
+	) {
+		return subCategories$.pipe(
+			tap(subCat => {
+				category.subCategoriesFull = subCat;
+			}),
+			take(1)
+		);
+	}
+
+	private processRole$(role$: Observable<RoleDB>, category: Category) {
+		return role$.pipe(
+			tap(role => {
+				if (role) {
+					category.rolesFull.push(role);
+				}
+			}),
+			take(1)
+		);
 	}
 
 	// getSubcategoriesByCategoryId(id: string) {

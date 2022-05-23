@@ -39,11 +39,11 @@
 			</div>
 
 			<div class="content">
-				<span class="common-label">Created by:</span>
-				{{ cat.createdBy }}
+				<span class="common-label">Created by: </span>
+				{{ cat.createdByFull.firstName + ' ' + cat.createdByFull.lastName }}
 				<br />
-				<span class="common-label">Roles:</span>
-				{{ cat.rolesFull | subcategoriesNameLister }}
+				<span class="common-label">Roles: </span>
+				<span *ngFor="let role of cat.rolesFull">{{ role.name }}</span>
 			</div>
 		</mat-card>
 	</div>
