@@ -9,7 +9,7 @@ import { environment } from '@env';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { ProfileModule } from './features/profile/profile-page.module';
+// Pages
 import { MainModule } from './features/main/main.module';
 import { PostModule } from './features/post/post.module';
 
@@ -20,7 +20,6 @@ import { PostModule } from './features/post/post.module';
 		BrowserAnimationsModule,
 		AppRoutingModule,
 		CoreModule,
-		ProfileModule,
 		MainModule,
 		PostModule,
 
