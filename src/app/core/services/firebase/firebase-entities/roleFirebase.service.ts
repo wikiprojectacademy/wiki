@@ -30,11 +30,19 @@ export class RoleFirebaseService extends FirebaseCrudService<
 		return this.addDoc(id, role);
 	}
 
+	editRole(id: string, role: IRole): Promise<void> {
+		return this.updateDoc(id, role);
+	}
+
 	getRole(id: string): Observable<IRole> {
 		return this.getDoc(id);
 	}
 
 	getRoles(): Observable<IRole[]> {
 		return this.getCollection();
+	}
+
+	deleteRole(id: string): Promise<void> {
+		return this.deleteDoc(id);
 	}
 }

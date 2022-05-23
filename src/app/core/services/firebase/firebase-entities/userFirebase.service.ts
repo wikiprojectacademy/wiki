@@ -3,7 +3,6 @@ import { FirebaseCrudService } from '@core/services/firebase/firebase-api/fireba
 import { IUser } from '@core/models/User';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { IRole } from '@core/models/Role';
 
 @Injectable({
 	providedIn: 'root'
@@ -22,10 +21,16 @@ export class UserFirebaseService extends FirebaseCrudService<
 		return this.addDocWithAutoId(user);
 	}
 
-	addUserWithRole(userId: string, user: IUser, role: IRole) {}
+	addUserWithRole(user: IUser) {
+		return this.addDocWithAutoId(user);
+	}
 
 	updateUser(id: string, content: IUser) {
 		return this.updateDoc(id, content);
+	}
+
+	deleteUser(id: string) {
+		return this.deleteDoc(id);
 	}
 
 	getUserData(id: string) {

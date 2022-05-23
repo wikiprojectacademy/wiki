@@ -45,7 +45,7 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				{{ element.modificationCategory }}
+				{{ element.canModifyCategory }}
 			</td>
 		</ng-container>
 
@@ -62,7 +62,7 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				{{ element.modificationPost }}
+				{{ element.canModifyPost }}
 			</td>
 		</ng-container>
 
@@ -80,8 +80,8 @@
 				*matCellDef="let element"
 			>
 				{{
-					element.availableCategoryIdsToView
-						? getNames(element.availableCategoryIdsToView)
+					element.availableCategoriesToView
+						? getNames(element.availableCategoriesToView)
 						: '-'
 				}}
 			</td>

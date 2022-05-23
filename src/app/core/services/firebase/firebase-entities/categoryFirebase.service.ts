@@ -41,8 +41,8 @@ export class CategoryFirebaseService extends FirebaseCrudService<
 		return this.getDocFromSubCollection(parentId, subCollectionId);
 	}
 
-	getCategories() {
-		this.getCollection().subscribe(categories => console.log(categories));
+	getCategories(): Observable<ICategory[]> {
+		return this.getCollection();
 	}
 
 	async addCategory(category: ICategory) {

@@ -1,6 +1,4 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { IUserModel } from '../../models/user.model';
-import { UserService } from '../../services/user.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -8,6 +6,9 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { forkJoin, Observable, switchMap, take, tap } from 'rxjs';
 import { IUser } from '@core/models/User';
 import { IRole } from '@core/models/Role';
+import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
+import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
+import { SnackBarService } from '@shared/services/snackbar.service';
 
 @Component({
 	selector: 'app-user',
@@ -15,7 +16,6 @@ import { IRole } from '@core/models/Role';
 	styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit, AfterViewInit {
-	public users: IUserModel[] = [];
 	public usersModel: IUser[];
 	users$: Observable<IUser[]>;
 	roles$: Observable<IRole[]>;
@@ -29,7 +29,9 @@ export class UserListComponent implements OnInit, AfterViewInit {
 	public dataSource: MatTableDataSource<IUser>;
 
 	constructor(
-		private userService: UserService,
+		private userFirebaseService: UserFirebaseService,
+		private roleFirebaseService: RoleFirebaseService,
+		private snackBService: SnackBarService,
 		private liveAnnouncer: LiveAnnouncer
 	) {
 		this.getUsers();
@@ -54,13 +56,13 @@ export class UserListComponent implements OnInit, AfterViewInit {
 	}
 
 	getUsers(): void {
-		this.users$ = this.userService.getUsers();
+		this.users$ = this.userFirebaseService.getUsers$();
 		this.roles$ = this.users$.pipe(
 			tap((users: IUser[]) => (this.usersModel = users)),
 			switchMap(actualUsers => {
 				const rolesArray$: Observable<IRole>[] = [];
 				actualUsers.forEach(user => {
-					const role$: Observable<IRole> = this.userService.getUserRole(
+					const role$: Observable<IRole> = this.roleFirebaseService.getRole(
 						user.roleId
 					);
 					rolesArray$.push(role$.pipe(take(1)));
@@ -79,7 +81,26 @@ export class UserListComponent implements OnInit, AfterViewInit {
 	}
 
 	onDelete(id: string): void {
-		this.userService.deleteUser(id);
-		this.getUsers();
+		if (id !== '0') {
+			this.userFirebaseService.deleteUser(id).then(
+				() => {
+					this.getUsers();
+					this.snackBService.openSnackBar('User account deleted', '', 1000);
+				},
+				error => {
+					this.snackBService.openSnackBar(
+						'User account has not been deleted. Reason: ' + error,
+						'',
+						1000
+					);
+				}
+			);
+		} else {
+			this.snackBService.openSnackBar(
+				'This Super Admin account cannot delete',
+				'',
+				5000
+			);
+		}
 	}
 }

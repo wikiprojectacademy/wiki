@@ -5,7 +5,6 @@ import {
 	QuerySnapshot
 } from '@angular/fire/compat/firestore';
 import { IRoleCategoryPair } from '@core/models/RoleCategoryPair';
-import { IRole } from '@core/models/Role';
 import { Observable } from 'rxjs';
 
 @Injectable({

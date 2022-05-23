@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RoleService } from '../../services/role.service';
-import { IRoleModel } from '../../models/role.model';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '@shared/services/snackbar.service';
-import { CategoryService } from '../../services/category.service';
+import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
+import { IRole } from '@core/models/Role';
+import { CategoryFirebaseService } from '@core/services/firebase/firebase-entities/categoryFirebase.service';
+import { ICategory } from '@core/models/Category';
 
 @Component({
 	selector: 'app-role-edit',
@@ -13,19 +15,19 @@ import { CategoryService } from '../../services/category.service';
 	styleUrls: ['./role-edit.component.scss']
 })
 export class RoleEditComponent implements OnInit, OnDestroy {
-	public role: IRoleModel;
-	public form: FormGroup;
-	//todo will change after role module added
+	private id: string;
 	private routeSub: Subscription;
-	public categories: any[] = [];
+	public role: IRole;
+	public form: FormGroup;
+	public categories$: Observable<ICategory[]>;
 
 	constructor(
-		private roleService: RoleService,
 		private formBuilder: FormBuilder,
 		private router: Router,
 		private route: ActivatedRoute,
 		private snackBService: SnackBarService,
-		private categoryService: CategoryService
+		private categoryFirebaseService: CategoryFirebaseService,
+		private roleFirebaseService: RoleFirebaseService
 	) {
 		this.getCategories();
 		this.form = formBuilder.group({
@@ -35,31 +37,42 @@ export class RoleEditComponent implements OnInit, OnDestroy {
 				'',
 				[Validators.required, Validators.minLength(2), Validators.maxLength(25)]
 			],
-			modificationCategory: [false],
-			modificationPost: [false],
-			availableCategoryIdsToView: []
+			canModifyCategory: [false],
+			canModifyPost: [false],
+			availableCategoriesToView: []
 		});
 	}
 
 	ngOnInit(): void {
 		this.routeSub = this.route.params.subscribe(params => {
+			this.id = params['id'];
 			this.getRoleById(params['id']);
 		});
 	}
 
-	getCategories(): void {
-		this.categories = this.categoryService.getCategories();
+	getCategories() {
+		this.categories$ = this.categoryFirebaseService.getCategories();
 	}
 
 	getRoleById(id: string): void {
-		this.role = this.roleService.getRoleById(id);
-		this.form.patchValue(this.role);
+		this.roleFirebaseService.getRole(id).subscribe((role: IRole) => {
+			this.role = role;
+			this.form.patchValue(this.role);
+		});
 	}
 
 	editRole(): void {
 		if (this.form.valid) {
-			this.roleService.editRole(this.form.value);
-			this.router.navigate(['/role']);
+			if (this.id !== '0') {
+				this.roleFirebaseService.editRole(this.id, this.form.value);
+				this.router.navigate(['/role']);
+			} else {
+				this.snackBService.openSnackBar(
+					'This Super Admin role cannot edit',
+					'',
+					5000
+				);
+			}
 		} else {
 			this.snackBService.openSnackBar(
 				'To edit a user, you must correctly fill in all required fields'
