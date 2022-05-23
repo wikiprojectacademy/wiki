@@ -35,6 +35,11 @@ const routes: Routes = [
 			import('./features/categories-edit/categories-edit.module').then(
 				m => m.CategoriesEditModule
 			)
+	},
+	{
+		path: 'post',
+		loadChildren: () =>
+			import('./features/post/post.module').then(m => m.PostModule)
 	}
 ];
 

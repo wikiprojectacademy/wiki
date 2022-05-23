@@ -1,0 +1,73 @@
+<div class="post-add">
+	<h1>Add New Post</h1>
+	<div class="container">
+		<form [formGroup]="form">
+			<div class="selectors">
+				<mat-form-field appearance="outline">
+					<mat-label>Enter Headline</mat-label>
+					<input
+						matInput
+						placeholder="Enter Headline"
+						formControlName="title"
+					/>
+					<mat-error *ngIf="form.controls['title'].hasError('required')">
+						Headline is required field
+					</mat-error>
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Available categories</mat-label>
+					<mat-select formControlName="categories">
+						<mat-option
+							[value]="category"
+							*ngFor="let category of categories"
+							>{{ category.name }}</mat-option
+						>
+					</mat-select>
+					<mat-error *ngIf="form.controls['categories'].hasError('required')">
+						Categories is required field
+					</mat-error>
+				</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Available subcategories</mat-label>
+					<mat-select formControlName="subcategories">
+						<mat-option
+							[value]="category"
+							*ngFor="let category of getSubCategories()"
+							>{{ category }}</mat-option
+						>
+					</mat-select>
+					<mat-error
+						*ngIf="form.controls['subcategories'].hasError('required')"
+					>
+						Subcategories is required field
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="NgxEditor__Wrapper">
+				<ngx-editor-menu
+					[toolbar]="toolbar"
+					[editor]="editor"
+				></ngx-editor-menu>
+				<ngx-editor
+					[editor]="editor"
+					[ngModel]="html"
+					[disabled]="false"
+					[placeholder]="'Type here...'"
+					formControlName="contentHTML"
+				></ngx-editor>
+			</div>
+		</form>
+		<div class="save-button-container">
+			<button
+				(click)="onSave()"
+				[disabled]="isValidForm()"
+				class="save-button"
+				mat-raised-button
+				color="primary"
+			>
+				Save
+			</button>
+		</div>
+	</div>
+</div>
