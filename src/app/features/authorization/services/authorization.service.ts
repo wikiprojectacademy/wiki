@@ -14,7 +14,7 @@ export class AuthorizationService {
 		private userFireStore: UserFirebaseService
 	) {}
 
-	async udateUser(newUsersData: IUser, currentUsersData: IUser): Promise<any> {
+	async updateUser(newUsersData: IUser, currentUsersData: IUser): Promise<any> {
 		const user = firebase.auth().currentUser;
 
 		try {
