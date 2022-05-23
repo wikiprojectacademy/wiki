@@ -12,6 +12,7 @@ import { ProfilePageComponent } from './profile-page.component';
 import { AboutMeComponent } from './pages/about-me/about-me.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { SubmitDialogComponent } from './pages/edit-profile/submit-dialog/submit-dialog';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
 	declarations: [
@@ -28,7 +29,8 @@ import { SubmitDialogComponent } from './pages/edit-profile/submit-dialog/submit
 		MatButtonModule,
 		MatIconModule,
 		CommonModule,
-		MatDialogModule
+		MatDialogModule,
+		SharedModule
 	]
 })
 export class ProfileModule {}

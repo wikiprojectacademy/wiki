@@ -26,9 +26,9 @@ export class OnlyLoggedInUserGuard implements CanActivate {
 		} else {
 			// this.routes.navigateByUrl('/main');
 			// this.snackBarService.openSnackBar(
-			// 	'This page available only for logged in users!',
-			// 	'Got it',
-			// 	2000
+			// 'This page available only for logged in users!',
+			// 'Got it',
+			// 2000
 			// );
 			// return false;
 			return true;
