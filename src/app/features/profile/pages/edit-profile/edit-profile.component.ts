@@ -5,9 +5,15 @@ import { passwordValidation } from '@shared/validators/validations';
 import { MatDialog } from '@angular/material/dialog';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
 import { CurrentUserService } from '@core/services/user/current-user.service';
-import { take } from 'rxjs';
+import { filter, first, take } from 'rxjs';
 import { AuthorizationService } from 'src/app/features/authorization/services/authorization.service';
-import { Router } from '@angular/router';
+import {
+	NavigationEnd,
+	Router,
+	Event,
+	NavigationStart,
+	ActivationStart
+} from '@angular/router';
 
 @Component({
 	selector: 'app-edit-profile',
@@ -42,8 +48,28 @@ export class EditProfileComponent implements OnInit {
 		public dialog: MatDialog,
 		private currentUserService: CurrentUserService,
 		private autorizationService: AuthorizationService,
-		private routes: Router
-	) {}
+		private router: Router
+	) {
+		// router.events.subscribe(() => {
+		// 	if (this.changeProfileForm.dirty) {
+		// 		this.dialog.open(SubmitDialogComponent);
+		// 		console.log(111);
+		// 	}
+		// });
+		// maybe i can do that with canDeactivate
+		// router.events.subscribe((event: Event) => {
+		// 	if (this.changeProfileForm.dirty && event instanceof ActivationStart) {
+		// 		this.dialog.open(SubmitDialogComponent);
+		// 		console.log(111);
+		// 	}
+		// });
+		// router.events.filter((event) => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
+		// 	if (this.changeProfileForm.dirty) {
+		// 		this.dialog.open(SubmitDialogComponent);
+		// 		console.log(111);
+		// 	}
+		// });
+	}
 
 	ngOnInit(): void {
 		// Contain data from currentUser inside FormGroup values
@@ -68,7 +94,7 @@ export class EditProfileComponent implements OnInit {
 					.afterClosed()
 					.pipe(take(1))
 					.subscribe(() => {
-						this.routes.navigateByUrl('profile/about');
+						this.router.navigateByUrl('profile/about');
 					});
 			});
 	}
@@ -85,5 +111,9 @@ export class EditProfileComponent implements OnInit {
 		} else if (this.changeProfileForm.hasError('pattern', inputField)) {
 			return 'The	password must contain minimum six	characters, at least one letter and one number';
 		} else return '';
+	}
+
+	ngOnDestroy() {
+		this.changeProfileForm.markAsPristine();
 	}
 }

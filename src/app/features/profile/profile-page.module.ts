@@ -13,13 +13,15 @@ import { AboutMeComponent } from './pages/about-me/about-me.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { SubmitDialogComponent } from './pages/edit-profile/submit-dialog/submit-dialog';
 import { SharedModule } from '@shared/shared.module';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
 	declarations: [
 		ProfilePageComponent,
 		AboutMeComponent,
 		EditProfileComponent,
-		SubmitDialogComponent
+		SubmitDialogComponent,
+		ConfirmationDialogComponent
 	],
 	imports: [
 		ProfileRoutingModule,
