@@ -11,7 +11,7 @@ export const rolesMock: IRole[] = [
 		// Admin
 		id: '0',
 		name: 'super admin',
-		hasUsers: false,
+		hasUsers: true,
 		canModifyCategory: true,
 		canModifyPost: true
 	},
@@ -19,7 +19,7 @@ export const rolesMock: IRole[] = [
 	{
 		id: '1',
 		name: 'user',
-		hasUsers: false,
+		hasUsers: true,
 		canModifyCategory: false,
 		canModifyPost: false
 	}

@@ -36,6 +36,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
 	) {
 		this.getUsers();
 	}
+
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
 
@@ -44,13 +45,14 @@ export class UserListComponent implements OnInit, AfterViewInit {
 			this.usersModel?.map(user => {
 				const roleId = user.roleId;
 				const role = roles.find(item => item.id === roleId);
-				return (user.roleId = role.name);
+				return (user.roleName = role.name);
 			});
 			this.dataSource = new MatTableDataSource<IUser>(this.usersModel);
 			this.dataSource.paginator = this.paginator;
 			this.dataSource.sort = this.sort;
 		});
 	}
+
 	ngOnInit(): void {
 		this.getUsers();
 	}
@@ -67,6 +69,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
 					);
 					rolesArray$.push(role$.pipe(take(1)));
 				});
+
 				return forkJoin(rolesArray$);
 			})
 		);
@@ -80,12 +83,22 @@ export class UserListComponent implements OnInit, AfterViewInit {
 		}
 	}
 
-	onDelete(id: string): void {
-		if (id !== '0') {
-			this.userFirebaseService.deleteUser(id).then(
+	onDelete(user: IUser): void {
+		if (user.id !== '0') {
+			this.userFirebaseService.deleteUser(user.id).then(
 				() => {
-					this.getUsers();
+					console.count('count');
 					this.snackBService.openSnackBar('User account deleted', '', 1000);
+					this.userFirebaseService
+						.getUsersWithRoleId(user.roleId)
+						.pipe(take(1))
+						.subscribe(users => {
+							if (!users.length) {
+								this.roleFirebaseService.editRole(user.roleId, {
+									hasUsers: false
+								});
+							}
+						});
 				},
 				error => {
 					this.snackBService.openSnackBar(

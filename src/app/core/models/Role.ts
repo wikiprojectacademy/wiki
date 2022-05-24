@@ -6,9 +6,9 @@
 export interface IRole {
 	id?: string;
 	name?: string; // moderator, super admin, editor
-	hasUsers: boolean;
-	canModifyCategory: boolean;
-	canModifyPost: boolean;
+	hasUsers?: boolean;
+	canModifyCategory?: boolean;
+	canModifyPost?: boolean;
 	availableCategoriesToView?: string[]; // Value should be fetched from junction collection: 'junction_role_category'
 	// It should return all records, where roleId === to current roleId
 }

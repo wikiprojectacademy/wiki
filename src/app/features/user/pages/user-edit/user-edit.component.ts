@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '@shared/services/snackbar.service';
-import { IUser } from '@core/models/User';
 import { IRole } from '@core/models/Role';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
@@ -16,7 +15,7 @@ import { UserFirebaseService } from '@core/services/firebase/firebase-entities/u
 export class UserEditComponent implements OnInit, OnDestroy {
 	private id: string;
 	private routeSub: Subscription;
-	public user$: Observable<IUser>;
+	public user;
 	public form: FormGroup;
 	public roles$: Observable<IRole[]>;
 
@@ -52,17 +51,37 @@ export class UserEditComponent implements OnInit, OnDestroy {
 	}
 
 	getUserById(id: string): void {
-		this.user$ = this.userFirebaseService.getUserData(id);
-		this.user$.subscribe(user => {
-			this.form.patchValue({ id, ...user });
-		});
+		this.userFirebaseService
+			.getUserData(id)
+			.pipe(take(1))
+			.subscribe(user => {
+				this.user = user;
+				this.form.patchValue({ id, ...user });
+			});
+	}
+
+	updateRole(roleId: string, hasUsers): void {
+		this.roleFirebaseService.editRole(roleId, { hasUsers });
 	}
 
 	editUser(): void {
+		console.count('count');
 		if (this.form.valid) {
 			if (this.id !== '0') {
 				this.userFirebaseService.updateUser(this.id, this.form.value).then(
 					() => {
+						if (this.form.value.roleId !== this.user.roleId) {
+							this.updateRole(this.form.value.roleId, true);
+							this.userFirebaseService
+								.getUsersWithRoleId(this.user.roleId)
+								.pipe(take(1))
+								.subscribe(users => {
+									console.log(users);
+									if (!users.length) {
+										this.updateRole(this.user.roleId, false);
+									}
+								});
+						}
 						this.router.navigate(['/user']);
 					},
 					error => {
