@@ -1,0 +1,57 @@
+:host {
+	width: 100%;
+	background-color: inherit;
+}
+
+* {
+	transition: all 0.5s, background 0.3s ease-out;
+	// transition-delay: 0.5s, 0s;
+}
+
+.loader {
+	display: flex;
+	// opacity: 1;
+	justify-content: center;
+	align-items: center;
+	background-color: #aaa;
+	// color: #fff;
+	// width: 100%;
+	height: 30px;
+	overflow: hidden;
+}
+
+.hidden {
+	background-color: #4d4;
+	// opacity: 0;
+	// color: #fff;
+	height: 0;
+}
+
+.text__wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+}
+
+.icon-rotate {
+	animation: rotation 0.5s infinite linear;
+}
+
+@keyframes bg-move {
+	0% {
+		background-position: 0% 0%;
+	}
+	100% {
+		background-position: 100% 0%;
+	}
+}
+
+@keyframes rotation {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-360deg);
+	}
+}

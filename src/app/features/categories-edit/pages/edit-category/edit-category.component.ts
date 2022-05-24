@@ -5,6 +5,9 @@ import { ICategory as CategoryDB } from '@core/models/Category';
 import { ICategoryFull as Category } from '../../models/icategory-full';
 import { SnackBarService } from '@shared/services/snackbar.service';
 import { CategoryService } from '../../services/categories.service';
+import { RolesService } from '../../services/roles.service';
+import { IRole as RoleDB } from '@core/models/Role';
+import { forkJoin, Observable, tap } from 'rxjs';
 
 @Component({
 	selector: 'app-edit-category',
@@ -12,11 +15,13 @@ import { CategoryService } from '../../services/categories.service';
 	styleUrls: ['./edit-category.component.scss']
 })
 export class EditCategoryComponent implements OnInit {
-	// isCreateMode = false;
 	form: FormGroup;
+	isLoading;
+	roles: RoleDB[] = [];
+	roles$: Observable<RoleDB[]>;
 
 	category: Category = {
-		id: 'new',
+		id: '',
 		name: '',
 		createdBy: '',
 		subCategories: [],
@@ -40,35 +45,41 @@ export class EditCategoryComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private categoryService: CategoryService,
-		private snackbarService: SnackBarService
+		private snackbarService: SnackBarService,
+		private roleService: RolesService
 	) {
 		let id = this.route.snapshot.paramMap.get('id');
 		if (id !== 'new') {
-			this.categoryService.getCategoryById(id).subscribe(cat => {
+			this.roles$ = this.roleService.getRolesAll();
+			this.roles$.subscribe(rolesFromDB => {
+				this.roles = rolesFromDB;
+			});
+
+			this.isLoading = true;
+			const subscr = this.categoryService.getCategoryById(id).subscribe(cat => {
 				this.category = cat;
 				this.updateForm();
+				this.isLoading = false;
+				subscr.unsubscribe();
 			});
+		} else {
+			this.roles$ = this.roleService.getRolesAll();
+			this.category.id = 'new';
 		}
+
+		// const subscrRoles = this.roleService
+		// 	.getRolesAll()
+		// 	.subscribe(rolesFromDB => {
+		// 		console.log(rolesFromDB);
+		// 		this.roles = rolesFromDB;
+		// 		subscrRoles.unsubscribe();
+		// 	});
 
 		this.form = new FormGroup({
 			name: new FormControl(this.category.name, Validators.required),
 			subCategories: new FormArray([]),
 			roles: new FormArray([])
 		});
-
-		// if (this.category.availableRolesToView.length) {
-		// 	this.category.availableRolesToView.map(role =>
-		// 		this.rolesArray.push(new FormControl(role, Validators.required))
-		// 	);
-		// }
-
-		// if (this.category.subCategoriesFull.length) {
-		// 	this.category.subCategoriesFull.map(sub =>
-		// 		this.subCategoriesArray.push(
-		// 			new FormControl(sub.name, Validators.required)
-		// 		)
-		// 	);
-		// }
 	}
 
 	// @ViewChild('form') form: NgForm;
@@ -77,10 +88,22 @@ export class EditCategoryComponent implements OnInit {
 
 	updateForm(): void {
 		this.nameFormControl.patchValue(this.category.name);
-		// this.rolesArray.patchValue(this.category.rolesFull);
-		// this.category.rolesFull.forEach(role => {
-		// 	this.rolesArray.push(new FormControl(role.name));
-		// });
+
+		if (this.category.subCategoriesFull) {
+			this.category.subCategoriesFull.forEach(subCat => {
+				if (subCat) {
+					this.subCategoriesArray.push(new FormControl(subCat.name));
+				}
+			});
+		}
+
+		console.log(this.roles);
+		this.category.rolesFull.forEach(role => {
+			console.log(role);
+			const formControl = new FormControl(role);
+			// formControl.setValue(role);
+			this.rolesArray.push(formControl);
+		});
 	}
 
 	addSubcategoryContoll() {

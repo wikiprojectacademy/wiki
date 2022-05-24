@@ -1,11 +1,8 @@
-<div
-	class="loader"
-	[class.loader__hidden]="!isLoading"
-></div>
+<app-loader [isLoading]="isLoading"></app-loader>
 
 <header>
 	<button
-		mat-button
+		mat-icon-button
 		routerLink="/main"
 	>
 		<mat-icon>arrow_back</mat-icon>
@@ -14,7 +11,7 @@
 	<h1>Categories list</h1>
 
 	<button
-		mat-button
+		mat-icon-button
 		routerLink="./edit/new"
 	>
 		<mat-icon>add</mat-icon>
@@ -39,11 +36,15 @@
 			</div>
 
 			<div class="content">
-				<span class="common-label">Created by: </span>
-				{{ cat.createdByFull.firstName + ' ' + cat.createdByFull.lastName }}
-				<br />
-				<span class="common-label">Roles: </span>
-				<span *ngFor="let role of cat.rolesFull">{{ role.name }}</span>
+				<div>
+					<span class="common-label">Created by: </span>
+					{{ cat.createdByFull.firstName + ' ' + cat.createdByFull.lastName }}
+				</div>
+
+				<div>
+					<span class="common-label">Roles: </span>
+					<span *ngFor="let role of cat.rolesFull">{{ role.name }}</span>
+				</div>
 			</div>
 		</mat-card>
 	</div>

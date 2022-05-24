@@ -1,6 +1,7 @@
+<app-loader [isLoading]="isLoading"></app-loader>
 <header>
 	<button
-		mat-button
+		mat-icon-button
 		routerLink="/edit-categories"
 	>
 		<mat-icon>arrow_back</mat-icon>
@@ -9,12 +10,16 @@
 	<h1 *ngIf="category.id == 'new'">Add category</h1>
 </header>
 
-<div class="form__wrapper">
+<div
+	class="form__wrapper"
+	*ngIf="!isLoading"
+>
 	<mat-card class="form-card">
 		<form
 			[formGroup]="form"
 			(ngSubmit)="onSubmit()"
 		>
+			<!-- NAME -->
 			<mat-card-title> Name: </mat-card-title>
 			<mat-form-field appearance="fill">
 				<input
@@ -25,6 +30,7 @@
 				<mat-error>This is required field.</mat-error>
 			</mat-form-field>
 
+			<!-- SUBCATEGORIES -->
 			<section formArrayName="subCategories">
 				<mat-card-subtitle>Subcategories:</mat-card-subtitle>
 				<div
@@ -59,11 +65,12 @@
 				</button>
 			</section>
 
+			<!-- ROLES -->
 			<section formArrayName="roles">
 				<mat-card-subtitle>Roles:</mat-card-subtitle>
 				<div
 					class="input-array-item"
-					*ngFor="let subCategory of rolesArray.controls; let i = index"
+					*ngFor="let role of rolesArray.controls; let i = index"
 				>
 					<mat-form-field appearance="fill">
 						<mat-select
@@ -71,11 +78,11 @@
 							[formControlName]="i"
 							placeholder="Role name"
 						>
-							<!-- <mat-option
-								*ngFor="let role of roles"
-								[value]="role.type"
-								>{{ role.type }}</mat-option
-							> -->
+							<mat-option
+								*ngFor="let role of roles$ | async"
+								[value]="role"
+								>{{ role.name }}</mat-option
+							>
 						</mat-select>
 						<mat-error>Not need it? Delete it.</mat-error>
 					</mat-form-field>
