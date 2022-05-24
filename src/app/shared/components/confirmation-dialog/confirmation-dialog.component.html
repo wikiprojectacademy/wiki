@@ -1,0 +1,19 @@
+<div class="container">
+	<h2 class="title">{{ text }}</h2>
+	<div class="actions">
+		<button
+			mat-raised-button
+			color="warn"
+			(click)="confirmed()"
+		>
+			Yes
+		</button>
+		<button
+			mat-raised-button
+			color="primary"
+			(click)="denied()"
+		>
+			No
+		</button>
+	</div>
+</div>
