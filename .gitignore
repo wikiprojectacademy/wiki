@@ -2,6 +2,7 @@
 
 # Firebase environment files
 src/environments/**
+functions/node_modules
 
 # Compiled output
 /dist
