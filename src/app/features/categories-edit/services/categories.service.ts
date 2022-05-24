@@ -39,14 +39,12 @@ export class CategoryService {
 	}
 
 	getCategoryById(id: string): Observable<Category> {
-		this.categoriesFbSevice.getCategory(id).subscribe(categoryDB => {
-			this.singleCategory = categoryDB;
-			this.categoriesFbSevice
-				.getSubCategories(id)
-				.subscribe(subCategoriesDB => {
-					this.singleCategory.subCategoriesFull = subCategoriesDB;
-					this.singleCategory$.next(this.singleCategory);
-				});
+		this.categoriesFbSevice.getDoc(id).subscribe(categoryFromDB => {
+			// this.categoriesFbSevice.getCategory(id).subscribe(categoryFromDB => {
+			this.singleCategory = categoryFromDB;
+			// console.log('getcategorybyid');
+			// console.log(categoryFromDB);
+			this.attachDataToSingleCategory();
 		});
 		return this.singleCategory$.asObservable();
 	}
@@ -67,7 +65,7 @@ export class CategoryService {
 			name: category.name || '-',
 			createdBy: category.createdBy,
 			Subcategories: category.subCategories.join(', ') || '-',
-			Roles: category.availableRolesToView.join(', ') || '-'
+			Roles: category.availableRolesToView
 		});
 	}
 
@@ -80,10 +78,6 @@ export class CategoryService {
 		let usersArray$: Observable<UserDB>[] = [];
 
 		this.categories.forEach(category => {
-			// --- Created By ---
-			const user$ = this.userFbService.getUserData(category.createdBy);
-			usersArray$.push(this.processUser$(user$, category));
-
 			// --- Subcategories ---
 			const subCategory$ = this.categoriesFbSevice.getSubCategories(
 				category.id
@@ -98,6 +92,10 @@ export class CategoryService {
 				const role$ = this.rolesFbService.getRole(roleId);
 				rolesArray$.push(this.processRole$(role$, category));
 			});
+
+			// --- Created By ---
+			const user$ = this.userFbService.getUserData(category.createdBy);
+			usersArray$.push(this.processUser$(user$, category));
 		});
 
 		// After done all of observable finally pass modified this.category to component
@@ -108,6 +106,36 @@ export class CategoryService {
 		]).subscribe(() => {
 			this.processDataToComponent();
 		});
+	}
+
+	private attachDataToSingleCategory(): void {
+		let subCategories$: Observable<SubCategoryDB[]> =
+			this.categoriesFbSevice.getSubCategories(this.singleCategory.id);
+		// this.categoriesFbSevice.getSubCollection()
+		let rolesArray$: Observable<RoleDB>[] = [];
+		let user$: Observable<UserDB> = this.userFbService.getUserData(
+			this.singleCategory.createdBy
+		);
+
+		subCategories$ = this.processSubCategories$(
+			subCategories$,
+			this.singleCategory
+		);
+
+		this.singleCategory.rolesFull = [];
+		this.singleCategory.availableRolesToView.forEach(roleId => {
+			const role$ = this.rolesFbService.getRole(roleId);
+			rolesArray$.push(this.processRole$(role$, this.singleCategory));
+		});
+
+		this.singleCategory.createdByFull = {};
+		user$ = this.processUser$(user$, this.singleCategory);
+
+		forkJoin([subCategories$, user$, ...rolesArray$])
+			.pipe(take(1))
+			.subscribe(() => {
+				this.singleCategory$.next(this.singleCategory);
+			});
 	}
 
 	private processDataToComponent(): void {
