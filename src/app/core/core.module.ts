@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
 	declarations: [
@@ -27,7 +28,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 		MatSnackBarModule,
 		MatToolbarModule,
 		BrowserModule,
-		AppRoutingModule
+		AppRoutingModule,
+		MatDialogModule
 	],
 	exports: [HeaderComponent]
 })
