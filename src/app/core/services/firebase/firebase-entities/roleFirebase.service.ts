@@ -3,7 +3,6 @@ import { FirebaseCrudService } from '@core/services/firebase/firebase-api/fireba
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IRole } from '@core/models/Role';
 import { Observable } from 'rxjs';
-import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,18 +12,13 @@ export class RoleFirebaseService extends FirebaseCrudService<
 	string,
 	any
 > {
-	constructor(
-		protected _firebase: AngularFirestore,
-		private userFirebaseService: UserFirebaseService
-	) {
+	constructor(protected _firebase: AngularFirestore) {
 		super('roles', 'none', _firebase);
 	}
 
 	addRole(role: IRole): Promise<string> {
 		return this.addDocWithAutoId(role);
 	}
-
-	addRoleToUser(roleId: string, role: IRole, userId: string) {}
 
 	addRoleWithCustomId(id: string, role: IRole): Promise<void> {
 		return this.addDoc(id, role);

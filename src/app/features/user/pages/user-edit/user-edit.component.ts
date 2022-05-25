@@ -65,7 +65,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
 	}
 
 	editUser(): void {
-		console.count('count');
 		if (this.form.valid) {
 			if (this.id !== '0') {
 				this.userFirebaseService.updateUser(this.id, this.form.value).then(
@@ -76,7 +75,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
 								.getUsersWithRoleId(this.user.roleId)
 								.pipe(take(1))
 								.subscribe(users => {
-									console.log(users);
 									if (!users.length) {
 										this.updateRole(this.user.roleId, false);
 									}
@@ -91,11 +89,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 					}
 				);
 			} else {
-				this.snackBService.openSnackBar(
-					'This Super Admin account cannot edit',
-					'',
-					5000
-				);
+				this.snackBService.openSnackBar('This Super Admin account cannot edit');
 			}
 		} else {
 			this.snackBService.openSnackBar(

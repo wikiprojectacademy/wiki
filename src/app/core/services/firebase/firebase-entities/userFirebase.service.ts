@@ -22,15 +22,15 @@ export class UserFirebaseService extends FirebaseCrudService<
 		return this.addDocWithAutoId(user);
 	}
 
-	updateUser(id: string, content: IUser) {
+	updateUser(id: string, content: IUser): Promise<void> {
 		return this.updateDoc(id, content);
 	}
 
-	deleteUser(id: string) {
+	deleteUser(id: string): Promise<void> {
 		return this.deleteDoc(id);
 	}
 
-	getUserData(id: string) {
+	getUserData(id: string): Observable<IUser> {
 		return this.getDocSnapshot(id);
 	}
 
@@ -38,7 +38,7 @@ export class UserFirebaseService extends FirebaseCrudService<
 		return this.getCollection();
 	}
 
-	getUsersWithRoleId(id) {
+	getUsersWithRoleId(id: string): Observable<IUser[]> {
 		return this.getUsersWhere('roleId', '==', id);
 	}
 
@@ -49,8 +49,8 @@ export class UserFirebaseService extends FirebaseCrudService<
 	getUsersWhere(
 		fieldName: string,
 		operationStr: WhereFilterOp = '==',
-		value: any
-	): any {
+		value: string
+	): Observable<IUser[]> {
 		return this.firebase
 			.collection<IUser>(this.base, ref =>
 				ref.where(fieldName, operationStr, value)

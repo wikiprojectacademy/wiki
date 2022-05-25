@@ -10,7 +10,6 @@ import { passwordValidation } from '@shared/validators/validations';
 import { SnackBarService } from '@shared/services/snackbar.service';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
-import { IRole } from '@core/models/Role';
 
 @Component({
 	selector: 'app-user-add',
@@ -56,7 +55,8 @@ export class UserAddComponent {
 					control => this.validatePasswords(control, 'password2')
 				]
 			],
-			roleId: ['']
+			roleId: [''],
+			isActivated: [false]
 		});
 	}
 
@@ -105,16 +105,9 @@ export class UserAddComponent {
 		if (this.form.valid) {
 			this.userFirebaseService.addUser(this.form.value).then(
 				() => {
-					this.roleFirebaseService
-						.getRole(this.form.value.roleId)
-						.subscribe((role: IRole) => {
-							if (!role.hasUsers) {
-								this.roleFirebaseService.editRole(role.id, {
-									...role,
-									hasUsers: true
-								});
-							}
-						});
+					this.roleFirebaseService.editRole(this.form.value.roleId, {
+						hasUsers: true
+					});
 					this.router.navigate(['/user']);
 				},
 				error => {

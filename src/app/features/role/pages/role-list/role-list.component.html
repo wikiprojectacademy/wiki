@@ -79,11 +79,7 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				{{
-					element.availableCategoriesToView
-						? getNames(element.availableCategoriesToView)
-						: '-'
-				}}
+				{{ element.availableCategoriesToView | arrayByKey }}
 			</td>
 		</ng-container>
 
@@ -113,7 +109,7 @@
 						color="warn"
 						[disabled]="element.id === '0' || element.hasUsers"
 						matTooltip="Delete role {{ element.name }}"
-						(click)="onDelete(element.id)"
+						(click)="onDelete(element)"
 					>
 						<mat-icon>delete</mat-icon>
 					</button>

@@ -87,12 +87,11 @@ export class UserListComponent implements OnInit, AfterViewInit {
 		if (user.id !== '0') {
 			this.userFirebaseService.deleteUser(user.id).then(
 				() => {
-					console.count('count');
-					this.snackBService.openSnackBar('User account deleted', '', 1000);
+					this.snackBService.openSnackBar('User account deleted');
 					this.userFirebaseService
 						.getUsersWithRoleId(user.roleId)
 						.pipe(take(1))
-						.subscribe(users => {
+						.subscribe((users: []) => {
 							if (!users.length) {
 								this.roleFirebaseService.editRole(user.roleId, {
 									hasUsers: false
@@ -102,18 +101,12 @@ export class UserListComponent implements OnInit, AfterViewInit {
 				},
 				error => {
 					this.snackBService.openSnackBar(
-						'User account has not been deleted. Reason: ' + error,
-						'',
-						1000
+						'User account has not been deleted. Reason: ' + error
 					);
 				}
 			);
 		} else {
-			this.snackBService.openSnackBar(
-				'This Super Admin account cannot delete',
-				'',
-				5000
-			);
+			this.snackBService.openSnackBar('This Super Admin account cannot delete');
 		}
 	}
 }

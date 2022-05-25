@@ -5,7 +5,7 @@ import {
 	QuerySnapshot
 } from '@angular/fire/compat/firestore';
 import { IRoleCategoryPair } from '@core/models/RoleCategoryPair';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -33,6 +33,24 @@ export class RoleCategoryFirebaseService extends FirebaseCrudService<
 
 	getRoleCategoryEntriesWithIds(): Observable<IRoleCategoryPair[]> {
 		return this.getCollectionWithIds();
+	}
+
+	getRoleCategoriesByRoleId(id): Observable<IRoleCategoryPair[]> {
+		return this.firebase
+			.collection<IRoleCategoryPair>(this.base, ref =>
+				ref.where('roleId', '==', id)
+			)
+			.valueChanges();
+	}
+
+	getRoleCategoriesId(roleId, categoryId): Observable<IRoleCategoryPair[]> {
+		return this.getCollectionSnapshot().pipe(
+			map(item => {
+				return item.filter(
+					item => item.categoryId == categoryId && item.roleId == roleId
+				);
+			})
+		);
 	}
 
 	getRoleCategoryEntriesByRoleId(

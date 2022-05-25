@@ -7,6 +7,7 @@ import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/r
 import { Observable } from 'rxjs';
 import { ICategory } from '@core/models/Category';
 import { CategoryFirebaseService } from '@core/services/firebase/firebase-entities/categoryFirebase.service';
+import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
 
 @Component({
 	selector: 'app-role-add',
@@ -22,7 +23,8 @@ export class RoleAddComponent {
 		private router: Router,
 		private snackBService: SnackBarService,
 		private categoryFirebaseService: CategoryFirebaseService,
-		private roleFirebaseService: RoleFirebaseService
+		private roleFirebaseService: RoleFirebaseService,
+		private roleCategoryFirebaseService: RoleCategoryFirebaseService
 	) {
 		this.getCategories();
 		this.form = formBuilder.group({
@@ -41,10 +43,24 @@ export class RoleAddComponent {
 		this.categories$ = this.categoryFirebaseService.getCategories();
 	}
 
+	get newRole() {
+		return {
+			name: this.form.value.name,
+			canModifyCategory: this.form.value.canModifyCategory,
+			canModifyPost: this.form.value.canModifyPost
+		};
+	}
+
 	addRole(): void {
 		if (this.form.valid) {
-			this.roleFirebaseService.addRole(this.form.value).then(
-				() => {
+			this.roleFirebaseService.addRole(this.newRole).then(
+				roleId => {
+					this.form.value.availableCategoriesToView.map(categoryId => {
+						this.roleCategoryFirebaseService.addRoleCategoryEntry({
+							roleId,
+							categoryId
+						});
+					});
 					this.router.navigate(['/role']);
 				},
 				error => {
