@@ -47,11 +47,7 @@ export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 	) {}
 
 	canDeactivate(): Observable<boolean> | boolean {
-		if (this.changeProfileForm.dirty) {
-			return false;
-		} else {
-			return true;
-		}
+		return !this.changeProfileForm.dirty;
 	}
 
 	ngOnInit(): void {
@@ -94,9 +90,5 @@ export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 		} else if (this.changeProfileForm.hasError('pattern', inputField)) {
 			return 'The	password must contain minimum six	characters, at least one letter and one number';
 		} else return '';
-	}
-
-	ngOnDestroy() {
-		this.changeProfileForm.markAsPristine();
 	}
 }
