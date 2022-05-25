@@ -13,13 +13,16 @@ import { AboutMeComponent } from './pages/about-me/about-me.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { SubmitDialogComponent } from './pages/edit-profile/submit-dialog/submit-dialog';
 import { SharedModule } from '@shared/shared.module';
+import { ConfirmationDialogComponent } from './pages/edit-profile/confirmation-dialog/confirmation-dialog.component';
+import { PendingChangeGuard } from './pages/edit-profile/_guard/pending-change.guard';
 
 @NgModule({
 	declarations: [
 		ProfilePageComponent,
 		AboutMeComponent,
 		EditProfileComponent,
-		SubmitDialogComponent
+		SubmitDialogComponent,
+		ConfirmationDialogComponent
 	],
 	imports: [
 		ProfileRoutingModule,
@@ -31,6 +34,7 @@ import { SharedModule } from '@shared/shared.module';
 		CommonModule,
 		MatDialogModule,
 		SharedModule
-	]
+	],
+	providers: [PendingChangeGuard]
 })
 export class ProfileModule {}

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-profile-page',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
 	styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent {
-	constructor() {}
+	constructor(public router: Router) {}
 }

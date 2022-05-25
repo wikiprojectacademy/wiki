@@ -5,16 +5,17 @@ import { passwordValidation } from '@shared/validators/validations';
 import { MatDialog } from '@angular/material/dialog';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
 import { CurrentUserService } from '@core/services/user/current-user.service';
-import { take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { AuthorizationService } from 'src/app/features/authorization/services/authorization.service';
 import { Router } from '@angular/router';
+import { ComponentCanDeactivate } from './_guard/pending-change.guard';
 
 @Component({
 	selector: 'app-edit-profile',
 	templateUrl: './edit-profile.component.html',
 	styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnInit {
+export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 	isPasswordHidden: boolean = true;
 	isLoading: boolean = false;
 	user: IUser;
@@ -42,8 +43,12 @@ export class EditProfileComponent implements OnInit {
 		public dialog: MatDialog,
 		private currentUserService: CurrentUserService,
 		private autorizationService: AuthorizationService,
-		private routes: Router
+		private router: Router
 	) {}
+
+	canDeactivate(): Observable<boolean> | boolean {
+		return !this.changeProfileForm.dirty;
+	}
 
 	ngOnInit(): void {
 		// Contain data from currentUser inside FormGroup values
@@ -68,7 +73,7 @@ export class EditProfileComponent implements OnInit {
 					.afterClosed()
 					.pipe(take(1))
 					.subscribe(() => {
-						this.routes.navigateByUrl('profile/about');
+						this.router.navigateByUrl('profile/about');
 					});
 			});
 	}

@@ -1,0 +1,18 @@
+<mat-dialog-content>
+	<h2>Your changes will not be saved!</h2>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+	<button
+		mat-raised-button
+		color="primary"
+		(click)="confirmRouting()"
+	>
+		Okay
+	</button>
+	<button
+		mat-raised-button
+		(click)="deniedRouting()"
+	>
+		Return
+	</button>
+</mat-dialog-actions>
