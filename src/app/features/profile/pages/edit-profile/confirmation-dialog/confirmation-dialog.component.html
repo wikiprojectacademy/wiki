@@ -1,5 +1,5 @@
 <mat-dialog-content>
-	<h2>Your changes will not be saved</h2>
+	<h2>Your changes will not be saved!</h2>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
 	<button
@@ -11,7 +11,7 @@
 	</button>
 	<button
 		mat-raised-button
-		mat-dialog-close
+		(click)="deniedRouting()"
 	>
 		Return
 	</button>

@@ -1,16 +1,9 @@
 <div class="buttons">
-	<!-- <button *ngIf="router.url === '/profile/edit'"
-		mat-raised-button
-		color="primary"
-		[routerLink]="'about'"
-	>
-		About me
-	</button>  -->
 	<button
 		*ngIf="router.url === '/profile/edit'"
 		mat-raised-button
 		color="primary"
-		(click)="openDialog()"
+		[routerLink]="'about'"
 	>
 		About me
 	</button>

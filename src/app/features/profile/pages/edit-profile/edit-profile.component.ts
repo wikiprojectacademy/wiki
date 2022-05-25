@@ -5,22 +5,17 @@ import { passwordValidation } from '@shared/validators/validations';
 import { MatDialog } from '@angular/material/dialog';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
 import { CurrentUserService } from '@core/services/user/current-user.service';
-import { filter, first, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { AuthorizationService } from 'src/app/features/authorization/services/authorization.service';
-import {
-	NavigationEnd,
-	Router,
-	Event,
-	NavigationStart,
-	ActivationStart
-} from '@angular/router';
+import { Router } from '@angular/router';
+import { ComponentCanDeactivate } from './_guard/pending-change.guard';
 
 @Component({
 	selector: 'app-edit-profile',
 	templateUrl: './edit-profile.component.html',
 	styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnInit {
+export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 	isPasswordHidden: boolean = true;
 	isLoading: boolean = false;
 	user: IUser;
@@ -49,26 +44,14 @@ export class EditProfileComponent implements OnInit {
 		private currentUserService: CurrentUserService,
 		private autorizationService: AuthorizationService,
 		private router: Router
-	) {
-		// router.events.subscribe(() => {
-		// 	if (this.changeProfileForm.dirty) {
-		// 		this.dialog.open(SubmitDialogComponent);
-		// 		console.log(111);
-		// 	}
-		// });
-		// maybe i can do that with canDeactivate
-		// router.events.subscribe((event: Event) => {
-		// 	if (this.changeProfileForm.dirty && event instanceof ActivationStart) {
-		// 		this.dialog.open(SubmitDialogComponent);
-		// 		console.log(111);
-		// 	}
-		// });
-		// router.events.filter((event) => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
-		// 	if (this.changeProfileForm.dirty) {
-		// 		this.dialog.open(SubmitDialogComponent);
-		// 		console.log(111);
-		// 	}
-		// });
+	) {}
+
+	canDeactivate(): Observable<boolean> | boolean {
+		if (this.changeProfileForm.dirty) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	ngOnInit(): void {
