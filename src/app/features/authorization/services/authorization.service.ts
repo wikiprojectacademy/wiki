@@ -15,47 +15,42 @@ export class AuthorizationService {
 	) {}
 
 	async updateUser(newUsersData: IUser, currentUsersData: IUser): Promise<any> {
+		//get User
 		const user = firebase.auth().currentUser;
 
+		//get UserCredential
+		const credential = firebase.auth.EmailAuthProvider.credential(
+			currentUsersData.email,
+			currentUsersData.password
+		);
+
 		try {
+			//reauthenticate User
+			const { user: userData } = await user.reauthenticateWithCredential(
+				credential
+			);
+
+			//update User in Firestore
+			await this.userFireStore.updateUser(user.uid, newUsersData);
+
+			//update UserData
 			if (
 				currentUsersData.firstName !== newUsersData.firstName ||
 				currentUsersData.lastName !== newUsersData.lastName
 			) {
-				//update UserData
-				await user.updateProfile({
+				await userData.updateProfile({
 					displayName: newUsersData.firstName + ' ' + newUsersData.lastName
 				});
 			}
-
-			if (
-				currentUsersData.email !== newUsersData.email ||
-				currentUsersData.password !== newUsersData.password
-			) {
-				//get UserCredential
-				const credential = firebase.auth.EmailAuthProvider.credential(
-					currentUsersData.email,
-					currentUsersData.password
-				);
-
-				//reauthenticate User
-				const { user: userData } = await user.reauthenticateWithCredential(
-					credential
-				);
-
-				if (currentUsersData.email !== newUsersData.email) {
-					//update UserEmail
-					await userData.updateEmail(newUsersData.email);
-				}
-
-				if (currentUsersData.password !== newUsersData.password) {
-					//update UserPassword
-					await userData.updatePassword(newUsersData.password);
-				}
+			//update UserEmail
+			if (currentUsersData.email !== newUsersData.email) {
+				await userData.updateEmail(newUsersData.email);
 			}
 
-			//update User in Firestore
-			this.userFireStore.updateUser(user.uid, newUsersData);
+			//update UserPassword
+			if (currentUsersData.password !== newUsersData.password) {
+				await userData.updatePassword(newUsersData.password);
+			}
 		} catch (error) {
 			console.log('error: ', error);
 			throw error;
