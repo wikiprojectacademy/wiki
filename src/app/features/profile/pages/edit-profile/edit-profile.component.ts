@@ -1,51 +1,81 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
 import { IUser } from '@core/models/User';
 import { passwordValidation } from '@shared/validators/validations';
+import { MatDialog } from '@angular/material/dialog';
+import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
+import { CurrentUserService } from '@core/services/user/current-user.service';
+import { Observable, take } from 'rxjs';
+import { AuthorizationService } from 'src/app/features/authorization/services/authorization.service';
+import { Router } from '@angular/router';
+import { ComponentCanDeactivate } from './_guard/pending-change.guard';
 
 @Component({
 	selector: 'app-edit-profile',
 	templateUrl: './edit-profile.component.html',
 	styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnInit {
-	changeProfileForm: FormGroup;
+export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 	isPasswordHidden: boolean = true;
+	isLoading: boolean = false;
+	user: IUser;
 
-	user: IUser = {
-		id: '3',
-		firstName: 'Ivan',
-		lastName: 'Ivanov',
-		email: 'ivanivanov@gmail.com',
-		password: 'rgfhfgh323fd',
-		roleId: '1'
-	};
+	changeProfileForm: FormGroup = new FormGroup({
+		firstName: new FormControl('', [
+			Validators.required,
+			Validators.minLength(2),
+			Validators.maxLength(25)
+		]),
+		lastName: new FormControl('', [
+			Validators.required,
+			Validators.minLength(2),
+			Validators.maxLength(25)
+		]),
+		email: new FormControl('', [Validators.required, Validators.email]),
+		password: new FormControl('', [
+			Validators.required,
+			passwordValidation,
+			Validators.maxLength(25)
+		])
+	});
 
-	constructor() {}
+	constructor(
+		public dialog: MatDialog,
+		private currentUserService: CurrentUserService,
+		private autorizationService: AuthorizationService,
+		private router: Router
+	) {}
+
+	canDeactivate(): Observable<boolean> | boolean {
+		return !this.changeProfileForm.dirty;
+	}
 
 	ngOnInit(): void {
-		this.changeProfileForm = new FormGroup({
-			firstName: new FormControl(`${this.user.firstName}`, [
-				Validators.required,
-				Validators.minLength(2),
-				Validators.maxLength(25)
-			]),
-			lastName: new FormControl(`${this.user.lastName}`, [
-				Validators.required,
-				Validators.minLength(2),
-				Validators.maxLength(25)
-			]),
-			email: new FormControl(`${this.user.email}`, [
-				Validators.required,
-				Validators.email
-			]),
-			password: new FormControl(`${this.user.password}`, [
-				Validators.required,
-				passwordValidation,
-				Validators.maxLength(25)
-			])
-		});
+		// Contain data from currentUser inside FormGroup values
+		this.currentUserService.currentUser$
+			.pipe(take(1))
+			.subscribe((curUser: IUser) => {
+				this.user = curUser;
+				this.changeProfileForm.patchValue(curUser);
+			});
+	}
+
+	submitResult() {
+		this.isLoading = true;
+		// Update data inside firebase
+		this.autorizationService
+			.updateUser(this.changeProfileForm.value, this.user)
+			.then(() => {
+				this.isLoading = false;
+				this.changeProfileForm.markAsPristine();
+				this.dialog
+					.open(SubmitDialogComponent)
+					.afterClosed()
+					.pipe(take(1))
+					.subscribe(() => {
+						this.router.navigateByUrl('profile/about');
+					});
+			});
 	}
 
 	getNameErrorMessage(inputField: string) {
@@ -60,10 +90,5 @@ export class EditProfileComponent implements OnInit {
 		} else if (this.changeProfileForm.hasError('pattern', inputField)) {
 			return 'The	password must contain minimum six	characters, at least one letter and one number';
 		} else return '';
-	}
-
-	changeProfile() {
-		// console.log(this.changeProfileForm.value);
-		// console.log(this.user);
 	}
 }

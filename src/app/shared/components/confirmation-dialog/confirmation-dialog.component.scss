@@ -1,0 +1,12 @@
+.container {
+	.title {
+		text-align: center;
+		font-size: 26px;
+	}
+
+	.actions {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+}

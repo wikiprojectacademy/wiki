@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material/icon';
-import { GOOGLE_ICON } from 'src/assets/icons/googleIcon';
 import { passwordValidation } from '@shared/validators/validations';
 import { AuthorizationService } from '../../services/authorization.service';
 import { SnackBarService } from '@shared/services/snackbar.service';
@@ -19,17 +16,10 @@ export class RegisterComponent {
 	public isLoading: boolean = false;
 
 	constructor(
-		private iconRegistry: MatIconRegistry,
-		private sanitizer: DomSanitizer,
 		private router: Router,
 		private authService: AuthorizationService,
 		private snack: SnackBarService
 	) {
-		iconRegistry.addSvgIconLiteral(
-			'google',
-			sanitizer.bypassSecurityTrustHtml(GOOGLE_ICON)
-		);
-
 		this.registerForm = new FormGroup({
 			firstName: new FormControl(null, [
 				Validators.required,
@@ -57,17 +47,6 @@ export class RegisterComponent {
 			} else {
 				this.registerForm.reset();
 				this.isLoading = false;
-				this.router.navigate(['/main']);
-			}
-		});
-	}
-
-	onGoogleAuth() {
-		this.authService.registerUserWithGoogle().then(result => {
-			if (result?.isValid === false) {
-				// console.log('result.message: ', result.message);
-				this.snack.openSnackBar(result.message);
-			} else {
 				this.router.navigate(['/main']);
 			}
 		});

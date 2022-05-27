@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material/icon';
-import { GOOGLE_ICON } from 'src/assets/icons/googleIcon';
 import { passwordValidation } from '@shared/validators/validations';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '../../services/authorization.service';
@@ -19,17 +16,10 @@ export class LoginComponent {
 	public isLoading: boolean = false;
 
 	constructor(
-		private iconRegistry: MatIconRegistry,
-		private sanitizer: DomSanitizer,
 		private router: Router,
 		private authService: AuthorizationService,
 		private snack: SnackBarService
 	) {
-		iconRegistry.addSvgIconLiteral(
-			'google',
-			sanitizer.bypassSecurityTrustHtml(GOOGLE_ICON)
-		);
-
 		this.loginForm = new FormGroup({
 			email: new FormControl(null, [Validators.required, Validators.email]),
 			password: new FormControl(null, [Validators.required, passwordValidation])
@@ -52,17 +42,6 @@ export class LoginComponent {
 					this.router.navigate(['/main']);
 				}
 			});
-	}
-
-	onGoogleAuth() {
-		this.authService.registerUserWithGoogle().then(result => {
-			if (result?.isValid === false) {
-				// console.log('result.message: ', result.message);
-				this.snack.openSnackBar(result.message);
-			} else {
-				this.router.navigate(['/main']);
-			}
-		});
 	}
 
 	getErrorMessage(inputField: string): string {

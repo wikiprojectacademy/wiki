@@ -1,4 +1,4 @@
-@import '/src/styles/variable.scss';
+@import 'variable.scss';
 $border-color: #808080;
 
 .user-info {
@@ -29,10 +29,29 @@ $border-color: #808080;
 	margin-bottom: 0;
 }
 
+.user-image {
+	img {
+		display: block;
+		margin: auto;
+		width: 17vw;
+	}
+	p {
+		font-size: 1.2em;
+		text-align: center;
+	}
+}
 @media (max-width: $screen-width-small) {
 	.user-info__name {
 		article p {
 			width: 40vw;
+		}
+	}
+	.user-image {
+		img {
+			width: 25vw;
+		}
+		p {
+			font-size: 1em;
 		}
 	}
 }
@@ -44,6 +63,14 @@ $border-color: #808080;
 	.user-info__name {
 		article p {
 			font-size: 0.9em;
+		}
+	}
+	.user-image {
+		img {
+			width: 30vw;
+		}
+		p {
+			font-size: 0.8em;
 		}
 	}
 }
