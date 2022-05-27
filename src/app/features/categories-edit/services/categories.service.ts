@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, Subject, tap, take } from 'rxjs';
+import {
+	forkJoin,
+	Observable,
+	Subject,
+	tap,
+	take,
+	combineLatest,
+	zip
+} from 'rxjs';
 
 import { ICategory as CategoryDB } from '@core/models/Category';
 import { ISubCategory as SubCategoryDB } from '@core/models/SubCategory';
@@ -7,10 +15,12 @@ import { ICategoryFull as Category } from '../models/icategory-full';
 import { IUser as UserDB } from '@core/models/User';
 import { IUserInCategory as User } from '../models/userInCategory.interface';
 import { IRole as RoleDB } from '@core/models/Role';
+import { IRoleCategoryPair as RoleCategoryDB } from '@core/models/RoleCategoryPair';
 
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 import { CategoryFirebaseService } from '@core/services/firebase/firebase-entities/categoryFirebase.service';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
+import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,6 +28,7 @@ import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/r
 export class CategoryService {
 	private categories: Category[];
 	private singleCategory: Category;
+	private roleCategoryPairs: RoleCategoryDB[];
 
 	private singleCategory$ = new Subject<Category>();
 	private categories$ = new Subject<Category[]>();
@@ -25,16 +36,22 @@ export class CategoryService {
 	constructor(
 		private categoriesFbSevice: CategoryFirebaseService,
 		private rolesFbService: RoleFirebaseService,
+		private roleCatServ: RoleCategoryFirebaseService,
 		private userFbService: UserFirebaseService
 	) {}
 
 	getCategoryAll(): Observable<Category[]> {
-		this.categoriesFbSevice
+		const categoriesDB$ = this.categoriesFbSevice
 			.getStreamCategories()
-			.subscribe(categoriesFromDB => {
-				this.categories = categoriesFromDB;
-				this.attachDataToCategories();
-			});
+			.pipe(tap(cats => (this.categories = cats)));
+		const catRolesDB$ = this.roleCatServ
+			.getCollection()
+			.pipe(tap(crPair => (this.roleCategoryPairs = crPair)));
+
+		combineLatest([categoriesDB$, catRolesDB$]).subscribe(() => {
+			console.log('in combine latest');
+			this.attachDataToCategories();
+		});
 		return this.categories$.asObservable();
 	}
 
@@ -49,24 +66,69 @@ export class CategoryService {
 		return this.singleCategory$.asObservable();
 	}
 
-	addCategory(category: Category): void {
-		console.table({
-			// id: 'Will be set in future',
-			// name: category. || '-',
-			'Created by': 'Will be set in future'
-			// Subcategories: category.subCategoriesFull.join(', ') || '-',
-			// Roles: category.availableRolesToView.join(', ') || '-'
-		});
+	addCategory(category: Category): Promise<string> {
+		console.log('input categoryfull:');
+		console.log(category);
+
+		// addCategory(): Promise<string> {
+		const categoryToDB: CategoryDB = {
+			name: category.name,
+			createdBy: category.createdBy,
+			availableRolesToView: category.availableRolesToView
+		};
+
+		///
+		console.log('category to DB: ');
+		console.log(categoryToDB);
+		///
+
+		const subCategoriesDB: SubCategoryDB[] = category.subCategoriesFull;
+
+		///
+		console.log('subactegories to DB: ');
+		console.log(subCategoriesDB);
+
+		console.log('cat.subcats: ');
+		console.log(category.subCategoriesFull);
+		///
+
+		console.log('try to write');
+		return this.categoriesFbSevice
+			.addDocWithAutoId(categoryToDB)
+			.then(newCategoryId => {
+				this.categoriesFbSevice.addDocToSubCollection(
+					newCategoryId,
+					subCategoriesDB
+				);
+			})
+			.then(() => Promise.resolve('done'));
+	}
+
+	testAdd(): Promise<string> {
+		const testCategory: CategoryDB = {
+			name: 'lalalal',
+			createdBy: '2'
+		};
+
+		console.log('try to write');
+		return this.categoriesFbSevice.addDocWithAutoId(testCategory);
+	}
+
+	testSubAdd(categoryId: string): Promise<void> {
+		const testSubcategory: SubCategoryDB = {
+			name: 'esfesfesfesfe'
+		};
+
+		console.log('trying to add subcategories');
+		return this.categoriesFbSevice.addDocToSubCollection(
+			categoryId,
+			testSubcategory
+		);
+		// return this.categoriesFbSevice.addSubCategory(categoryId, testSubcategory);
 	}
 
 	editCategory(category: Category): void {
-		console.table({
-			id: category.id,
-			name: category.name || '-',
-			createdBy: category.createdBy,
-			Subcategories: category.subCategories.join(', ') || '-',
-			Roles: category.availableRolesToView
-		});
+		console.log('got in service');
 	}
 
 	/**
@@ -88,10 +150,35 @@ export class CategoryService {
 
 			// --- Avaible roles to view ---
 			category.rolesFull = []; // need to be array, not undefined
-			category.availableRolesToView.forEach(roleId => {
-				const role$ = this.rolesFbService.getRole(roleId);
-				rolesArray$.push(this.processRole$(role$, category));
+			const availableRolesToView: string[] = [];
+			this.roleCategoryPairs.forEach(pair => {
+				if (pair.categoryId == category.id) {
+					console.log(pair);
+					availableRolesToView.push(pair.roleId);
+				}
 			});
+			console.log(
+				`Roles for Category ${category.name}: ${availableRolesToView.length}`
+			);
+			if (availableRolesToView) {
+				availableRolesToView.forEach(roleId => {
+					if (roleId) {
+						const role$ = this.rolesFbService.getRole(roleId);
+						rolesArray$.push(this.processRole$(role$, category));
+					}
+				});
+			}
+
+			// --- --- --- --- --- --- --- ---
+			// category.rolesFull = []; // need to be array, not undefined
+			// if (category.availableRolesToView) {
+			// 	category.availableRolesToView.forEach(roleId => {
+			// 		if (roleId) {
+			// 			const role$ = this.rolesFbService.getRole(roleId);
+			// 			rolesArray$.push(this.processRole$(role$, category));
+			// 		}
+			// 	});
+			// }
 
 			// --- Created By ---
 			const user$ = this.userFbService.getUserData(category.createdBy);
@@ -123,10 +210,12 @@ export class CategoryService {
 		);
 
 		this.singleCategory.rolesFull = [];
-		this.singleCategory.availableRolesToView.forEach(roleId => {
-			const role$ = this.rolesFbService.getRole(roleId);
-			rolesArray$.push(this.processRole$(role$, this.singleCategory));
-		});
+		if (this.singleCategory.availableRolesToView) {
+			this.singleCategory.availableRolesToView.forEach(roleId => {
+				const role$ = this.rolesFbService.getRole(roleId);
+				rolesArray$.push(this.processRole$(role$, this.singleCategory));
+			});
+		}
 
 		this.singleCategory.createdByFull = {};
 		user$ = this.processUser$(user$, this.singleCategory);

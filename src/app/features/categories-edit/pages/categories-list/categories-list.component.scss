@@ -30,7 +30,7 @@ header {
 		margin-bottom: 7px;
 		cursor: pointer;
 		transition: transform 0.1s;
-		width: clamp(300px, 95vw, 700px);
+		width: clamp(300px, 95vw, 1200px);
 
 		&:hover {
 			transform: translateY(-2px);

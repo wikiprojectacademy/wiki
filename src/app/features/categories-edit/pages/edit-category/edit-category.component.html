@@ -19,7 +19,9 @@
 			[formGroup]="form"
 			(ngSubmit)="onSubmit()"
 		>
-			<!-- NAME -->
+			<!--- -- -- -- -- --->
+			<!--- --- NAME --- -->
+			<!--- -- -- -- -- --->
 			<mat-card-title> Name: </mat-card-title>
 			<mat-form-field appearance="fill">
 				<input
@@ -30,81 +32,121 @@
 				<mat-error>This is required field.</mat-error>
 			</mat-form-field>
 
-			<!-- SUBCATEGORIES -->
-			<section formArrayName="subCategories">
-				<mat-card-subtitle>Subcategories:</mat-card-subtitle>
-				<div
-					class="input-array-item"
-					*ngFor="let subCategory of subCategoriesArray.controls; let i = index"
+			<div class="section__wrapper">
+				<!--- -- -- -- -- --->
+				<!-- SUBCATEGORIES -->
+				<!--- -- -- -- -- --->
+				<section
+					formArrayName="subCategories"
+					class="section"
 				>
-					<mat-form-field appearance="fill">
-						<input
-							matInput
-							placeholder="Subcategory name"
-							[formControlName]="i"
-						/>
-						<mat-error>Not need it? Delete it.</mat-error>
-					</mat-form-field>
-					<button
-						type="button"
-						class="delete-button"
-						mat-icon-button
-						(click)="removeSubcategoryControll(i)"
-					>
-						<mat-icon>delete</mat-icon>
-					</button>
-				</div>
+					<!-- SUBCATEGORY HEADER -->
+					<div class="section__header">
+						<mat-card-subtitle>Subcategories:</mat-card-subtitle>
 
-				<button
-					mat-button
-					class="add-button"
-					type="button"
-					(click)="addSubcategoryContoll()"
-				>
-					+ Add more
-				</button>
-			</section>
-
-			<!-- ROLES -->
-			<section formArrayName="roles">
-				<mat-card-subtitle>Roles:</mat-card-subtitle>
-				<div
-					class="input-array-item"
-					*ngFor="let role of rolesArray.controls; let i = index"
-				>
-					<mat-form-field appearance="fill">
-						<mat-select
-							formControlName="roles"
-							[formControlName]="i"
-							placeholder="Role name"
+						<!-- ADD SUBCATEGORY -->
+						<button
+							mat-button
+							class="add-button"
+							type="button"
+							(click)="addSubcategoryContoll()"
 						>
-							<mat-option
-								*ngFor="let role of roles$ | async"
-								[value]="role"
-								>{{ role.name }}</mat-option
-							>
-						</mat-select>
-						<mat-error>Not need it? Delete it.</mat-error>
-					</mat-form-field>
-					<button
-						type="button"
-						class="delete-button"
-						mat-icon-button
-						(click)="removeRoleControll(i)"
-					>
-						<mat-icon>delete</mat-icon>
-					</button>
-				</div>
+							+<mat-icon>category</mat-icon> Add more
+						</button>
+					</div>
 
-				<button
-					mat-button
-					class="add-button"
-					type="button"
-					(click)="addRoleContoll()"
+					<!-- SUBCATEGORY FORMFIELD -->
+					<div
+						class="input-array-item"
+						*ngFor="
+							let subCategory of subCategoriesArray.controls;
+							let i = index
+						"
+					>
+						<mat-form-field appearance="fill">
+							<mat-label>Subcategory #{{ i + 1 }}</mat-label>
+							<input
+								matInput
+								placeholder="Subcategory name"
+								[formControlName]="i"
+							/>
+							<mat-error>Not need it? Delete it.</mat-error>
+						</mat-form-field>
+						<button
+							type="button"
+							class="delete-button"
+							mat-icon-button
+							(click)="removeSubcategoryControll(i)"
+						>
+							<mat-icon>delete</mat-icon>
+						</button>
+					</div>
+
+					<div
+						class="no-content"
+						*ngIf="!subCategoriesArray.length"
+					>
+						0 subcategories
+					</div>
+				</section>
+
+				<!--- -- -- -- -- -- -- - --->
+				<!-- AVAIBLE ROLES TO VIEW -->
+				<!--- -- -- -- -- --- --- --->
+				<section
+					formArrayName="roles"
+					class="section"
 				>
-					+ Add more
-				</button>
-			</section>
+					<!-- HEADER -->
+					<div class="section__header">
+						<mat-card-subtitle>Roles:</mat-card-subtitle>
+						<button
+							mat-button
+							class="add-button"
+							type="button"
+							(click)="addRoleContoll()"
+						>
+							+<mat-icon>group</mat-icon> Add more
+						</button>
+					</div>
+
+					<!-- ROLE FORMFIELD -->
+					<div
+						class="input-array-item"
+						*ngFor="let role of rolesArray.controls; let i = index"
+					>
+						<mat-form-field appearance="fill">
+							<mat-label>Role #{{ i + 1 }}</mat-label>
+							<mat-select [formControlName]="i">
+								<mat-option
+									*ngFor="let role of roles$ | async"
+									[value]="role.id"
+									[disabled]="isRoleNotSelected(role.id)"
+								>
+									{{ role.name }}</mat-option
+								>
+							</mat-select>
+
+							<mat-error>Not need it? Delete it.</mat-error>
+						</mat-form-field>
+						<button
+							type="button"
+							class="delete-button"
+							mat-icon-button
+							(click)="removeRoleControll(i)"
+						>
+							<mat-icon>delete</mat-icon>
+						</button>
+					</div>
+
+					<div
+						class="no-content"
+						*ngIf="!rolesArray.length"
+					>
+						0 roles
+					</div>
+				</section>
+			</div>
 
 			<mat-card-subtitle
 				>Created by: {{ category.createdBy }}</mat-card-subtitle
@@ -112,20 +154,33 @@
 
 			<div class="button-wrapper">
 				<button
-					mat-button
-					color="primary"
+					mat-stroked-button
+					color="warn"
 					type="button"
-					routerLink="/edit-categories"
+					(click)="deleteCategory()"
 				>
-					Cancel
+					<mat-icon>delete</mat-icon>
+					Delete
 				</button>
-				<button
-					mat-raised-button
-					color="primary"
-					type="submit"
-				>
-					Save
-				</button>
+
+				<div>
+					<button
+						mat-button
+						color="primary"
+						type="button"
+						routerLink="/edit-categories"
+					>
+						Cancel
+					</button>
+					<button
+						mat-raised-button
+						color="primary"
+						type="submit"
+					>
+						<mat-icon>save</mat-icon>
+						Save
+					</button>
+				</div>
 			</div>
 		</form>
 	</mat-card>
