@@ -24,14 +24,13 @@ export class OnlySuperAdminRoleGuard implements CanActivate {
 		if (this.curRoleId === '0') {
 			return true;
 		} else {
-			// this.routes.navigateByUrl('/main');
-			// this.snackBarService.openSnackBar(
-			// 'This page available only for super admin!',
-			// 'Got it',
-			// 2000
-			// );
-			// return false;
-			return true;
+			this.routes.navigateByUrl('/main');
+			this.snackBarService.openSnackBar(
+				'This page available only for super admin!',
+				'Got it',
+				2000
+			);
+			return false;
 		}
 	}
 }
