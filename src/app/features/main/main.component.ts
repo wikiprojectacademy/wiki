@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IPost } from '@core/models/Post';
 import { FirebaseStorageService } from '@core/services/firebase/firebase-init/firebaseStorage.service';
 import { ICategoryFull as Category } from '../categories-edit/models/icategory-full';
 import { CategoryService } from '../categories-edit/services/categories.service';
@@ -9,38 +10,30 @@ import { CategoryService } from '../categories-edit/services/categories.service'
 	styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-	mockedPosts = [
-		{ title: 'title number one', content: 'test content' },
-		{ title: 'SUPER TITLE', content: 'test content medium medium test test' },
+	searchParams = {
+		categoryId: '8',
+		subCategoryId: null,
+		phrase: ''
+	};
+	mockedPosts: IPost[] = [
+		{ categoryId: '6', contentHTML: '-', title: 'C++' },
+		{ categoryId: '6', contentHTML: '-', title: 'HTML' },
+		{ categoryId: '6', contentHTML: '-', title: 'JavaScript' },
+		{ categoryId: '7', contentHTML: '-', title: 'Audi' },
+		{ categoryId: '7', contentHTML: '-', title: 'BMW' },
+		{ categoryId: '7', contentHTML: '-', title: 'Mercedes' },
+		{ categoryId: '8', contentHTML: '-', title: 'How to repair notebook' },
 		{
-			title: 'Test test test',
-			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet metus mollis, faucibus purus sit amet, blandit massa. Nunc luctus tra tra fsdgesgse fesgfgesgfesg e vgsrgrd'
+			categoryId: '8',
+			subCategory: 'CqJam3A7XkHnzQLzhjf0',
+			contentHTML: '-',
+			title: 'NT-5325'
 		},
 		{
-			title: 'Test test test',
-			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet metus mollis, faucibus purus sit amet, blandit massa. Nunc luctus tra tra fsdgesgse fesgfgesgfesg e vgsrgrd'
-		},
-		{
-			title: 'Test test test',
-			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet metus mollis, faucibus purus sit amet, blandit massa. Nunc luctus tra tra fsdgesgse fesgfgesgfesg e vgsrgrd'
-		},
-		{
-			title: 'Test test test',
-			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet metus mollis, faucibus purus sit amet, blandit massa. Nunc luctus tra tra fsdgesgse fesgfgesgfesg e vgsrgrd'
-		},
-		{
-			title: 'Test test test',
-			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet metus mollis, faucibus purus sit amet, blandit massa. Nunc luctus tra tra fsdgesgse fesgfgesgfesg e vgsrgrd'
-		},
-		{
-			title: 'Test test test',
-			content:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet metus mollis, faucibus purus sit amet, blandit massa. Nunc luctus tra tra fsdgesgse fesgfgesgfesg e vgsrgrd'
+			categoryId: '8',
+			subCategory: 't8JPrF390yaEwtwGHiXM',
+			contentHTML: '-',
+			title: 'Mac Book'
 		}
 	];
 
@@ -90,6 +83,14 @@ export class MainComponent implements OnInit {
 		this.categoryService.getCategoryAll().subscribe(response => {
 			this.categories = response;
 		});
+	}
+
+	changeSearchParams(categoryID: string, subCategoryID: string): void {
+		this.searchParams = {
+			...this.searchParams,
+			categoryId: categoryID,
+			subCategoryId: subCategoryID
+		};
 	}
 
 	initDB() {

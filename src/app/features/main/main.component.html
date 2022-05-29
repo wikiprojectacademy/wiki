@@ -26,16 +26,31 @@
 
 		<!-- </button> -->
 		<!-- </h2> -->
+		<div class="category">
+			<span
+				class="category-item"
+				(click)="changeSearchParams('all', null)"
+				>All</span
+			>
+		</div>
 		<div
 			class="category"
 			*ngFor="let category of categories"
 		>
-			<span class="category-item">{{ category.name }}</span>
+			<span
+				class="category-item"
+				(click)="changeSearchParams(category.id, null)"
+				>{{ category.name }}</span
+			>
 			<div
 				class="subcategory"
 				*ngFor="let sub of category.subCategoriesFull"
 			>
-				<span class="category-item">{{ sub.name }}</span>
+				<span
+					class="category-item"
+					(click)="changeSearchParams(category.id, sub.id)"
+					>{{ sub.name }}</span
+				>
 			</div>
 		</div>
 	</div>
@@ -53,10 +68,13 @@
 		<mat-card
 			matRipple
 			class="post"
-			*ngFor="let post of mockedPosts"
+			*ngFor="
+				let post of mockedPosts
+					| postSearch: searchParams.categoryId:searchParams.subCategoryId
+			"
 		>
 			<mat-card-title>{{ post.title }}</mat-card-title>
-			<mat-card-content>{{ post.content | contentShortner }}</mat-card-content>
+			<!-- <mat-card-content>{{ post.content | contentShortner }}</mat-card-content> -->
 		</mat-card>
 	</div>
 </main>

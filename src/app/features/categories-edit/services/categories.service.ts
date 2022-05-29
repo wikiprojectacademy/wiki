@@ -263,6 +263,10 @@ export class CategoryService {
 	) {
 		return subCategories$.pipe(
 			tap(subCat => {
+				///
+				console.log(subCat);
+				///
+
 				category.subCategoriesFull = subCat;
 			}),
 			take(1)
