@@ -30,14 +30,13 @@ export class AuthorizationService {
 				credential
 			);
 
-			//update User in Firestore
-			await this.userFireStore.updateUser(user.uid, newUsersData);
-
 			//update UserData
 			if (
 				currentUsersData.firstName !== newUsersData.firstName ||
 				currentUsersData.lastName !== newUsersData.lastName
 			) {
+				//update User in Firestore
+				await this.userFireStore.updateUser(user.uid, newUsersData);
 				await userData.updateProfile({
 					displayName: newUsersData.firstName + ' ' + newUsersData.lastName
 				});
@@ -51,6 +50,9 @@ export class AuthorizationService {
 			if (currentUsersData.password !== newUsersData.password) {
 				await userData.updatePassword(newUsersData.password);
 			}
+
+			//update User in Firestore
+			await this.userFireStore.updateUser(user.uid, newUsersData);
 		} catch (error) {
 			console.log('error: ', error);
 			throw error;
@@ -74,9 +76,6 @@ export class AuthorizationService {
 				this.userFireStore.addUserWithCustomId(userId, user);
 			})
 			.catch(error => {
-				// console.log('Auth Service: register error', error);
-				// console.log('error code', error.code);
-				// console.log('error', error);
 				return error.code ? { isValid: false, message: error.message } : error;
 			});
 	}
@@ -88,10 +87,40 @@ export class AuthorizationService {
 				console.log('resultUser: ', result);
 			})
 			.catch(error => {
-				// console.log('Auth Service: login error...');
-				// console.log('error code', error.code);
-				// console.log('error', error);
 				return error.code ? { isValid: false, message: error.message } : error;
 			});
+	}
+
+	private registerUserFromDatabase(user: IUser): Promise<any> {
+		return this.afAuth
+			.createUserWithEmailAndPassword(user.email, user.password)
+			.then((result: UserCredential) => {
+				result.user.updateProfile({
+					displayName: user.firstName + ' ' + user.lastName,
+					photoURL:
+						'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
+				});
+				this.userFireStore.updateUser(user.id, { isActivated: true });
+				console.log('result: ', result);
+				return result;
+			})
+			.catch(error => {
+				return error.code ? { isValid: false, message: error.message } : error;
+			});
+	}
+
+	async loginUserFromDatabase(email: string, password: string): Promise<any> {
+		const user = await this.userFireStore.getUserByEmail(email);
+		console.log('user: ', user);
+
+		if (user.isActivated) {
+			console.log('isActivated user: ', user);
+			// login user
+			return this.loginUser(email, password);
+		} else {
+			console.log('user need to register', user);
+			// register user
+			return this.registerUserFromDatabase(user);
+		}
 	}
 }
