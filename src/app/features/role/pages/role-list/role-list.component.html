@@ -45,7 +45,7 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				{{ element.modificationCategory }}
+				{{ element.canModifyCategory }}
 			</td>
 		</ng-container>
 
@@ -62,7 +62,7 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				{{ element.modificationPost }}
+				{{ element.canModifyPost }}
 			</td>
 		</ng-container>
 
@@ -79,11 +79,7 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				{{
-					element.availableCategoryIdsToView
-						? getNames(element.availableCategoryIdsToView)
-						: '-'
-				}}
+				{{ element.availableCategoriesToView | arrayByKey }}
 			</td>
 		</ng-container>
 
@@ -113,7 +109,7 @@
 						color="warn"
 						[disabled]="element.id === '0' || element.hasUsers"
 						matTooltip="Delete role {{ element.name }}"
-						(click)="onDelete(element.id)"
+						(click)="onDelete(element)"
 					>
 						<mat-icon>delete</mat-icon>
 					</button>

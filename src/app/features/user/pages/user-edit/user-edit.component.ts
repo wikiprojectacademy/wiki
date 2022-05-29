@@ -1,13 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { IUserModel } from '../../models/user.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '@shared/services/snackbar.service';
-import { IUser } from '@core/models/User';
 import { IRole } from '@core/models/Role';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
+import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 
 @Component({
 	selector: 'app-user-edit',
@@ -15,18 +13,19 @@ import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/r
 	styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit, OnDestroy {
-	public user$: Observable<IUser>;
+	private id: string;
+	private routeSub: Subscription;
+	public user;
 	public form: FormGroup;
 	public roles$: Observable<IRole[]>;
-	private routeSub: Subscription;
 
 	constructor(
-		private userService: UserService,
+		private userFirebaseService: UserFirebaseService,
 		private formBuilder: FormBuilder,
 		private router: Router,
 		private route: ActivatedRoute,
 		private snackBService: SnackBarService,
-		private rolesFirebaseService: RoleFirebaseService
+		private roleFirebaseService: RoleFirebaseService
 	) {
 		this.form = formBuilder.group({
 			id: [],
@@ -44,23 +43,54 @@ export class UserEditComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.roles$ = this.rolesFirebaseService.getRoles();
+		this.roles$ = this.roleFirebaseService.getRoles();
 		this.routeSub = this.route.params.subscribe(params => {
+			this.id = params['id'];
 			this.getUserById(params['id']);
 		});
 	}
 
 	getUserById(id: string): void {
-		this.user$ = this.userService.getUserById(id);
-		this.user$.subscribe(user => {
-			this.form.patchValue({ id, ...user });
-		});
+		this.userFirebaseService
+			.getUserData(id)
+			.pipe(take(1))
+			.subscribe(user => {
+				this.user = user;
+				this.form.patchValue({ id, ...user });
+			});
+	}
+
+	updateRole(roleId: string, hasUsers): void {
+		this.roleFirebaseService.editRole(roleId, { hasUsers });
 	}
 
 	editUser(): void {
 		if (this.form.valid) {
-			this.userService.editUser(this.form.value);
-			this.router.navigate(['/user']);
+			if (this.id !== '0') {
+				this.userFirebaseService.updateUser(this.id, this.form.value).then(
+					() => {
+						if (this.form.value.roleId !== this.user.roleId) {
+							this.updateRole(this.form.value.roleId, true);
+							this.userFirebaseService
+								.getUsersWithRoleId(this.user.roleId)
+								.pipe(take(1))
+								.subscribe(users => {
+									if (!users.length) {
+										this.updateRole(this.user.roleId, false);
+									}
+								});
+						}
+						this.router.navigate(['/user']);
+					},
+					error => {
+						this.snackBService.openSnackBar(
+							'Failure to create a new user. Reason: ' + error
+						);
+					}
+				);
+			} else {
+				this.snackBService.openSnackBar('This Super Admin account cannot edit');
+			}
 		} else {
 			this.snackBService.openSnackBar(
 				'To edit a user, you must correctly fill in all required fields'
