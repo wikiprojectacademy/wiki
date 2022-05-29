@@ -9,6 +9,7 @@ import { Observable, take } from 'rxjs';
 import { AuthorizationService } from 'src/app/features/authorization/services/authorization.service';
 import { Router } from '@angular/router';
 import { ComponentCanDeactivate } from './_guard/pending-change.guard';
+import { SnackBarService } from '@shared/services/snackbar.service';
 
 @Component({
 	selector: 'app-edit-profile',
@@ -43,7 +44,8 @@ export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 		public dialog: MatDialog,
 		private currentUserService: CurrentUserService,
 		private autorizationService: AuthorizationService,
-		private router: Router
+		private router: Router,
+		private snack: SnackBarService
 	) {}
 
 	canDeactivate(): Observable<boolean> | boolean {
@@ -75,6 +77,14 @@ export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 					.subscribe(() => {
 						this.router.navigateByUrl('profile/about');
 					});
+			})
+			.catch(error => {
+				this.isLoading = false;
+				let snackBarRef = this.snack.openSnackBar(error);
+				snackBarRef.afterDismissed().subscribe(() => {
+					this.ngOnInit();
+				});
+				this.changeProfileForm.markAsPristine();
 			});
 	}
 
