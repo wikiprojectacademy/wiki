@@ -9,7 +9,7 @@ export class PostSearchPipe implements PipeTransform {
 		if (categoryID == 'all') {
 			return posts;
 		} else if (subCategoryId) {
-			console.log('clicked on subcat');
+			// console.log('clicked on subcat');
 			return posts.filter(post => post.subCategory == subCategoryId);
 		} else {
 			return posts.filter(post => post.categoryId == categoryID);

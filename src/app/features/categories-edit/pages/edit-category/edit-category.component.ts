@@ -133,16 +133,12 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 	onSubmit() {
 		if (this.form.valid) {
 			this.isLoading = true;
-			// const output = this.form.value;
 			this.fillCategoryFromForm();
 
 			if (this.category.id == 'new') {
-				this.categoryService.addCategory(this.category).then(() => {
-					// this.isLoading = false;
-					this.router.navigateByUrl('/edit-categories');
-				});
+				this.addCategory();
 			} else {
-				this.categoryService.editCategory(this.category);
+				this.editCategory();
 			}
 		} else {
 			this.snackbarService.openSnackBar(
@@ -153,13 +149,32 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	editCategory(): void {
+		this.snackbarService.openSnackBar('In Development', 'OK', 3000);
+		this.isLoading = false;
+	}
+
+	addCategory(): void {
+		this.categoryService.addCategory(this.category).then(() => {
+			this.navigateToList();
+		});
+	}
+
+	navigateToList() {
+		this.router.navigateByUrl('/edit-categories');
+	}
+
 	deleteCategory() {
 		this.isLoading = true;
 		// this.snackbarService.openSnackBar('In development', 'Got it', 3000);
-		this.categoryService.deleteCategory(this.category).then(() => {
-			console.log('deleted');
-			this.router.navigateByUrl('/edit-categories');
-		});
+		this.categoryService
+			.deleteCategory(this.category)
+			.then(() => {
+				this.router.navigateByUrl('/edit-categories');
+			})
+			.catch(reason => {
+				console.log(reason);
+			});
 	}
 
 	isRoleNotSelected(roleId): boolean {

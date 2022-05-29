@@ -119,19 +119,44 @@ export class CategoryService {
 
 	deleteCategory(category: Category): Promise<void> {
 		const junctionsIdToDelete = [];
+		const subCategoriesIdToDelete = [];
+
 		this.roleCategoryPairs.forEach(pair => {
 			if (pair.categoryId == category.id) {
 				junctionsIdToDelete.push(pair.id);
 			}
 		});
+		category.subCategoriesFull.forEach(subCat => {
+			subCategoriesIdToDelete.push(subCat.id);
+		});
 
 		return new Promise<void>((resolve, reject) => {
-			this.rolesService
-				.deleteJunctionByIds(junctionsIdToDelete)
-				.then(() => this.categoriesFbSevice.deleteDoc(category.id))
-				.then(() => {
-					resolve();
-				})
+			Promise.all([
+				this.categoriesFbSevice.deleteDoc(category.id),
+				this.rolesService.deleteJunctionByIds(junctionsIdToDelete),
+				this.deleteSubCategories(category.id, subCategoriesIdToDelete)
+			]).then(() => resolve());
+			// resolve();
+		});
+	}
+
+	private deleteSubCategories(
+		categoryId: string,
+		subCategoriesId: string[]
+	): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			const deletingSubCat: Promise<void>[] = [];
+			subCategoriesId.forEach(subCatID => {
+				deletingSubCat.push(
+					this.categoriesFbSevice.deleteDocFromSubCollection(
+						categoryId,
+						subCatID
+					)
+				);
+			});
+
+			Promise.all(deletingSubCat)
+				.then(() => resolve())
 				.catch(reason => {
 					reject(reason);
 				});
@@ -263,10 +288,6 @@ export class CategoryService {
 	) {
 		return subCategories$.pipe(
 			tap(subCat => {
-				///
-				console.log(subCat);
-				///
-
 				category.subCategoriesFull = subCat;
 			}),
 			take(1)
