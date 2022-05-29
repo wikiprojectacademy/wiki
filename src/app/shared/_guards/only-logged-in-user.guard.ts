@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/user/current-user.service';
 import { SnackBarService } from '@shared/services/snackbar.service';
@@ -24,14 +24,13 @@ export class OnlyLoggedInUserGuard implements CanActivate {
 		if (this.curRoleId !== '') {
 			return true;
 		} else {
-			// this.routes.navigateByUrl('/main');
-			// this.snackBarService.openSnackBar(
-			// 'This page available only for logged in users!',
-			// 'Got it',
-			// 2000
-			// );
-			// return false;
-			return true;
+			this.routes.navigateByUrl('/main');
+			this.snackBarService.openSnackBar(
+				'This page available only for logged in users!',
+				'Got it',
+				2000
+			);
+			return false;
 		}
 	}
 }
