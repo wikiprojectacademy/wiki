@@ -1,6 +1,3 @@
-import { ISubCategory } from '@core/models/SubCategory';
-import { IRole } from '@core/models/Role';
-
 /**
  * Main models to describe Category entity
  * Relation between Category to SubCategory -> One to Many

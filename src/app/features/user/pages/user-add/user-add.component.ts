@@ -5,11 +5,11 @@ import {
 	FormGroup,
 	Validators
 } from '@angular/forms';
-import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { passwordValidation } from '@shared/validators/validations';
 import { SnackBarService } from '@shared/services/snackbar.service';
-import { RoleService } from '../../../role/services/role.service';
+import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
+import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 
 @Component({
 	selector: 'app-user-add',
@@ -20,14 +20,14 @@ export class UserAddComponent {
 	public form: FormGroup;
 	public isHide: boolean = true;
 	public isConfirmHide: boolean = true;
-	public roles = [];
+	public roles$;
 
 	constructor(
 		private formBuilder: FormBuilder,
-		private userService: UserService,
+		private userFirebaseService: UserFirebaseService,
 		private router: Router,
 		private snackBService: SnackBarService,
-		private roleService: RoleService
+		private roleFirebaseService: RoleFirebaseService
 	) {
 		this.getRoles();
 		this.form = formBuilder.group({
@@ -55,7 +55,8 @@ export class UserAddComponent {
 					control => this.validatePasswords(control, 'password2')
 				]
 			],
-			roleId: ['']
+			roleId: [''],
+			isActivated: [false]
 		});
 	}
 
@@ -68,7 +69,7 @@ export class UserAddComponent {
 	}
 
 	getRoles(): void {
-		this.roles = this.roleService.getRolesOption();
+		this.roles$ = this.roleFirebaseService.getRoles();
 	}
 
 	validatePasswords(control: AbstractControl, name: string) {
@@ -102,8 +103,19 @@ export class UserAddComponent {
 
 	addUser(): void {
 		if (this.form.valid) {
-			this.userService.addUser(this.form.value);
-			this.router.navigate(['/user']);
+			this.userFirebaseService.addUser(this.form.value).then(
+				() => {
+					this.roleFirebaseService.editRole(this.form.value.roleId, {
+						hasUsers: true
+					});
+					this.router.navigate(['/user']);
+				},
+				error => {
+					this.snackBService.openSnackBar(
+						'Failure to create a new user. Reason: ' + error
+					);
+				}
+			);
 		} else {
 			this.snackBService.openSnackBar(
 				'To create a user, you must correctly fill in all required fields'

@@ -4,4 +4,5 @@
 export interface IRoleCategoryPair {
 	categoryId: string;
 	roleId: string;
+	id?: string;
 }

@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
 	declarations: [RoleListComponent, RoleAddComponent, RoleEditComponent],
@@ -29,7 +30,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 		ReactiveFormsModule,
 		MatInputModule,
 		MatSelectModule,
-		MatCheckboxModule
+		MatCheckboxModule,
+		SharedModule
 	]
 })
 export class RoleModule {}

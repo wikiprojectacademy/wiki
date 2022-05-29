@@ -3,7 +3,8 @@ import { FirebaseCrudService } from '@core/services/firebase/firebase-api/fireba
 import { IUser } from '@core/models/User';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { IRole } from '@core/models/Role';
+import firebase from 'firebase/compat';
+import WhereFilterOp = firebase.firestore.WhereFilterOp;
 
 @Injectable({
 	providedIn: 'root'
@@ -18,17 +19,18 @@ export class UserFirebaseService extends FirebaseCrudService<
 	}
 
 	addUser(user: IUser): Promise<string> {
-		// TODO: Add here logic, that update hasUsers, property, for Role after adding user
 		return this.addDocWithAutoId(user);
 	}
 
-	addUserWithRole(userId: string, user: IUser, role: IRole) {}
-
-	updateUser(id: string, content: IUser) {
+	updateUser(id: string, content: IUser): Promise<void> {
 		return this.updateDoc(id, content);
 	}
 
-	getUserData(id: string) {
+	deleteUser(id: string): Promise<void> {
+		return this.deleteDoc(id);
+	}
+
+	getUserData(id: string): Observable<IUser> {
 		return this.getDocSnapshot(id);
 	}
 
@@ -36,7 +38,23 @@ export class UserFirebaseService extends FirebaseCrudService<
 		return this.getCollection();
 	}
 
+	getUsersWithRoleId(id: string): Observable<IUser[]> {
+		return this.getUsersWhere('roleId', '==', id);
+	}
+
 	addUserWithCustomId(id: string, user: IUser): Promise<void> {
 		return this.addDoc(id, user);
+	}
+
+	getUsersWhere(
+		fieldName: string,
+		operationStr: WhereFilterOp = '==',
+		value: string
+	): Observable<IUser[]> {
+		return this.firebase
+			.collection<IUser>(this.base, ref =>
+				ref.where(fieldName, operationStr, value)
+			)
+			.valueChanges();
 	}
 }
