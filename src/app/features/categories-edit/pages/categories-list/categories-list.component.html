@@ -43,16 +43,14 @@
 
 				<div>
 					<span class="common-label">Roles: </span>
-					<span *ngFor="let role of cat.rolesFull">{{ role.name }}</span>
+					<span
+						*ngFor="let role of cat.rolesFull"
+						class="role"
+					>
+						{{ role.name }}
+					</span>
 				</div>
 			</div>
 		</mat-card>
 	</div>
-
-	<button
-		mat-button
-		(click)="tryToAdd()"
-	>
-		TRY TO ADD
-	</button>
 </div>

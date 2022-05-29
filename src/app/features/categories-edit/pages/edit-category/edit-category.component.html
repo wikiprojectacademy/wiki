@@ -10,10 +10,7 @@
 	<h1 *ngIf="category.id == 'new'">Add category</h1>
 </header>
 
-<div
-	class="form__wrapper"
-	*ngIf="!isLoading"
->
+<div class="form__wrapper">
 	<mat-card class="form-card">
 		<form
 			[formGroup]="form"
@@ -149,7 +146,12 @@
 			</div>
 
 			<mat-card-subtitle
-				>Created by: {{ category.createdBy }}</mat-card-subtitle
+				>Created by:
+				{{
+					category.createdByFull.firstName +
+						' ' +
+						category.createdByFull.lastName
+				}}</mat-card-subtitle
 			>
 
 			<div class="button-wrapper">
@@ -158,6 +160,7 @@
 					color="warn"
 					type="button"
 					(click)="deleteCategory()"
+					*ngIf="category.id != 'new'"
 				>
 					<mat-icon>delete</mat-icon>
 					Delete

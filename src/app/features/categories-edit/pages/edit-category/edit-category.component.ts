@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ICategory as CategoryDB } from '@core/models/Category';
 import { ICategoryFull as Category } from '../../models/icategory-full';
 import { SnackBarService } from '@shared/services/snackbar.service';
@@ -22,16 +22,18 @@ import { ISubCategory as SubCategoryDB } from '@core/models/SubCategory';
 export class EditCategoryComponent implements OnInit, OnDestroy {
 	form: FormGroup;
 	isLoading: boolean;
+	// isLoadingAdding: boolean = false;
 	// roles: RoleDB[] = [];
 	roles$: Observable<RoleDB[]>;
 	category: Category = {
 		id: '',
 		name: '',
-		createdBy: '2',
+		createdBy: '0',
 		subCategories: [],
 		availableRolesToView: [],
 		subCategoriesFull: [],
-		rolesFull: []
+		rolesFull: [],
+		createdByFull: { firstName: 'NO', lastName: 'DATA' }
 	};
 	// FORMAT FOR DB
 	get categoryDB(): CategoryDB {
@@ -60,7 +62,8 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private categoryService: CategoryService,
 		private snackbarService: SnackBarService,
-		private roleService: RolesService
+		private roleService: RolesService,
+		private router: Router
 	) {
 		let id = this.route.snapshot.paramMap.get('id');
 		if (id !== 'new') {
@@ -93,6 +96,7 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {}
 
 	updateForm(): void {
+		// console.log(this.category);
 		this.nameFormControl.patchValue(this.category.name);
 
 		if (this.category.subCategoriesFull) {
@@ -128,21 +132,15 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 
 	onSubmit() {
 		if (this.form.valid) {
-			this.snackbarService.openSnackBar('Sended to console!', 'OK', 2000);
-			const output = this.form.value;
+			this.isLoading = true;
+			// const output = this.form.value;
 			this.fillCategoryFromForm();
 
-			///
-			// console.log('FORM');
-			// console.log(output);
-			// console.log('CATEGORY:');
-			// console.log(this.category);
-			// console.log(this.categoryDB);
-			// console.log(this.subCategoriesDB);
-			///
-
 			if (this.category.id == 'new') {
-				this.categoryService.addCategory(this.category);
+				this.categoryService.addCategory(this.category).then(() => {
+					// this.isLoading = false;
+					this.router.navigateByUrl('/edit-categories');
+				});
 			} else {
 				this.categoryService.editCategory(this.category);
 			}
@@ -156,7 +154,12 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 	}
 
 	deleteCategory() {
-		this.snackbarService.openSnackBar('In development', 'Got it', 3000);
+		this.isLoading = true;
+		// this.snackbarService.openSnackBar('In development', 'Got it', 3000);
+		this.categoryService.deleteCategory(this.category).then(() => {
+			console.log('deleted');
+			this.router.navigateByUrl('/edit-categories');
+		});
 	}
 
 	isRoleNotSelected(roleId): boolean {
@@ -169,7 +172,9 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 		formOutput.subCategories.forEach(subCategoryName => {
 			subCategoriesArray.push({ name: subCategoryName });
 		});
+
 		this.category.subCategoriesFull = subCategoriesArray;
 		this.category.availableRolesToView = formOutput.roles;
+		this.category.name = formOutput.name;
 	}
 }

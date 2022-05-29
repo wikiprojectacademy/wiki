@@ -21,6 +21,7 @@ import { UserFirebaseService } from '@core/services/firebase/firebase-entities/u
 import { CategoryFirebaseService } from '@core/services/firebase/firebase-entities/categoryFirebase.service';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
+import { RolesService } from './roles.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -35,104 +36,111 @@ export class CategoryService {
 
 	constructor(
 		private categoriesFbSevice: CategoryFirebaseService,
-		private rolesFbService: RoleFirebaseService,
-		private roleCatServ: RoleCategoryFirebaseService,
+		private rolesService: RolesService,
+		private junctionService: RoleCategoryFirebaseService,
 		private userFbService: UserFirebaseService
 	) {}
 
 	getCategoryAll(): Observable<Category[]> {
 		const categoriesDB$ = this.categoriesFbSevice
 			.getStreamCategories()
-			.pipe(tap(cats => (this.categories = cats)));
-		const catRolesDB$ = this.roleCatServ
-			.getCollection()
-			.pipe(tap(crPair => (this.roleCategoryPairs = crPair)));
+			.pipe(tap(categoriesFromDB => (this.categories = categoriesFromDB)));
+		const catRolesDB$ = this.junctionService.getCollection().pipe(
+			tap(crPair => (this.roleCategoryPairs = crPair)),
+			take(1)
+		);
 
 		combineLatest([categoriesDB$, catRolesDB$]).subscribe(() => {
-			console.log('in combine latest');
 			this.attachDataToCategories();
 		});
 		return this.categories$.asObservable();
 	}
 
 	getCategoryById(id: string): Observable<Category> {
-		this.categoriesFbSevice.getDoc(id).subscribe(categoryFromDB => {
-			// this.categoriesFbSevice.getCategory(id).subscribe(categoryFromDB => {
-			this.singleCategory = categoryFromDB;
-			// console.log('getcategorybyid');
-			// console.log(categoryFromDB);
+		const singleCategoryDB$ = this.categoriesFbSevice.getDoc(id).pipe(
+			tap(categoryFromDB => (this.singleCategory = categoryFromDB)),
+			take(1)
+		);
+		const catRolesDB$ = this.junctionService.getCollection().pipe(
+			tap(catRolePairDB => (this.roleCategoryPairs = catRolePairDB)),
+			take(1)
+		);
+
+		combineLatest([singleCategoryDB$, catRolesDB$]).subscribe(() => {
 			this.attachDataToSingleCategory();
 		});
 		return this.singleCategory$.asObservable();
 	}
 
-	addCategory(category: Category): Promise<string> {
+	// addCategory(category: Category): Promise<string> {
+	addCategory(category: Category): Promise<void> {
 		console.log('input categoryfull:');
 		console.log(category);
 
-		// addCategory(): Promise<string> {
 		const categoryToDB: CategoryDB = {
 			name: category.name,
-			createdBy: category.createdBy,
-			availableRolesToView: category.availableRolesToView
+			createdBy: category.createdBy
 		};
-
-		///
-		console.log('category to DB: ');
-		console.log(categoryToDB);
-		///
-
 		const subCategoriesDB: SubCategoryDB[] = category.subCategoriesFull;
 
-		///
-		console.log('subactegories to DB: ');
-		console.log(subCategoriesDB);
+		return new Promise<void>((resolve, reject) => {
+			this.categoriesFbSevice
+				.addDocWithAutoId(categoryToDB)
+				.then(newCategoryID => {
+					const subCatAddingArray: Promise<void>[] = [];
+					const addingJunctions: Promise<void> = this.rolesService.addJunctions(
+						newCategoryID,
+						category.availableRolesToView
+					);
 
-		console.log('cat.subcats: ');
-		console.log(category.subCategoriesFull);
-		///
+					subCategoriesDB.forEach(subCat => {
+						subCatAddingArray.push(
+							this.categoriesFbSevice.addDocToSubCollection(
+								newCategoryID,
+								subCat
+							)
+						);
+					});
 
-		console.log('try to write');
-		return this.categoriesFbSevice
-			.addDocWithAutoId(categoryToDB)
-			.then(newCategoryId => {
-				this.categoriesFbSevice.addDocToSubCollection(
-					newCategoryId,
-					subCategoriesDB
-				);
-			})
-			.then(() => Promise.resolve('done'));
-	}
-
-	testAdd(): Promise<string> {
-		const testCategory: CategoryDB = {
-			name: 'lalalal',
-			createdBy: '2'
-		};
-
-		console.log('try to write');
-		return this.categoriesFbSevice.addDocWithAutoId(testCategory);
-	}
-
-	testSubAdd(categoryId: string): Promise<void> {
-		const testSubcategory: SubCategoryDB = {
-			name: 'esfesfesfesfe'
-		};
-
-		console.log('trying to add subcategories');
-		return this.categoriesFbSevice.addDocToSubCollection(
-			categoryId,
-			testSubcategory
-		);
-		// return this.categoriesFbSevice.addSubCategory(categoryId, testSubcategory);
+					Promise.all([...subCatAddingArray, addingJunctions])
+						.then(() => {
+							resolve();
+						})
+						.catch(reason => {
+							reject(reason);
+						});
+				});
+		});
 	}
 
 	editCategory(category: Category): void {
 		console.log('got in service');
 	}
 
+	deleteCategory(category: Category): Promise<void> {
+		const junctionsIdToDelete = [];
+		this.roleCategoryPairs.forEach(pair => {
+			if (pair.categoryId == category.id) {
+				junctionsIdToDelete.push(pair.id);
+			}
+		});
+
+		return new Promise<void>((resolve, reject) => {
+			this.rolesService
+				.deleteJunctionByIds(junctionsIdToDelete)
+				.then(() => this.categoriesFbSevice.deleteDoc(category.id))
+				.then(() => {
+					resolve();
+				})
+				.catch(reason => {
+					reject(reason);
+				});
+		});
+	}
+
 	/**
-	 * Collect all observables and handle all of them in the end
+	 * Adds objects of ISubCategory, IRole to each category (this.categories)
+	 *
 	 */
 	private attachDataToCategories(): void {
 		let subCategoriesArray$: Observable<SubCategoryDB[]>[] = [];
@@ -153,32 +161,18 @@ export class CategoryService {
 			const availableRolesToView: string[] = [];
 			this.roleCategoryPairs.forEach(pair => {
 				if (pair.categoryId == category.id) {
-					console.log(pair);
+					// console.log(pair);
 					availableRolesToView.push(pair.roleId);
 				}
 			});
-			console.log(
-				`Roles for Category ${category.name}: ${availableRolesToView.length}`
-			);
 			if (availableRolesToView) {
 				availableRolesToView.forEach(roleId => {
 					if (roleId) {
-						const role$ = this.rolesFbService.getRole(roleId);
+						const role$ = this.rolesService.getRoleById(roleId);
 						rolesArray$.push(this.processRole$(role$, category));
 					}
 				});
 			}
-
-			// --- --- --- --- --- --- --- ---
-			// category.rolesFull = []; // need to be array, not undefined
-			// if (category.availableRolesToView) {
-			// 	category.availableRolesToView.forEach(roleId => {
-			// 		if (roleId) {
-			// 			const role$ = this.rolesFbService.getRole(roleId);
-			// 			rolesArray$.push(this.processRole$(role$, category));
-			// 		}
-			// 	});
-			// }
 
 			// --- Created By ---
 			const user$ = this.userFbService.getUserData(category.createdBy);
@@ -191,10 +185,15 @@ export class CategoryService {
 			...rolesArray$,
 			...usersArray$
 		]).subscribe(() => {
+			// console.log(this.categories);
 			this.processDataToComponent();
 		});
 	}
 
+	/**
+	 * Adds objects of ISubCategory, IRole to each category (this.singleCategory)
+	 *
+	 */
 	private attachDataToSingleCategory(): void {
 		let subCategories$: Observable<SubCategoryDB[]> =
 			this.categoriesFbSevice.getSubCategories(this.singleCategory.id);
@@ -210,9 +209,16 @@ export class CategoryService {
 		);
 
 		this.singleCategory.rolesFull = [];
-		if (this.singleCategory.availableRolesToView) {
-			this.singleCategory.availableRolesToView.forEach(roleId => {
-				const role$ = this.rolesFbService.getRole(roleId);
+		const availableRolesToView: string[] = [];
+		this.roleCategoryPairs.forEach(pair => {
+			if (pair.categoryId == this.singleCategory.id) {
+				// console.log(pair);
+				availableRolesToView.push(pair.roleId);
+			}
+		});
+		if (availableRolesToView) {
+			availableRolesToView.forEach(roleId => {
+				const role$ = this.rolesService.getRoleById(roleId);
 				rolesArray$.push(this.processRole$(role$, this.singleCategory));
 			});
 		}

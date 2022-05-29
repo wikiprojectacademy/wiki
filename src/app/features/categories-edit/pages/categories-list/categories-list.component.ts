@@ -37,20 +37,4 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
 			// catSub.unsubscribe();
 		});
 	}
-
-	tryToAdd() {
-		this.categoryService
-			.testAdd()
-			.then(response => {
-				console.log('Sucsessfull');
-				console.log(response);
-				this.categoryService.testSubAdd(response).then(final => {
-					console.log(final);
-					console.log('succesfull');
-				});
-			})
-			.catch(() => {
-				console.log('error');
-			});
-	}
 }
