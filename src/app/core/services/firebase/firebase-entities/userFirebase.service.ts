@@ -65,8 +65,8 @@ export class UserFirebaseService extends FirebaseCrudService<
 				}
 
 				return user;
-			}),
-			take(1)
+			})
+			// take(1)
 		);
 	}
 }
