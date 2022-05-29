@@ -74,6 +74,7 @@ export class AuthorizationService {
 				user.id = userId;
 				// add user to Firestore
 				this.userFireStore.addUserWithCustomId(userId, user);
+				return result;
 			})
 			.catch(error => {
 				return error.code ? { isValid: false, message: error.message } : error;
