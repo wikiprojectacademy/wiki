@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Firebase environment files
-src/environments/**
+/src/environments/**
 functions/node_modules
 
 # Compiled output
@@ -50,3 +50,5 @@ Thumbs.db
 *-debug.log
 .runtimeconfig.json
 
+src/environments/environment.prod.ts
+src/environments/environment.ts
