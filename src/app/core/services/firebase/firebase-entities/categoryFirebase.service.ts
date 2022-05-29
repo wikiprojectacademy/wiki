@@ -3,7 +3,7 @@ import { ICategory } from '@core/models/Category';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
 import { ISubCategory } from '@core/models/SubCategory';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 /**
  * Small example of usage Firebase CRUD service for operations with categories
@@ -30,6 +30,14 @@ export class CategoryFirebaseService extends FirebaseCrudService<
 		return this.getSubCollection(id);
 	}
 
+	getCategoriesByIds(ids: string[]): Observable<ICategory[]> {
+		return this.getCollectionSnapshot().pipe(
+			map(item => {
+				return item.filter(item => ids.includes(item.id));
+			})
+		);
+	}
+
 	getStreamCategories(): Observable<ICategory[]> {
 		return this.getCollection();
 	}
@@ -41,8 +49,8 @@ export class CategoryFirebaseService extends FirebaseCrudService<
 		return this.getDocFromSubCollection(parentId, subCollectionId);
 	}
 
-	getCategories() {
-		this.getCollection().subscribe(categories => console.log(categories));
+	getCategories(): Observable<ICategory[]> {
+		return this.getCollection();
 	}
 
 	async addCategory(category: ICategory) {

@@ -11,34 +11,33 @@
 						formControlName="name"
 					/>
 					<mat-error *ngIf="form.controls['name'].invalid"
-						>First name must be at least 2 characters long and at most
-						25</mat-error
-					>
+						>First name must be at least 2 characters long and at most 25
+					</mat-error>
 				</mat-form-field>
 			</div>
 
 			<div class="role__form-element">
-				<mat-checkbox formControlName="modificationCategory"
-					>Can modify categories</mat-checkbox
-				>
+				<mat-checkbox formControlName="canModifyCategory"
+					>Can modify categories
+				</mat-checkbox>
 			</div>
 
 			<div class="role__form-element">
-				<mat-checkbox formControlName="modificationPost"
-					>Can modify posts</mat-checkbox
-				>
+				<mat-checkbox formControlName="canModifyPost"
+					>Can modify posts
+				</mat-checkbox>
 			</div>
 
 			<div class="role__form-element">
 				<mat-form-field appearance="outline">
 					<mat-label>Available categories to view</mat-label>
 					<mat-select
-						formControlName="availableCategoryIdsToView"
+						formControlName="categories"
 						multiple
 					>
 						<mat-option
 							[value]="category.id"
-							*ngFor="let category of categories"
+							*ngFor="let category of categories$ | async"
 							>{{ category.name }}</mat-option
 						>
 					</mat-select>

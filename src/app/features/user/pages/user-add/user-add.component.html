@@ -98,7 +98,7 @@
 				<mat-select formControlName="roleId">
 					<mat-option
 						[value]="role.id"
-						*ngFor="let role of roles"
+						*ngFor="let role of roles$ | async"
 					>
 						{{ role.name }}
 					</mat-option>

@@ -1,21 +1,26 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { IRoleModel } from '../../models/role.model';
-import { RoleService } from '../../services/role.service';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { SnackBarService } from '@shared/services/snackbar.service';
 import { Router } from '@angular/router';
-import { CategoryService } from '../../services/category.service';
+import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
+import { Observable, take, tap } from 'rxjs';
+import { IRole } from '@core/models/Role';
+import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
+import { CategoryFirebaseService } from '@core/services/firebase/firebase-entities/categoryFirebase.service';
+import { IRoleCategoryPair } from '@core/models/RoleCategoryPair';
+import { ICategory } from '@core/models/Category';
 
 @Component({
 	selector: 'app-user',
 	templateUrl: './role-list.component.html',
 	styleUrls: ['./role-list.component.scss']
 })
-export class RoleListComponent implements OnInit, AfterViewInit {
-	public roles: IRoleModel[] = [];
+export class RoleListComponent implements AfterViewInit {
+	public roles: Observable<IRole[]>;
 	public displayedColumns: string[] = [
 		'name',
 		'modificationCategory',
@@ -23,35 +28,48 @@ export class RoleListComponent implements OnInit, AfterViewInit {
 		'availableCategoryIdsToView',
 		'id'
 	];
-	public dataSource: MatTableDataSource<IRoleModel>;
+	public dataSource: MatTableDataSource<IRole>;
 
 	constructor(
-		private roleService: RoleService,
 		private liveAnnouncer: LiveAnnouncer,
 		private snackBService: SnackBarService,
 		private router: Router,
-		private categoryService: CategoryService
-	) {
-		this.getRoles();
-	}
+		private roleFirebaseService: RoleFirebaseService,
+		private roleCategoryFirebaseService: RoleCategoryFirebaseService,
+		private categoryFirebaseService: CategoryFirebaseService
+	) {}
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
 
 	ngAfterViewInit() {
-		this.dataSource.paginator = this.paginator;
-		this.dataSource.sort = this.sort;
-	}
-
-	ngOnInit(): void {}
-
-	getRoles(): void {
-		this.roles = this.roleService.getRoles();
-		this.dataSource = new MatTableDataSource<IRoleModel>(this.roles);
-	}
-
-	getNames(ids: string[]): string {
-		return this.categoryService.getCategoriesById(ids);
+		this.roleFirebaseService
+			.getRoles()
+			.pipe(
+				tap(roles => {
+					roles.forEach(role => {
+						this.roleCategoryFirebaseService
+							.getRoleCategoriesByRoleId(role.id)
+							.pipe(take(1))
+							.subscribe((resul: IRoleCategoryPair[]) => {
+								let categoriesIds = resul.map(item => item.categoryId);
+								if (!!categoriesIds.length) {
+									this.categoryFirebaseService
+										.getCategoriesByIds(categoriesIds)
+										.pipe(take(1))
+										.subscribe((categoriesName: ICategory[]) => {
+											role.availableCategoriesToView = categoriesName || [];
+										});
+								}
+							});
+					});
+				})
+			)
+			.subscribe(roles => {
+				this.dataSource = new MatTableDataSource<IRole>(roles);
+				this.dataSource.paginator = this.paginator;
+				this.dataSource.sort = this.sort;
+			});
 	}
 
 	announceSortChange(sortState: Sort): void {
@@ -62,9 +80,22 @@ export class RoleListComponent implements OnInit, AfterViewInit {
 		}
 	}
 
-	onDelete(id: string): void {
-		this.roleService.deleteRole(id);
-		this.getRoles();
+	onDelete(role: IRole): void {
+		if (role.id !== '0') {
+			this.roleFirebaseService.deleteRole(role.id);
+			role.availableCategoriesToView.map(item => {
+				this.roleCategoryFirebaseService
+					.getRoleCategoriesId(role.id, item.id)
+					.pipe(take(1))
+					.subscribe((res: IRoleCategoryPair[]) => {
+						res.map(item => {
+							this.roleCategoryFirebaseService.deleteDoc(item.id);
+						});
+					});
+			});
+		} else {
+			this.snackBService.openSnackBar('This Super Admin role cannot delete');
+		}
 	}
 
 	onEdit(id: string): void {
@@ -80,6 +111,7 @@ export class RoleListComponent implements OnInit, AfterViewInit {
 		}
 		return '';
 	}
+
 	getTooltipTextForEdit(element): string {
 		if (element.id === '0') {
 			return 'Super Admin role cannot edit';

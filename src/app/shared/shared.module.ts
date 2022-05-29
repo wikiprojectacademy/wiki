@@ -5,17 +5,19 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UpdateDataSpinnerComponent } from './components/update-spinner/update-data-spinner.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
+import { ArrayByKeyPipe } from './pipes/array-by-key.pipe';
 
 @NgModule({
 	// Here are must list all components, that are inside shared folder
 	declarations: [
 		LoadSpinnerComponent,
 		UpdateDataSpinnerComponent,
-		ConfirmationDialogComponent
+		ConfirmationDialogComponent,
+		ArrayByKeyPipe
 	],
 	imports: [CommonModule, MatProgressSpinnerModule, MatButtonModule],
 	// Here are must list all components, that are inside shared folder, so when you import shared module in some of module,
 	// you have access for all shared components
-	exports: [LoadSpinnerComponent, UpdateDataSpinnerComponent]
+	exports: [LoadSpinnerComponent, UpdateDataSpinnerComponent, ArrayByKeyPipe]
 })
 export class SharedModule {}

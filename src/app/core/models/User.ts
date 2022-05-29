@@ -1,5 +1,3 @@
-import { IRole } from '@core/models/Role';
-
 /**
  * Main models that describe User entity
  * Relation between User and Role -> Many to One
@@ -14,4 +12,5 @@ export interface IUser {
 	password?: string;
 	roleId?: string;
 	isActivated?: boolean;
+	roleName?: string;
 }
