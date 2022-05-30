@@ -1,0 +1,41 @@
+<div class="post">
+	<ng-template
+		[ngIf]="!post"
+		[ngIfElse]="postTemplate"
+	>
+		<div class="spinner">
+			<mat-spinner color="primary"></mat-spinner>
+		</div>
+	</ng-template>
+	<ng-template #postTemplate>
+		<div class="title-container">
+			<h1 class="title">{{ post?.title }}</h1>
+			<div class="dates">
+				<span class="created-at"
+					>Created at: {{ post?.createdAt | date: 'MMMM d, y' }}</span
+				>
+				<span
+					class="updated-at"
+					*ngIf="post?.updatedAt"
+					>Updated at: {{ post?.updatedAt | date: 'MMMM d, y' }}</span
+				>
+			</div>
+		</div>
+
+		<div class="category">
+			<!--    todo: getcategorybyId to display name after category service will be finished -->
+			<span>{{ post?.categoryId }}</span>
+		</div>
+		<div
+			class="subcategory"
+			*ngIf="post?.subCategory"
+		>
+			<span>{{ post?.subCategory }}</span>
+		</div>
+		<mat-divider class="divider"></mat-divider>
+		<div
+			class="content"
+			[innerHTML]="post?.contentHTML | safeHtml"
+		></div>
+	</ng-template>
+</div>
