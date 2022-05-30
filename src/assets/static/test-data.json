@@ -1,0 +1,166 @@
+{
+	"roles": [
+		{
+			"id": "1",
+			"name": "user",
+			"hasUsers": true,
+			"canModifyCategory": false,
+			"canModifyPost": false
+		}
+	],
+	"users": [
+		{
+			"id": "2",
+			"email": "user1@mail.com",
+			"firstName": "default",
+			"lastName": "user",
+			"password": "password12345",
+			"roleId": "1"
+		},
+		{
+			"id": "3",
+			"email": "user2@mail.com",
+			"firstName": "default",
+			"lastName": "user",
+			"password": "password12345",
+			"roleId": "1"
+		}
+	],
+	"categories": [
+		{
+			"id": "6",
+			"name": "Programming Languages",
+			"createdBy": "2",
+			"subCategories": [
+				{
+					"id": "lang-1",
+					"name": "Backend"
+				},
+				{
+					"id": "lang-2",
+					"name": "Frontend"
+				}
+			]
+		},
+		{
+			"id": "7",
+			"name": "Automobiles",
+			"createdBy": "2",
+			"subCategories": []
+		},
+		{
+			"id": "8",
+			"name": "Notebooks",
+			"createdBy": "3",
+			"subCategories": [
+				{
+					"id": "note-1",
+					"name": "HP"
+				},
+				{
+					"id": "note-2",
+					"name": "Lenovo"
+				},
+				{
+					"id": "note-3",
+					"name": "Apple"
+				},
+				{
+					"id": "note-4",
+					"name": "Acer"
+				}
+			]
+		},
+		{
+			"id": "9",
+			"name": "Animals",
+			"createdBy": "3",
+			"subCategories": [
+				{
+					"id": "animal-1",
+					"name": "Cats"
+				},
+				{
+					"id": "animal-2",
+					"name": "Dogs"
+				},
+				{
+					"id": "animal-3",
+					"name": "Lions"
+				},
+				{
+					"id": "animal-4",
+					"name": "Crocodiles"
+				}
+			]
+		}
+	],
+	"roleCategories": [
+		{
+			"categoryId": "6",
+			"roleId": "1"
+		},
+		{
+			"categoryId": "7",
+			"roleId": "1"
+		},
+		{
+			"categoryId": "8",
+			"roleId": "1"
+		},
+		{
+			"categoryId": "9",
+			"roleId": "1"
+		}
+	],
+	"posts": [
+		{
+			"id": "15",
+			"title": "Java",
+			"contentHTML": "OOP oriented language",
+			"categoryId": "6",
+			"subCategory": "lang-1"
+		},
+		{
+			"id": "16",
+			"title": "Java Script",
+			"contentHTML": "Runs inside browser",
+			"categoryId": "6",
+			"subCategory": "lang-2"
+		},
+		{
+			"id": "17",
+			"title": "Apple M1 PRO",
+			"contentHTML": "The most powerful processor",
+			"categoryId": "8",
+			"subCategory": "note-3"
+		},
+		{
+			"id": "18",
+			"title": "Lenovo Ideapad 310-15 IKB",
+			"contentHTML": "Ideal for studying",
+			"categoryId": "8",
+			"subCategory": "note-2"
+		},
+		{
+			"id": "19",
+			"title": "British",
+			"contentHTML": "Programmers love cats",
+			"categoryId": "9",
+			"subCategory": "animal-1"
+		},
+		{
+			"id": "20",
+			"title": "M40",
+			"contentHTML": "Машина для пацанів",
+			"categoryId": "7",
+			"subCategory": "car-1"
+		},
+		{
+			"id": "21",
+			"title": "Post without subcategory",
+			"contentHTML": "It is a general description of animals",
+			"categoryId": "9"
+		}
+	]
+}

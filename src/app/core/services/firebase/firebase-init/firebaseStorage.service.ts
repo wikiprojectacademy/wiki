@@ -22,11 +22,21 @@ import {
 } from '@core/models/test-data';
 import { IRole } from '@core/models/Role';
 import { IRoleCategoryPair } from '@core/models/RoleCategoryPair';
+import {
+	IFullCategory,
+	TestMock
+} from '@core/services/firebase/firebase-init/test-mock.model';
+import { HttpClient } from '@angular/common/http';
+import { IPost } from '@core/models/Post';
+
+const PATH_TO_DEFAULT_DATA = './assets/static/';
+const FILE_NAME = 'test-data.json';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class FirebaseStorageService {
+	pathToDefaultData = '';
 	private usersCollection: AngularFirestoreCollection<IUser>;
 	users: Observable<IUser[]>;
 	isDatabaseInitialized: boolean;
@@ -37,7 +47,8 @@ export class FirebaseStorageService {
 		private postService: PostFirebaseService,
 		private roleFirebase: RoleFirebaseService,
 		private roleCategoryFirebase: RoleCategoryFirebaseService,
-		private userFirebase: UserFirebaseService
+		private userFirebase: UserFirebaseService,
+		private httpClient: HttpClient
 	) {
 		this.usersCollection = this.firestore.collection<IUser>('users');
 		this.users = this.usersCollection.valueChanges();
@@ -47,52 +58,75 @@ export class FirebaseStorageService {
 		return this.userFirebase.getCollectionSnapshot();
 	}
 
-	initDB(): void {
-		Promise.all([
-			this.initRoles(),
-			this.initUsers(),
-			this.initCategories(),
-			this.initPosts(),
-			this.initRoleCategoryRelations()
+	/**
+	 * Database initialization method. Available only for super admin.
+	 * Can be useful for testing, when you connect application to empty
+	 * Firestore database.
+	 */
+	async initDB(): Promise<void> {
+		const mockData: TestMock = await this.loadMockDataFromAssets();
+		const loadingData = await Promise.all([
+			this.initRoles(mockData.roles),
+			this.initUsers(mockData.users),
+			this.initCategories(mockData.categories),
+			this.initRoleCategoryRelations(mockData.roleCategories),
+			this.initPosts(mockData.posts)
 		])
 			.then(() => {
 				console.log('DB initialized');
+				return Promise.resolve();
 			})
 			.catch(error => console.error(error));
+		return loadingData;
 	}
 
-	initCategories(): Promise<void[]>[] {
-		const categories = categoriesMock.map((category: ICategory) => {
+	loadMockDataFromAssets(): Promise<TestMock> {
+		return this.httpClient
+			.get<TestMock>(PATH_TO_DEFAULT_DATA + FILE_NAME)
+			.toPromise();
+	}
+
+	initTest(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				return resolve();
+			}, 2000);
+		});
+	}
+
+	initCategories(categories: IFullCategory[]): Promise<void[]>[] {
+		return categories.map((category: IFullCategory) => {
 			return this.categoryService
 				.addCategoryWithId(category.id, {
 					name: category.name,
-					createdBy: category.createdBy,
-					availableRolesToView: category.availableRolesToView
+					createdBy: category.createdBy
 				})
 				.then(() => {
-					return category.subCategories.map((subCategoryId: string) => {
-						const subCategory: ISubCategory = subCategoriesMock.find(
-							subcategory => subcategory.id === subCategoryId
-						);
-						if (subCategory) {
-							this.categoryService.addSubCategory(category.id as string, {
-								name: subCategory.name
-							});
-						}
-					});
+					if (categories.length) {
+						return category.subCategories.map((subCategory: ISubCategory) => {
+							this.categoryService.addInSubCategoryWithCustomId(
+								category.id as string,
+								subCategory.id,
+								{
+									name: subCategory.name
+								}
+							);
+						});
+					}
 				});
 		});
-		return categories;
 	}
 
-	initRoleCategoryRelations(): Promise<string>[] {
-		return roleCategoryMocks.map(relation =>
+	initRoleCategoryRelations(
+		roleCategoryPairs: IRoleCategoryPair[]
+	): Promise<string>[] {
+		return roleCategoryPairs.map(relation =>
 			this.roleCategoryFirebase.addRoleCategoryEntry(relation)
 		);
 	}
 
-	initRoles() {
-		const role = rolesMock.map(role => {
+	initRoles(roles: IRole[]) {
+		return roles.map(role => {
 			return this.roleFirebase.addRoleWithCustomId(role.id, {
 				name: role.name,
 				hasUsers: role.hasUsers,
@@ -100,11 +134,10 @@ export class FirebaseStorageService {
 				canModifyCategory: role.canModifyCategory
 			});
 		});
-		return role;
 	}
 
-	initUsers() {
-		const users = usersMock.map(user => {
+	initUsers(users: IUser[]) {
+		users.map(user => {
 			return this.userFirebase.addUserWithCustomId(user.id, {
 				firstName: user.firstName,
 				lastName: user.lastName,
@@ -116,16 +149,15 @@ export class FirebaseStorageService {
 		return users;
 	}
 
-	initPosts(): Promise<void>[] {
-		const posts = postsMock.map(post =>
+	initPosts(posts: IPost[]): Promise<void>[] {
+		return posts.map(post =>
 			this.postService.addPostWithCustomId(post.id, {
 				title: post.title,
 				contentHTML: post.contentHTML,
 				categoryId: post.categoryId,
-				subCategory: post.subCategory
+				subCategory: post?.subCategory ? post.subCategory : ''
 			})
 		);
-		return posts;
 	}
 
 	getLiveCategories() {
