@@ -1,3 +1,11 @@
+@import 'variable.scss';
+
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 :host {
 	flex-grow: 1;
 	background-color: #eee;
@@ -5,14 +13,16 @@
 
 header {
 	display: flex;
-	padding: 5px;
+	padding: 10px;
+
+	@media screen and (max-width: $screen-width-small) {
+		padding: 3px;
+	}
 
 	h1 {
-		display: block;
 		flex-grow: 1;
 		text-align: center;
-		height: 100%;
-		margin-right: 50px;
+		margin: 0px 50px 0px 0px;
 	}
 }
 
@@ -25,26 +35,81 @@ header {
 	.form-card {
 		width: clamp(250px, 95vw, 600px);
 
-		section {
-			position: relative;
-			padding: 15px 15px 1px 15px;
-			// padding: 15px;
-			background-color: #ccc1;
-			margin-bottom: 15px;
-			border-radius: 5px;
-			box-shadow: inset 0 1px 1px #3336, inset 0 0px 1px #3333;
+		@media screen and (min-width: 960px) {
+			width: clamp(700px, 95vw, 1200px);
+		}
 
-			.input-array-item {
+		@media screen and (max-width: $screen-width-small) {
+			padding: 10px;
+			width: 96%;
+		}
+
+		.section__wrapper {
+			@media screen and (min-width: 960px) {
 				display: flex;
-				.delete-button {
-					margin: 10px 0px 0px 5px;
-				}
+				gap: 15px;
 			}
+			.section {
+				$background: #f8f8f8;
 
-			.add-button {
-				position: absolute;
-				right: 15px;
-				top: 7px;
+				width: 100%;
+				padding: 0px 15px;
+				background-color: $background;
+				margin-bottom: 15px;
+				border-radius: 5px;
+				border: 1px solid #ddd;
+
+				&__header {
+					z-index: 100;
+					position: sticky;
+					top: 64px;
+
+					@include flex-center();
+					justify-content: space-between;
+					margin: 0 -15px;
+					padding: 5px 5px 5px 15px;
+					border-radius: 5px;
+
+					background-color: lighten($background, 2);
+					border-bottom: 1px solid #0002;
+					box-shadow: 0 2px 3px #ccc4;
+
+					@media screen and (max-width: 600px) {
+						top: 55px;
+					}
+
+					mat-card-subtitle {
+						margin: 0;
+					}
+				}
+
+				@media screen and (max-width: $screen-width-small) {
+					padding: 0px 10px;
+					&__header {
+						margin: 0 -10px;
+					}
+				}
+
+				.input-array-item {
+					display: flex;
+					&:nth-child(2) {
+						margin-top: 15px;
+					}
+					.delete-button {
+						margin: 10px 0px 0px 5px;
+					}
+				}
+
+				.no-content {
+					width: 100%;
+					height: calc(100% - 50px);
+					display: flex;
+					flex-grow: 1;
+					align-items: center;
+					justify-content: center;
+					padding: 5px;
+					opacity: 0.5;
+				}
 			}
 		}
 
@@ -53,10 +118,24 @@ header {
 		}
 
 		.button-wrapper {
-			text-align: right;
-			button {
-				width: clamp(100px, 30%, 400px);
-				margin-left: 5px;
+			display: flex;
+			justify-content: space-between;
+			button,
+			div > button {
+				width: clamp(70px, 30%, 200px);
+				min-width: 70px;
+			}
+
+			@media screen and (max-width: $screen-width-small) {
+				mat-icon {
+					display: none;
+				}
+			}
+
+			div {
+				display: flex;
+				flex-grow: 1;
+				justify-content: right;
 			}
 		}
 	}

@@ -93,6 +93,19 @@ export abstract class FirebaseCrudService<T, ID, S>
 		return docReference.delete();
 	}
 
+	deleteDocFromSubCollection(
+		parentDocumentId: ID,
+		subCollectionDocumentId: ID
+	): Promise<void> {
+		const docReference: AngularFirestoreDocument<T> = this.firebase
+			.collection<T>(`${this.base}`)
+			.doc<T>(`${parentDocumentId}`);
+		const collectionReference: AngularFirestoreCollection<S> =
+			docReference.collection(this.sub);
+
+		return collectionReference.doc(`${subCollectionDocumentId}`).delete();
+	}
+
 	/**
 	 * Return an observable of document, from sub collection of parent document
 	 * @param parentDocumentId id of document in parent/main collection
@@ -119,7 +132,7 @@ export abstract class FirebaseCrudService<T, ID, S>
 		const docReference: AngularFirestoreDocument<T> = this.firebase
 			.collection<T>(`${this.base}`)
 			.doc<T>(`${id}`);
-		return docReference.collection<S>(this.sub).valueChanges();
+		return docReference.collection<S>(this.sub).valueChanges({ idField: 'id' });
 	}
 
 	/**

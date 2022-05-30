@@ -1,0 +1,17 @@
+<div
+	class="loader"
+	[class.hidden]="!isLoading"
+>
+	<div
+		*ngIf="isLoading"
+		class="text__wrapper"
+	>
+		<mat-icon class="icon-rotate">cached</mat-icon> Loading
+	</div>
+	<div
+		*ngIf="!isLoading"
+		class="text__wrapper"
+	>
+		<mat-icon>done</mat-icon> Done
+	</div>
+</div>

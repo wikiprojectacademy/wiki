@@ -1,6 +1,8 @@
+<app-loader [isLoading]="isLoading"></app-loader>
+
 <header>
 	<button
-		mat-button
+		mat-icon-button
 		routerLink="/main"
 	>
 		<mat-icon>arrow_back</mat-icon>
@@ -9,7 +11,7 @@
 	<h1>Categories list</h1>
 
 	<button
-		mat-button
+		mat-icon-button
 		routerLink="./edit/new"
 	>
 		<mat-icon>add</mat-icon>
@@ -17,6 +19,8 @@
 </header>
 
 <div class="categories__wrapper">
+	<!-- *ngIf="isLoading" -->
+
 	<div *ngFor="let cat of categories">
 		<mat-card
 			matRipple
@@ -26,19 +30,26 @@
 			<div class="labels">
 				<mat-card-title class="category-label"> {{ cat.name }} </mat-card-title>
 				<mat-card-subtitle>
-					{{ cat.subCategories.join(', ') }}
+					<!-- {{ cat.subCategories.join(', ') }} -->
+					{{ cat.subCategoriesFull | subcategoriesNameLister }}
 				</mat-card-subtitle>
 			</div>
 
 			<div class="content">
-				<span class="common-label">Created by:</span>
-				{{ cat.createdBy }}
-				<br />
-				<span class="common-label">Roles:</span>
-				<!-- <span *ngFor="let role of cat.availableRolesToView">
-					{{ role }}
-				</span> -->
-				{{ cat.availableRolesToView.join(', ') }}
+				<div>
+					<span class="common-label">Created by: </span>
+					{{ cat.createdByFull.firstName + ' ' + cat.createdByFull.lastName }}
+				</div>
+
+				<div>
+					<span class="common-label">Roles: </span>
+					<span
+						*ngFor="let role of cat.rolesFull"
+						class="role"
+					>
+						{{ role.name }}
+					</span>
+				</div>
 			</div>
 		</mat-card>
 	</div>

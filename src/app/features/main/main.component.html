@@ -1,41 +1,58 @@
-<!-- <div class="main-container"> -->
 <nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
-	<button
-		mat-button
-		(click)="isOpened = false"
-		class="small-screen-element"
-	>
-		x
-	</button>
-	<button
-		mat-raised-button
-		[disabled]="isDatabaseInitialized"
-		(click)="initDB()"
-	>
-		Init database
-	</button>
 	<div class="categories__content">
-		<h2>List of categories:</h2>
-		<button
-			mat-button
-			routerLink="/edit-categories"
-		>
-			<mat-icon>edit_note</mat-icon>
-			Edit
-		</button>
+		<h2 class="header">
+			<button
+				mat-icon-button
+				(click)="isOpened = false"
+				class="small-screen-element"
+			>
+				x
+			</button>
+			List of categories:
+			<button
+				mat-icon-button
+				routerLink="/edit-categories"
+			>
+				<mat-icon>edit_note</mat-icon>
+			</button>
+		</h2>
+		<div class="button__wrapper">
+			<button
+				mat-raised-button
+				[disabled]="isDatabaseInitialized"
+				(click)="initDB()"
+			>
+				Init Database
+			</button>
+		</div>
 
-		<!-- </button> -->
-		<!-- </h2> -->
+		<div class="category">
+			<div
+				class="category-item category-head"
+				[class.category-item__selected]="searchParams.categoryId == 'all'"
+				(click)="changeSearchParams('all', null)"
+			>
+				All
+			</div>
+		</div>
 		<div
 			class="category"
-			*ngFor="let category of mockedCateg"
+			*ngFor="let category of categories"
 		>
-			<span class="category-item">{{ category.name }}</span>
 			<div
-				class="subcategory"
-				*ngFor="let sub of category.subCategories"
+				class="category-item category-head"
+				(click)="changeSearchParams(category.id, null)"
+				[class.category-item__selected]="searchParams.categoryId == category.id"
 			>
-				<span class="category-item">{{ sub.name }}</span>
+				{{ category.name }}
+			</div>
+			<div
+				class="subcategory category-item"
+				*ngFor="let sub of category.subCategoriesFull"
+				[class.category-item__selected]="searchParams.subCategoryId == sub.id"
+				(click)="changeSearchParams(null, sub.id)"
+			>
+				{{ sub.name }}
 			</div>
 		</div>
 	</div>
@@ -53,11 +70,17 @@
 		<mat-card
 			matRipple
 			class="post"
-			*ngFor="let post of mockedPosts"
+			[routerLink]="post.id"
+			*ngFor="
+				let post of posts
+					| postFilter: searchParams.categoryId:searchParams.subCategoryId
+			"
 		>
 			<mat-card-title>{{ post.title }}</mat-card-title>
-			<mat-card-content>{{ post.content | contentShortner }}</mat-card-content>
+			<mat-card-content>{{
+				post.contentHTML | contentShortner | tagRemove
+			}}</mat-card-content>
 		</mat-card>
+		<div class="no-content">No posts here</div>
 	</div>
 </main>
-<!-- </div> -->
