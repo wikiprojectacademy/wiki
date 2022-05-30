@@ -17,7 +17,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
-	declarations: [PostAddComponent, PostComponent, SafeHtmlPipe, SafeHtmlPipe],
+	declarations: [
+		PostAddComponent,
+		PostComponent,
+		SafeHtmlPipe,
+		SafeHtmlPipe,
+		SafeHtmlPipe
+	],
 	imports: [
 		CommonModule,
 		PostRoutingModule,
