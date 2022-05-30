@@ -81,12 +81,14 @@ export class UserFirebaseService extends FirebaseCrudService<
 		return this.getUsers$().pipe(
 			map(data => {
 				const user = data.find(user => user.email === email);
+
 				if (!user) {
 					throw Error('User not found in database');
 				}
 
 				return user;
-			})
+			}),
+			take(1)
 		);
 	}
 }

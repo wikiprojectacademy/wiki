@@ -14,7 +14,7 @@ export class SnackBarService {
 	openSnackBar(
 		message: string,
 		action: string = 'Got it',
-		duration: number = 50000
+		duration: number = 5000
 	): MatSnackBarRef<TextOnlySnackBar> {
 		return this.snackBar.open(message, action, {
 			duration

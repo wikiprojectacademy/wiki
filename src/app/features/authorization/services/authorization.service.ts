@@ -30,6 +30,10 @@ export class AuthorizationService {
 				credential
 			);
 
+			//update User in Firestore
+			newUsersData.email = newUsersData.email.toLowerCase();
+			await this.userFireStore.updateUser(currentUsersData.id, newUsersData);
+
 			//update UserEmail
 			if (currentUsersData.email !== newUsersData.email) {
 				await userData.updateEmail(newUsersData.email);
@@ -50,9 +54,6 @@ export class AuthorizationService {
 					displayName: newUsersData.firstName + ' ' + newUsersData.lastName
 				});
 			}
-
-			//update User in Firestore
-			await this.userFireStore.updateUser(currentUsersData.id, newUsersData);
 		} catch (error) {
 			console.log('error: ', error);
 			throw error;
