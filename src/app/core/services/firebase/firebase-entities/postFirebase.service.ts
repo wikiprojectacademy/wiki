@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseCrudService } from '@core/services/firebase/firebase-api/firebaseCrud.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IPost } from '@core/models/Post';
+import { Observable } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -21,5 +22,9 @@ export class PostFirebaseService extends FirebaseCrudService<
 
 	addPostWithCustomId(id: string, post: IPost): Promise<void> {
 		return this.addDoc(id, post);
+	}
+
+	getPost(id: string): Observable<IPost> | undefined {
+		return this.getDoc(id);
 	}
 }
