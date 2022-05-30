@@ -1,4 +1,4 @@
-@import '../../../../../../src/styles/variable.scss';
+@import 'variable.scss';
 
 @mixin flex-center {
 	display: flex;
@@ -22,7 +22,6 @@ header {
 	h1 {
 		flex-grow: 1;
 		text-align: center;
-		// margin-right: 50px;
 		margin: 0px 50px 0px 0px;
 	}
 }
@@ -82,9 +81,6 @@ header {
 					mat-card-subtitle {
 						margin: 0;
 					}
-
-					// .add-button {
-					// }
 				}
 
 				@media screen and (max-width: $screen-width-small) {
@@ -140,7 +136,6 @@ header {
 				display: flex;
 				flex-grow: 1;
 				justify-content: right;
-				// text-align: right;
 			}
 		}
 	}

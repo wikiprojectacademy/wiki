@@ -1,11 +1,8 @@
-@import '/src/styles/variable.scss';
+@import 'variable.scss';
 
 :host {
-	// width: 100%;
-	// min-height: 100%;
 	flex-grow: 1;
 	background-color: #eee;
-	// border: 3px solid #ff0;
 }
 
 header {

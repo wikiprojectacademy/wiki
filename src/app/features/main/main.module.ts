@@ -7,10 +7,16 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ContentShortnerPipe } from './pipes/content-shortner.pipe';
 import { MatIconModule } from '@angular/material/icon';
-import { PostSearchPipe } from './pipes/post-search.pipe';
+import { PostFilterPipe } from './pipes/post-filter.pipe';
+import { TagRemovePipe } from './pipes/tag-remove.pipe';
 
 @NgModule({
-	declarations: [MainComponent, ContentShortnerPipe, PostSearchPipe],
+	declarations: [
+		MainComponent,
+		ContentShortnerPipe,
+		PostFilterPipe,
+		TagRemovePipe
+	],
 	imports: [
 		CommonModule,
 		MainRoutingModule,
