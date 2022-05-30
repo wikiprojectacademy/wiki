@@ -153,6 +153,28 @@ export abstract class FirebaseCrudService<T, ID, S>
 	}
 
 	/**
+	 * Add a document with autoId in sub collection of parent document, fetched by id
+	 * @param id parent document identifier
+	 * @param content object to write
+	 */
+	addDocToSubCollectionWithCustomId(
+		parentId: ID,
+		childId: ID,
+		content: any
+	): Promise<void> {
+		const docReference: AngularFirestoreDocument<T> = this.firebase
+			.collection<T>(`${this.base}`)
+			.doc<T>(`${parentId}`);
+		return docReference
+			.collection(this.sub)
+			.doc(`${childId}`)
+			.set(content)
+			.then(document => {
+				console.log('Document in sub collection was added');
+			});
+	}
+
+	/**
 	 * Return current collection data, without metadata, trigger new values, when
 	 * some documents from collection will be removed or added. Attach id of document,
 	 * to each returned object in 'id' field.
@@ -175,7 +197,7 @@ export abstract class FirebaseCrudService<T, ID, S>
 	}
 
 	/**
-	 * Similar to getCollectionShapshot(), but return live updates, and append for
+	 * Similar to getCollectionSnapshot(), but return live updates, and append for
 	 * each document his id, that allow to us query sub documents, or change existed
 	 */
 	getCollectionWithIds(): Observable<T[]> {
