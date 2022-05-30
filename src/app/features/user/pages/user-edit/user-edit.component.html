@@ -35,9 +35,17 @@
 					placeholder="pat@example.com"
 					formControlName="email"
 				/>
-				<mat-error *ngIf="form.controls['email'].invalid"
-					>Enter the correct email</mat-error
-				>
+				<mat-error *ngIf="form.controls['email'].invalid">
+					<span *ngIf="form.controls['email'].errors?.['required']">
+						This filed is required
+					</span>
+					<span *ngIf="form.controls['email'].errors?.['email']">
+						Enter the correct email
+					</span>
+					<span *ngIf="form.controls['email'].errors?.['emailExists']">
+						Email already exist
+					</span>
+				</mat-error>
 			</mat-form-field>
 
 			<mat-form-field appearance="outline">

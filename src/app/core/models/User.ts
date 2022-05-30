@@ -13,4 +13,5 @@ export interface IUser {
 	roleId?: string;
 	isActivated?: boolean;
 	roleName?: string;
+	isAdmin?: boolean;
 }
