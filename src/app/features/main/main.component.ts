@@ -79,6 +79,10 @@ export class MainComponent implements OnInit {
 		};
 	}
 
+	changeSearchPhrase(text: any) {
+		this.searchParams.phrase = text.value;
+	}
+
 	initDB() {
 		this.firebaseStorage.initDB();
 	}

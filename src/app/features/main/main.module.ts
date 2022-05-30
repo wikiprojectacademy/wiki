@@ -5,17 +5,21 @@ import { MainComponent } from './main.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { ContentShortnerPipe } from './pipes/content-shortner.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { PostFilterPipe } from './pipes/post-filter.pipe';
 import { TagRemovePipe } from './pipes/tag-remove.pipe';
+import { MatInputModule } from '@angular/material/input';
+import { PostSearchPipe } from './pipes/post-search.pipe';
 
 @NgModule({
 	declarations: [
 		MainComponent,
 		ContentShortnerPipe,
 		PostFilterPipe,
-		TagRemovePipe
+		TagRemovePipe,
+  PostSearchPipe
 	],
 	imports: [
 		CommonModule,
@@ -23,7 +27,9 @@ import { TagRemovePipe } from './pipes/tag-remove.pipe';
 		MatCardModule,
 		MatRippleModule,
 		MatButtonModule,
-		MatIconModule
+		MatIconModule,
+		MatFormFieldModule,
+		MatInputModule
 	]
 })
 export class MainModule {}

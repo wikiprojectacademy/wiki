@@ -59,6 +59,28 @@
 </nav>
 
 <main [ngClass]="isOpened ? 'post-list post-list_opened' : ' post-list'">
+	<div class="search-block">
+		<!-- <mat-form-field
+			class="search"
+			[floatLabel]="'never'"
+		>
+			<input
+				placeholder="Search"
+				matNativeControl
+				[value]="searchParams.phrase"
+			/>
+		</mat-form-field> -->
+		<input
+			type="text"
+			class="search"
+			placeholder="search"
+			(input)="changeSearchPhrase($event.target)"
+		/>
+		<button mat-button>
+			<mat-icon>add</mat-icon>
+			Add new post
+		</button>
+	</div>
 	<button
 		mat-button
 		(click)="isOpened = true"
@@ -66,14 +88,16 @@
 	>
 		Show Categories
 	</button>
+
 	<div class="post-list__content">
 		<mat-card
 			matRipple
 			class="post"
-			[routerLink]="post.id"
+			[routerLink]="['../post', post.id]"
 			*ngFor="
 				let post of posts
 					| postFilter: searchParams.categoryId:searchParams.subCategoryId
+					| postSearch: searchParams.phrase
 			"
 		>
 			<mat-card-title>{{ post.title }}</mat-card-title>
