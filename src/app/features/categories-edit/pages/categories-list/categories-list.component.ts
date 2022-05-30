@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CategoryService } from '../../services/categories.service';
 
 import { ICategoryFull as Category } from '../../models/icategory-full';
@@ -9,22 +9,13 @@ import { ICategoryFull as Category } from '../../models/icategory-full';
 	templateUrl: './categories-list.component.html',
 	styleUrls: ['./categories-list.component.scss']
 })
-export class CategoriesListComponent implements OnInit, OnDestroy {
+export class CategoriesListComponent {
 	categories: Category[];
 	categories$ = new Observable<Category[]>();
-	// catSub = new Subscription();
 	isLoading = true;
 
-	timer;
-
-	constructor(private categoryService: CategoryService) {}
-
-	ngOnInit(): void {
+	constructor(private categoryService: CategoryService) {
 		this.getCategories();
-	}
-
-	ngOnDestroy(): void {
-		clearInterval(this.timer);
 	}
 
 	getCategories(): void {
