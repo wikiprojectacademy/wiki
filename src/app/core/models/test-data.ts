@@ -12,7 +12,10 @@ const admin = {
 	name: 'super admin',
 	hasUsers: true,
 	canModifyCategory: true,
-	canModifyPost: true
+	canModifyPost: true,
+	isActivated: true,
+	isActive: true,
+	isDatabaseInitialized: false
 };
 
 // Roles
