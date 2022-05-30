@@ -14,7 +14,7 @@
 			"email": "user1@mail.com",
 			"firstName": "default",
 			"lastName": "user",
-			"password": "password12345",
+			"password": "Password12345",
 			"roleId": "1"
 		},
 		{
@@ -22,7 +22,7 @@
 			"email": "user2@mail.com",
 			"firstName": "default",
 			"lastName": "user",
-			"password": "password12345",
+			"password": "Password12345",
 			"roleId": "1"
 		}
 	],

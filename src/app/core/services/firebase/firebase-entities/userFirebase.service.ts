@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseCrudService } from '@core/services/firebase/firebase-api/firebaseCrud.service';
 import { IUser } from '@core/models/User';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { lastValueFrom, map, Observable, take } from 'rxjs';
 import firebase from 'firebase/compat';
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 
@@ -38,14 +38,6 @@ export class UserFirebaseService extends FirebaseCrudService<
 		return this.getCollection();
 	}
 
-	getUsersWithRoleId(id: string): Observable<IUser[]> {
-		return this.getUsersWhere('roleId', '==', id);
-	}
-
-	addUserWithCustomId(id: string, user: IUser): Promise<void> {
-		return this.addDoc(id, user);
-	}
-
 	getUsersWhere(
 		fieldName: string,
 		operationStr: WhereFilterOp = '==',
@@ -56,5 +48,44 @@ export class UserFirebaseService extends FirebaseCrudService<
 				ref.where(fieldName, operationStr, value)
 			)
 			.valueChanges();
+	}
+
+	getUsersWithRoleId(id: string): Observable<IUser[]> {
+		return this.getUsersWhere('roleId', '==', id);
+	}
+
+	addUserWithCustomId(id: string, user: IUser): Promise<void> {
+		return this.addDoc(id, user);
+	}
+
+	getUserByEmail(email: string): Promise<IUser> {
+		const userFromDatabase$ = this.getUsers$().pipe(
+			map(data => {
+				const user = data.find(user => user.email === email);
+				if (!user) {
+					throw Error('User not found in database');
+				}
+
+				return user;
+			}),
+			take(1)
+		);
+
+		return lastValueFrom(userFromDatabase$).then((user: IUser) => user);
+	}
+
+	getUserDataByEmail(email: string): Observable<IUser> {
+		return this.getUsers$().pipe(
+			map(data => {
+				const user = data.find(user => user.email === email);
+
+				if (!user) {
+					throw Error('User not found in database');
+				}
+
+				return user;
+			}),
+			take(1)
+		);
 	}
 }

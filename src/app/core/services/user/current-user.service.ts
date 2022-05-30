@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
 	BehaviorSubject,
 	map,
@@ -11,6 +10,7 @@ import {
 } from 'rxjs';
 import { IUser } from '@core/models/User';
 import { UserFirebaseService } from '../firebase/firebase-entities/userFirebase.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
 	providedIn: 'root'
@@ -41,10 +41,10 @@ export class CurrentUserService {
 		);
 
 		this.isUserLogin$ = this.currentUser$.pipe(
-			tap(user => {
-				if (user?.roleId !== '' && user?.isAdmin) {
+			tap(userData => {
+				if (userData?.roleId !== '' && userData?.isAdmin) {
 					this.isAdmin.next(true);
-					this.isDatabaseInitialized.next(user?.isDatabaseInitialized);
+					this.isDatabaseInitialized.next(userData?.isDatabaseInitialized);
 				} else {
 					this.isAdmin.next(false);
 				}
