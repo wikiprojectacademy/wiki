@@ -1,9 +1,8 @@
+@import 'variable.scss';
+
 :host {
-	// width: 100%;
-	// min-height: 100%;
 	flex-grow: 1;
 	background-color: #eee;
-	// border: 3px solid #ff0;
 }
 
 header {
@@ -25,12 +24,10 @@ header {
 
 	.category {
 		display: flex;
-		// flex-basis: 700px;
 		margin-bottom: 7px;
 		cursor: pointer;
 		transition: transform 0.1s;
-		// max-width: 700px;
-		width: clamp(300px, 95vw, 700px);
+		width: clamp(300px, 95vw, 1200px);
 
 		&:hover {
 			transform: translateY(-2px);
@@ -40,16 +37,45 @@ header {
 		}
 
 		.labels,
-		content {
-			width: 50%;
+		.content {
 			& * {
 				margin: 0;
 			}
 		}
 
+		.labels {
+			width: 70%;
+		}
+
+		.content {
+			width: 30%;
+		}
+
 		.common-label {
 			opacity: 0.8;
 			font-weight: bold;
+		}
+
+		@media screen and (max-width: $screen-width-small) {
+			flex-direction: column;
+
+			.labels,
+			.content {
+				width: 100%;
+			}
+
+			.labels {
+				width: 100%;
+			}
+
+			.content {
+				margin-top: 5px;
+				width: 100%;
+				display: flex;
+				gap: 5px;
+				justify-content: space-between;
+				flex-wrap: wrap;
+			}
 		}
 	}
 }

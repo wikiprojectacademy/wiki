@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { map, of, shareReplay, switchMap, takeLast } from 'rxjs';
+import { catchError, map, of, shareReplay, switchMap } from 'rxjs';
 import { IUser } from '@core/models/User';
 import { UserFirebaseService } from '../firebase/firebase-entities/userFirebase.service';
 
@@ -11,7 +11,9 @@ export class CurrentUserService {
 	public currentUser$ = this.afAuth.user.pipe(
 		switchMap(user =>
 			user
-				? this.userFireStore.getUserData(user.uid)
+				? this.userFireStore
+						.getUserDataByEmail(user.email)
+						.pipe(catchError(() => of({ roleId: '' } as IUser)))
 				: of({ roleId: '' } as IUser)
 		),
 		shareReplay(1)

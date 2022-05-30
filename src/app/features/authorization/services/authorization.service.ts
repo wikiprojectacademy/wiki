@@ -31,17 +31,9 @@ export class AuthorizationService {
 			);
 
 			//update User in Firestore
-			await this.userFireStore.updateUser(user.uid, newUsersData);
+			newUsersData.email = newUsersData.email.toLowerCase();
+			await this.userFireStore.updateUser(currentUsersData.id, newUsersData);
 
-			//update UserData
-			if (
-				currentUsersData.firstName !== newUsersData.firstName ||
-				currentUsersData.lastName !== newUsersData.lastName
-			) {
-				await userData.updateProfile({
-					displayName: newUsersData.firstName + ' ' + newUsersData.lastName
-				});
-			}
 			//update UserEmail
 			if (currentUsersData.email !== newUsersData.email) {
 				await userData.updateEmail(newUsersData.email);
@@ -50,6 +42,17 @@ export class AuthorizationService {
 			//update UserPassword
 			if (currentUsersData.password !== newUsersData.password) {
 				await userData.updatePassword(newUsersData.password);
+			}
+
+			//update UserData
+			if (
+				currentUsersData.firstName !== newUsersData.firstName ||
+				currentUsersData.lastName !== newUsersData.lastName
+			) {
+				//update User in Firestore
+				await userData.updateProfile({
+					displayName: newUsersData.firstName + ' ' + newUsersData.lastName
+				});
 			}
 		} catch (error) {
 			console.log('error: ', error);
@@ -61,7 +64,6 @@ export class AuthorizationService {
 		return this.afAuth
 			.createUserWithEmailAndPassword(user.email, user.password)
 			.then((result: UserCredential) => {
-				console.log('result: ', result);
 				result.user.updateProfile({
 					displayName: user.firstName + ' ' + user.lastName,
 					photoURL:
@@ -70,13 +72,12 @@ export class AuthorizationService {
 				const userId = result.user.uid;
 				user.roleId = '1';
 				user.id = userId;
+				user.isActivated = true;
 				// add user to Firestore
 				this.userFireStore.addUserWithCustomId(userId, user);
+				return result;
 			})
 			.catch(error => {
-				// console.log('Auth Service: register error', error);
-				// console.log('error code', error.code);
-				// console.log('error', error);
 				return error.code ? { isValid: false, message: error.message } : error;
 			});
 	}
@@ -84,14 +85,38 @@ export class AuthorizationService {
 	loginUser(email: string, password: string): Promise<any> {
 		return this.afAuth
 			.signInWithEmailAndPassword(email, password)
-			.then(result => {
-				console.log('resultUser: ', result);
-			})
+			.then((result: UserCredential) => result)
 			.catch(error => {
-				// console.log('Auth Service: login error...');
-				// console.log('error code', error.code);
-				// console.log('error', error);
 				return error.code ? { isValid: false, message: error.message } : error;
 			});
+	}
+
+	private registerUserFromDatabase(user: IUser): Promise<any> {
+		return this.afAuth
+			.createUserWithEmailAndPassword(user.email, user.password)
+			.then((result: UserCredential) => {
+				result.user.updateProfile({
+					displayName: user.firstName + ' ' + user.lastName,
+					photoURL:
+						'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
+				});
+				this.userFireStore.updateUser(user.id, { isActivated: true });
+				return result;
+			})
+			.catch(error => {
+				return error.code ? { isValid: false, message: error.message } : error;
+			});
+	}
+
+	async loginUserFromDatabase(email: string, password: string): Promise<any> {
+		const user = await this.userFireStore.getUserByEmail(email);
+
+		if (user.isActivated) {
+			// login user
+			return this.loginUser(email, password);
+		} else {
+			// register user
+			return this.registerUserFromDatabase(user);
+		}
 	}
 }
