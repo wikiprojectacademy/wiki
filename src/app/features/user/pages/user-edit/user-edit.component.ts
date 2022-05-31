@@ -1,6 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription, take } from 'rxjs';
+import {
+	AbstractControl,
+	AsyncValidatorFn,
+	FormBuilder,
+	FormGroup,
+	ValidationErrors,
+	Validators
+} from '@angular/forms';
+import { map, Observable, Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '@shared/services/snackbar.service';
 import { IRole } from '@core/models/Role';
@@ -37,7 +44,11 @@ export class UserEditComponent implements OnInit, OnDestroy {
 				'',
 				[Validators.required, Validators.minLength(2), Validators.maxLength(25)]
 			],
-			email: ['', [Validators.required, Validators.email]],
+			email: [
+				'',
+				[Validators.required, Validators.email],
+				[this.emailValidator()]
+			],
 			roleId: ['']
 		});
 	}
@@ -48,6 +59,19 @@ export class UserEditComponent implements OnInit, OnDestroy {
 			this.id = params['id'];
 			this.getUserById(params['id']);
 		});
+	}
+
+	emailValidator(): AsyncValidatorFn {
+		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+			return this.userFirebaseService
+				.getUsersWhere('email', '==', control.value)
+				.pipe(
+					take(1),
+					map(res => {
+						return res.length ? { emailExists: true } : null;
+					})
+				);
+		};
 	}
 
 	getUserById(id: string): void {
@@ -66,7 +90,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
 	editUser(): void {
 		if (this.form.valid) {
-			if (this.id !== '0') {
+			if (!this.user.isAdmin) {
 				this.userFirebaseService.updateUser(this.id, this.form.value).then(
 					() => {
 						if (this.form.value.roleId !== this.user.roleId) {
