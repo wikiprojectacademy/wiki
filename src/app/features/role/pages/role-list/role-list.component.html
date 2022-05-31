@@ -109,7 +109,7 @@
 						color="warn"
 						[disabled]="element.id === '0' || element.hasUsers"
 						matTooltip="Delete role {{ element.name }}"
-						(click)="onDelete(element)"
+						(click)="confirmationDelete(element)"
 					>
 						<mat-icon>delete</mat-icon>
 					</button>

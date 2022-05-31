@@ -9,6 +9,8 @@ import { IRole } from '@core/models/Role';
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 import { SnackBarService } from '@shared/services/snackbar.service';
+import { ConfirmationSheetChoice } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from '@core/services/confirmationDialog/confirmationDialog.service';
 
 @Component({
 	selector: 'app-user',
@@ -29,6 +31,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
 	public dataSource: MatTableDataSource<IUser>;
 
 	constructor(
+		private confirmationDialogService: ConfirmationDialogService,
 		private userFirebaseService: UserFirebaseService,
 		private roleFirebaseService: RoleFirebaseService,
 		private snackBService: SnackBarService,
@@ -83,11 +86,23 @@ export class UserListComponent implements OnInit, AfterViewInit {
 		}
 	}
 
+	confirmationDelete(user: IUser) {
+		this.confirmationDialogService
+			.ask(`Are you sure to delete user ${user.firstName} ${user.lastName}?`)
+			.then(result => {
+				if (result === ConfirmationSheetChoice.CONFIRMED) {
+					this.onDelete(user);
+				}
+			});
+	}
+
 	onDelete(user: IUser): void {
-		if (user.id !== '0') {
+		if (!user.isAdmin) {
 			this.userFirebaseService.deleteUser(user.id).then(
 				() => {
-					this.snackBService.openSnackBar('User account deleted');
+					this.snackBService.openSnackBar(
+						`The ${user.firstName} ${user.lastName} user has deleted successfully`
+					);
 					this.userFirebaseService
 						.getUsersWithRoleId(user.roleId)
 						.pipe(take(1))

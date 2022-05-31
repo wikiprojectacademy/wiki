@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SnackBarService } from '@shared/services/snackbar.service';
-
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 import { Observable } from 'rxjs';
 import { ICategory } from '@core/models/Category';
@@ -35,7 +34,7 @@ export class RoleAddComponent {
 			hasUsers: [false],
 			canModifyCategory: [false],
 			canModifyPost: [false],
-			availableCategoriesToView: []
+			availableCategoriesToView: [[]]
 		});
 	}
 
@@ -55,12 +54,17 @@ export class RoleAddComponent {
 		if (this.form.valid) {
 			this.roleFirebaseService.addRole(this.newRole).then(
 				roleId => {
-					this.form.value.availableCategoriesToView.map(categoryId => {
-						this.roleCategoryFirebaseService.addRoleCategoryEntry({
-							roleId,
-							categoryId
+					if (
+						this.form.value.availableCategoriesToView &&
+						this.form.value.availableCategoriesToView.length
+					) {
+						this.form.value.availableCategoriesToView.map(categoryId => {
+							this.roleCategoryFirebaseService.addRoleCategoryEntry({
+								roleId,
+								categoryId
+							});
 						});
-					});
+					}
 					this.router.navigate(['/role']);
 				},
 				error => {
