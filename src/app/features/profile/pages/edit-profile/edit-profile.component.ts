@@ -1,15 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { IUser } from '@core/models/User';
-import { passwordValidation } from '@shared/validators/validations';
-import { MatDialog } from '@angular/material/dialog';
-import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
-import { CurrentUserService } from '@core/services/user/current-user.service';
-import { Observable, take } from 'rxjs';
-import { AuthorizationService } from 'src/app/features/authorization/services/authorization.service';
 import { Router } from '@angular/router';
-import { ComponentCanDeactivate } from './_guard/pending-change.guard';
+import {
+	FormGroup,
+	FormControl,
+	Validators,
+	AsyncValidatorFn,
+	AbstractControl,
+	ValidationErrors
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { IUser } from '@core/models/User';
+import { CurrentUserService } from '@core/services/user/current-user.service';
+import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
+import { passwordValidation } from '@shared/validators/validations';
 import { SnackBarService } from '@shared/services/snackbar.service';
+import { map, Observable, take } from 'rxjs';
+import { AuthorizationService } from 'src/app/features/authorization/services/authorization.service';
+import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
+import { ComponentCanDeactivate } from './_guard/pending-change.guard';
 
 @Component({
 	selector: 'app-edit-profile',
@@ -32,7 +40,11 @@ export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 			Validators.minLength(2),
 			Validators.maxLength(25)
 		]),
-		email: new FormControl('', [Validators.required, Validators.email]),
+		email: new FormControl(
+			'',
+			[Validators.required, Validators.email],
+			[this.emailValidator()]
+		),
 		password: new FormControl('', [
 			Validators.required,
 			passwordValidation,
@@ -42,6 +54,7 @@ export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 
 	constructor(
 		public dialog: MatDialog,
+		private userFirebaseService: UserFirebaseService,
 		private currentUserService: CurrentUserService,
 		private autorizationService: AuthorizationService,
 		private router: Router,
@@ -100,5 +113,18 @@ export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 		} else if (this.changeProfileForm.hasError('pattern', inputField)) {
 			return 'The	password must contain minimum six	characters, at least one letter and one number';
 		} else return '';
+	}
+
+	emailValidator(): AsyncValidatorFn {
+		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+			return this.userFirebaseService
+				.getUsersWhere('email', '==', control.value)
+				.pipe(
+					take(1),
+					map(res => {
+						return res.length ? { emailExists: true } : null;
+					})
+				);
+		};
 	}
 }
