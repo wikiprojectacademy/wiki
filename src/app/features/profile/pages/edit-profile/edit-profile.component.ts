@@ -122,7 +122,10 @@ export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 				.pipe(
 					take(1),
 					map(res => {
-						return res.length ? { emailExists: true } : null;
+						if (this.user.email !== this.changeProfileForm.get('email').value) {
+							return res.length ? { emailExists: true } : null;
+						}
+						return null;
 					})
 				);
 		};
