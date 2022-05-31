@@ -52,13 +52,11 @@ export class RoleListComponent implements AfterViewInit {
 					roles.forEach(role => {
 						this.roleCategoryFirebaseService
 							.getRoleCategoriesByRoleId(role.id)
-							.pipe(take(1))
 							.subscribe((resul: IRoleCategoryPair[]) => {
 								let categoriesIds = resul.map(item => item.categoryId);
 								if (!!categoriesIds.length) {
 									this.categoryFirebaseService
 										.getCategoriesByIds(categoriesIds)
-										.pipe(take(1))
 										.subscribe((categoriesName: ICategory[]) => {
 											role.availableCategoriesToView = categoriesName || [];
 										});
