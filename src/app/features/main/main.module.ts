@@ -12,6 +12,7 @@ import { PostFilterPipe } from './pipes/post-filter.pipe';
 import { TagRemovePipe } from './pipes/tag-remove.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { PostSearchPipe } from './pipes/post-search.pipe';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
 	declarations: [
@@ -19,7 +20,7 @@ import { PostSearchPipe } from './pipes/post-search.pipe';
 		ContentShortnerPipe,
 		PostFilterPipe,
 		TagRemovePipe,
-  PostSearchPipe
+		PostSearchPipe
 	],
 	imports: [
 		CommonModule,
@@ -29,7 +30,8 @@ import { PostSearchPipe } from './pipes/post-search.pipe';
 		MatButtonModule,
 		MatIconModule,
 		MatFormFieldModule,
-		MatInputModule
+		MatInputModule,
+		SharedModule
 	]
 })
 export class MainModule {}

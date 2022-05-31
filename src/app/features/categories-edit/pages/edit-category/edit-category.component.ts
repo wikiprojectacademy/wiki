@@ -19,16 +19,21 @@ export class EditCategoryComponent {
 	form: FormGroup;
 	isLoading: boolean;
 	roles$: Observable<RoleDB[]>;
+	roles: RoleDB[];
 	category: Category = {
 		id: '',
 		name: '',
-		createdBy: '0',
+		// createdBy: '0',
+		// uncoment in future
+		createdBy: '2',
 		subCategories: [],
 		availableRolesToView: [],
 		subCategoriesFull: [],
 		rolesFull: [],
 		createdByFull: { firstName: 'NO', lastName: 'DATA' }
 	};
+	categoryStartState: Category;
+	// categorySnapshot: Category;
 	// FORMAT FOR DB
 	get categoryDB(): CategoryDB {
 		return {
@@ -61,6 +66,9 @@ export class EditCategoryComponent {
 	) {
 		let id = this.route.snapshot.paramMap.get('id');
 		this.roles$ = this.roleService.getRolesAll();
+		this.roles$.subscribe(roles => {
+			this.roles = roles;
+		});
 
 		if (id !== 'new') {
 			this.loadCategoryFromDB(id);
@@ -95,7 +103,11 @@ export class EditCategoryComponent {
 		const subscr = this.categoryService
 			.getCategoryById(categoryId)
 			.subscribe(cat => {
+				// console.log(cat);
 				this.category = cat;
+				this.categoryStartState = { ...this.category };
+				// console.log(this.categoryStartState);
+
 				this.updateForm();
 				this.isLoading = false;
 				subscr.unsubscribe();
@@ -130,6 +142,7 @@ export class EditCategoryComponent {
 	editCategory(): void {
 		this.snackbarService.openSnackBar('In Development', 'OK', 3000);
 		this.isLoading = false;
+		this.categoryService.editCategory(this.category, this.categoryStartState);
 	}
 
 	addCategory(): void {
@@ -165,9 +178,18 @@ export class EditCategoryComponent {
 		formOutput.subCategories.forEach(subCategoryName => {
 			subCategoriesArray.push({ name: subCategoryName });
 		});
+		const rolesArray: RoleDB[] = [];
+		formOutput.roles.forEach(roleID => {
+			rolesArray.push(
+				this.roles.filter(role => {
+					return role.id == roleID;
+				})[0]
+			);
+		});
 
 		this.category.subCategoriesFull = subCategoriesArray;
 		this.category.availableRolesToView = formOutput.roles;
+		this.category.rolesFull = rolesArray;
 		this.category.name = formOutput.name;
 	}
 

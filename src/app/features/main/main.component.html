@@ -1,3 +1,7 @@
+<app-stripe-loader
+	[isLoading]="!isPostLoaded && !isCategoriesLoaded"
+></app-stripe-loader>
+
 <nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
 	<div class="categories__content">
 		<h2 class="header">
@@ -60,34 +64,36 @@
 
 <main [ngClass]="isOpened ? 'post-list post-list_opened' : ' post-list'">
 	<div class="search-block">
-		<!-- <mat-form-field
-			class="search"
-			[floatLabel]="'never'"
+		<button
+			mat-icon-button
+			(click)="isOpened = true"
+			class="small-screen-element"
 		>
-			<input
-				placeholder="Search"
-				matNativeControl
-				[value]="searchParams.phrase"
-			/>
-		</mat-form-field> -->
+			<mat-icon>menu</mat-icon>
+		</button>
 		<input
 			type="text"
 			class="search"
-			placeholder="search"
+			placeholder="🔍 search"
 			(input)="changeSearchPhrase($event.target)"
 		/>
-		<button mat-button>
+		<button
+			mat-button
+			class="button-add"
+			routerLink="/post/add"
+		>
 			<mat-icon>add</mat-icon>
 			Add new post
 		</button>
+
+		<button
+			mat-icon-button
+			class="button-add__icon"
+			routerLink="/post/add"
+		>
+			<mat-icon>add</mat-icon>
+		</button>
 	</div>
-	<button
-		mat-button
-		(click)="isOpened = true"
-		class="small-screen-element"
-	>
-		Show Categories
-	</button>
 
 	<div class="post-list__content">
 		<mat-card

@@ -22,6 +22,7 @@ import { CategoryFirebaseService } from '@core/services/firebase/firebase-entiti
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
 import { RolesService } from './roles.service';
+import { CategoriesUpdateService } from './categories-update.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -38,7 +39,8 @@ export class CategoryService {
 		private categoriesFbSevice: CategoryFirebaseService,
 		private rolesService: RolesService,
 		private junctionService: RoleCategoryFirebaseService,
-		private userFbService: UserFirebaseService
+		private userFbService: UserFirebaseService,
+		private categoriesUpdateService: CategoriesUpdateService
 	) {}
 
 	getCategoryAll(): Observable<Category[]> {
@@ -113,8 +115,8 @@ export class CategoryService {
 		});
 	}
 
-	editCategory(category: Category): void {
-		console.log('got in service');
+	editCategory(modCategory: Category, origCategory: Category): void {
+		return this.categoriesUpdateService.editCategory(modCategory, origCategory);
 	}
 
 	deleteCategory(category: Category): Promise<void> {

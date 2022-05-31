@@ -6,13 +6,15 @@ $color4: #0af;
 $duration: 2s;
 
 :host {
+	z-index: 1000;
 	position: absolute;
-	width: 100%;
+	width: 100vw;
 }
 
 @mixin stripe($color, $delay) {
 	$color-light: lighten($color, 40%);
 	$color-dark: darken($color, 40%);
+
 	background: linear-gradient(90deg, $color-dark, #{$color} 50%, $color-light);
 	box-shadow: 0 5px 5px rgba($color, $alpha: 0.3),
 		0 2px 2px rgba($color, $alpha: 0.3);
