@@ -5,16 +5,21 @@ import { ICategory } from '@core/models/Category';
 import { ISubCategory } from '@core/models/SubCategory';
 import { IRoleCategoryPair } from '@core/models/RoleCategoryPair';
 
+// How admin role looks like
+const admin = {
+	// Admin
+	id: '0',
+	name: 'super admin',
+	hasUsers: true,
+	canModifyCategory: true,
+	canModifyPost: true,
+	isActivated: true,
+	isActive: true,
+	isDatabaseInitialized: false
+};
+
 // Roles
 export const rolesMock: IRole[] = [
-	{
-		// Admin
-		id: '0',
-		name: 'super admin',
-		hasUsers: true,
-		canModifyCategory: true,
-		canModifyPost: true
-	},
 	// New created user role
 	{
 		id: '1',
@@ -27,38 +32,21 @@ export const rolesMock: IRole[] = [
 
 // Users
 export const usersMock: IUser[] = [
-	// Administrator
-	{
-		id: '0',
-		email: 'super.admin@gmail.com',
-		firstName: 'super',
-		lastName: 'admin',
-		password: 'admin12345',
-		roleId: '0'
-	},
 	// New registered user
 	{
-		id: '3',
+		id: '2',
 		email: 'user1@mail.com',
-		firstName: 'default',
-		lastName: 'user',
-		password: 'password123',
-		roleId: '1'
-	},
-	{
-		id: '4',
-		email: 'user2@mail.com',
 		firstName: 'default',
 		lastName: 'user',
 		password: 'password12345',
 		roleId: '1'
 	},
 	{
-		id: '5',
-		email: 'user3@mail.com',
+		id: '3',
+		email: 'user2@mail.com',
 		firstName: 'default',
 		lastName: 'user',
-		password: 'password123456789',
+		password: 'password12345',
 		roleId: '1'
 	}
 ];
@@ -69,66 +57,93 @@ export const categoriesMock: ICategory[] = [
 		id: '6',
 		name: 'Programming Languages',
 		createdBy: '2',
-		subCategories: ['5', '6'],
-		availableRolesToView: ['2']
+		subCategories: ['lang-1', 'lang-2']
 	},
 	{
 		id: '7',
 		name: 'Automobiles',
 		createdBy: '2',
-		subCategories: [],
-		availableRolesToView: ['3']
+		subCategories: ['auto-1', 'auto-2', 'auto-3']
 	},
 	{
 		id: '8',
 		name: 'Notebooks',
-		createdBy: '2',
-		subCategories: ['11', '12', '13', '14'],
-		availableRolesToView: ['3']
-	}
-];
-
-// Junction Role Category
-export const roleCategoryMocks: IRoleCategoryPair[] = [
-	{
-		categoryId: '4',
-		roleId: '2'
+		createdBy: '3',
+		subCategories: ['note-1', 'note-2', 'note-3', 'note-4']
 	},
 	{
-		categoryId: '9',
-		roleId: '3'
-	},
-	{
-		categoryId: '8',
-		roleId: '3'
+		id: '9',
+		name: 'Animals',
+		createdBy: '3',
+		subCategories: ['animal-1', 'animal-2', 'animal-3', 'animal-4']
 	}
 ];
 
 // Sub Categories
 export const subCategoriesMock: ISubCategory[] = [
 	{
-		id: '9',
+		id: 'lang-1',
 		name: 'Backend'
 	},
 	{
-		id: '10',
+		id: 'lang-2',
 		name: 'Frontend'
 	},
 	{
-		id: '11',
+		id: 'note-1',
 		name: 'HP'
 	},
 	{
-		id: '12',
+		id: 'note-2',
 		name: 'Lenovo'
 	},
 	{
-		id: '13',
+		id: 'note-3',
 		name: 'Apple'
 	},
 	{
-		id: '14',
+		id: 'note-4',
 		name: 'Acer'
+	},
+	{
+		id: 'animal-1',
+		name: 'Cats'
+	},
+	{
+		id: 'animal-2',
+		name: 'Dogs'
+	},
+	{
+		id: 'animal-3',
+		name: 'Lions'
+	},
+	{
+		id: 'animal-4',
+		name: 'Crocodiles'
+	},
+	{
+		id: 'car-1',
+		name: 'Tesla'
+	}
+];
+
+// Junction Role Category
+export const roleCategoryMocks: IRoleCategoryPair[] = [
+	{
+		categoryId: '6',
+		roleId: '1'
+	},
+	{
+		categoryId: '7',
+		roleId: '1'
+	},
+	{
+		categoryId: '8',
+		roleId: '1'
+	},
+	{
+		categoryId: '9',
+		roleId: '1'
 	}
 ];
 
@@ -138,20 +153,47 @@ export const postsMock: IPost[] = [
 		title: 'Java',
 		contentHTML: 'OOP oriented language',
 		categoryId: '6',
-		subCategory: '9'
+		subCategory: 'lang-1'
 	},
 	{
 		id: '16',
 		title: 'Java Script',
 		contentHTML: 'Runs inside browser',
 		categoryId: '6',
-		subCategory: '10'
+		subCategory: 'lang-2'
 	},
 	{
 		id: '17',
 		title: 'Apple M1 PRO',
 		contentHTML: 'The most powerful processor',
 		categoryId: '8',
-		subCategory: '13'
+		subCategory: 'note-3'
+	},
+	{
+		id: '18',
+		title: 'Lenovo Ideapad 310-15 IKB',
+		contentHTML: 'Ideal for studying',
+		categoryId: '8',
+		subCategory: 'note-2'
+	},
+	{
+		id: '19',
+		title: 'British',
+		contentHTML: 'Programmers love cats',
+		categoryId: '6',
+		subCategory: 'animal-1'
+	},
+	{
+		id: '20',
+		title: 'M40',
+		contentHTML: 'Машина для пацанів',
+		categoryId: '7',
+		subCategory: 'car-1'
+	},
+	{
+		id: '21',
+		title: 'Post without subcategory',
+		contentHTML: 'It is a general description of animals',
+		categoryId: '9'
 	}
 ];

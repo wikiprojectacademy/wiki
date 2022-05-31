@@ -8,10 +8,11 @@ export interface IUser {
 	id?: string;
 	firstName?: string;
 	lastName?: string;
+	isAdmin?: boolean;
 	email?: string;
 	password?: string;
 	roleId?: string;
 	isActivated?: boolean;
 	roleName?: string;
-	isAdmin?: boolean;
+	isDatabaseInitialized?: boolean;
 }

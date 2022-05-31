@@ -3,7 +3,6 @@ import { FirebaseCrudService } from '@core/services/firebase/firebase-api/fireba
 import { IUser } from '@core/models/User';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { lastValueFrom, map, Observable, take } from 'rxjs';
-import { IRole } from '@core/models/Role';
 import firebase from 'firebase/compat';
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 
@@ -22,8 +21,6 @@ export class UserFirebaseService extends FirebaseCrudService<
 	addUser(user: IUser): Promise<string> {
 		return this.addDocWithAutoId(user);
 	}
-
-	addUserWithRole(userId: string, user: IUser, role: IRole) {}
 
 	updateUser(id: string, content: IUser): Promise<void> {
 		return this.updateDoc(id, content);

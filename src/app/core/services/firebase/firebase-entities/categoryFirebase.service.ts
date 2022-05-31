@@ -68,4 +68,16 @@ export class CategoryFirebaseService extends FirebaseCrudService<
 	addSubCategory(categoryId: string, subCategory: ISubCategory) {
 		this.addDocToSubCollection(categoryId, subCategory);
 	}
+
+	addInSubCategoryWithCustomId(
+		categoryId: string,
+		subCategoryId: string,
+		subCategory: Partial<ISubCategory>
+	) {
+		this.addDocToSubCollectionWithCustomId(
+			categoryId,
+			subCategoryId,
+			subCategory
+		);
+	}
 }
