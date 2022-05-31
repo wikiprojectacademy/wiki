@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPost } from '@core/models/Post';
@@ -8,7 +8,8 @@ import Timestamp = firebase.firestore.Timestamp;
 @Component({
 	selector: 'app-post',
 	templateUrl: './post.component.html',
-	styleUrls: ['./post.component.scss']
+	styleUrls: ['./post.component.scss'],
+	encapsulation: ViewEncapsulation.None
 })
 export class PostComponent implements OnInit {
 	post: IPost | null = null;
