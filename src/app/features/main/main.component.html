@@ -69,7 +69,7 @@
 		<mat-card
 			matRipple
 			class="post"
-			[routerLink]="post.id"
+			[routerLink]="['/post/' + post.id]"
 			*ngFor="
 				let post of posts
 					| postFilter: searchParams.categoryId:searchParams.subCategoryId
