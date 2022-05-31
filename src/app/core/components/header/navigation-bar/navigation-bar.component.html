@@ -9,6 +9,7 @@
 			</button>
 
 -->
+<app-load-spinner [isLoading]="isLoading"></app-load-spinner>
 
 <button
 	mat-button
@@ -43,4 +44,12 @@
 	routerLink="/post/add"
 >
 	Add Post
+</button>
+<button
+	*ngIf="isAdmin | async"
+	mat-button
+	[disabled]="isDBInitialized || isLoading"
+	(click)="initDB()"
+>
+	{{ 'Init database' }}
 </button>

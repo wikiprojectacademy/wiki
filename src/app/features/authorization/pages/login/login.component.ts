@@ -29,18 +29,24 @@ export class LoginComponent {
 	onSubmit() {
 		this.isLoading = true;
 		this.authService
-			.loginUser(this.loginForm.value.email, this.loginForm.value.password)
+			.loginUserFromDatabase(
+				this.loginForm.value.email,
+				this.loginForm.value.password
+			)
 			.then(result => {
 				this.isLoading = false;
 
-				if (result?.isValid === false) {
-					// console.log('result.message: ', result.message);
+				if (result.isValid === false) {
 					this.snack.openSnackBar(result.message);
 				} else {
 					this.loginForm.reset();
 					this.isLoading = false;
 					this.router.navigate(['/main']);
 				}
+			})
+			.catch(error => {
+				this.isLoading = false;
+				this.snack.openSnackBar(error);
 			});
 	}
 

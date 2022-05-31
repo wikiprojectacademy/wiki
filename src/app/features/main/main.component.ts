@@ -46,8 +46,6 @@ export class MainComponent implements OnInit {
 	categories: Category[];
 	posts: Post[];
 
-	isDatabaseInitialized: boolean;
-
 	constructor(
 		private firebaseStorage: FirebaseStorageService,
 		private categoryService: CategoryService,
@@ -55,10 +53,6 @@ export class MainComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.firebaseStorage.isDBInitialized().subscribe(users => {
-			this.isDatabaseInitialized = users.length > 2;
-		});
-
 		this.categoryService.getCategoryAll().subscribe(response => {
 			this.categories = response;
 			this.isCategoriesLoaded = true;
@@ -81,9 +75,5 @@ export class MainComponent implements OnInit {
 
 	changeSearchPhrase(text: any) {
 		this.searchParams.phrase = text.value;
-	}
-
-	initDB() {
-		this.firebaseStorage.initDB();
 	}
 }

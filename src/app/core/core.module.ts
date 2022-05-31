@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
 	declarations: [
@@ -29,7 +30,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 		MatToolbarModule,
 		BrowserModule,
 		AppRoutingModule,
-		MatDialogModule
+		MatDialogModule,
+		SharedModule
 	],
 	exports: [HeaderComponent]
 })

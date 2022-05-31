@@ -38,18 +38,23 @@ export class RegisterComponent {
 
 	onSubmit() {
 		this.isLoading = true;
-		this.authService.registerUser(this.registerForm.value).then(result => {
-			this.isLoading = false;
-
-			if (result?.isValid === false) {
-				// console.log('result.message: ', result.message);
-				this.snack.openSnackBar(result.message);
-			} else {
-				this.registerForm.reset();
+		this.authService
+			.registerUser(this.registerForm.value)
+			.then(result => {
 				this.isLoading = false;
-				this.router.navigate(['/main']);
-			}
-		});
+
+				if (result.isValid === false) {
+					this.snack.openSnackBar(result.message);
+				} else {
+					this.registerForm.reset();
+					this.isLoading = false;
+					this.router.navigate(['/main']);
+				}
+			})
+			.catch(error => {
+				this.isLoading = false;
+				this.snack.openSnackBar(error);
+			});
 	}
 
 	getNameErrorMessage(inputField: string): string {

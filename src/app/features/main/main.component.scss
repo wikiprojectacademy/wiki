@@ -39,11 +39,6 @@ $sidebar-open-duration: 0.3s;
 		}
 	}
 
-	.button__wrapper {
-		display: flex;
-		justify-content: center;
-	}
-
 	.categories__content {
 		width: clamp(250px, 20vw, 350px);
 		color: #555;

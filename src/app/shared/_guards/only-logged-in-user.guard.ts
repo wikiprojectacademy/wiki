@@ -21,8 +21,11 @@ export class OnlyLoggedInUserGuard implements CanActivate {
 
 	canActivate() {
 		// '' role id for guest
-		if (this.curRoleId !== '') {
+		if (this.curRoleId !== '' && typeof this.curRoleId !== 'undefined') {
 			return true;
+		} else if (typeof this.curRoleId === 'undefined') {
+			this.routes.navigateByUrl('/main');
+			return false;
 		} else {
 			this.routes.navigateByUrl('/main');
 			this.snackBarService.openSnackBar(

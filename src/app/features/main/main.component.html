@@ -3,6 +3,14 @@
 ></app-stripe-loader>
 
 <nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
+	<button
+		mat-button
+		(click)="isOpened = false"
+		class="small-screen-element"
+	>
+		x
+	</button>
+
 	<div class="categories__content">
 		<h2 class="header">
 			<button
@@ -20,15 +28,6 @@
 				<mat-icon>edit_note</mat-icon>
 			</button>
 		</h2>
-		<div class="button__wrapper">
-			<button
-				mat-raised-button
-				[disabled]="isDatabaseInitialized"
-				(click)="initDB()"
-			>
-				Init Database
-			</button>
-		</div>
 
 		<div class="category">
 			<div
@@ -99,7 +98,7 @@
 		<mat-card
 			matRipple
 			class="post"
-			[routerLink]="['../post', post.id]"
+			[routerLink]="['/post', post.id]"
 			*ngFor="
 				let post of posts
 					| postFilter: searchParams.categoryId:searchParams.subCategoryId

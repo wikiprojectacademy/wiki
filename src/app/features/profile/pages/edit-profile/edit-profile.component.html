@@ -47,8 +47,13 @@
 					changeProfileForm.get('email')?.invalid &&
 					changeProfileForm.get('email')?.touched
 				"
-				>{{ getNameErrorMessage('email') }}</mat-error
-			>
+				>{{ getNameErrorMessage('email') }}
+				<span
+					*ngIf="changeProfileForm.controls['email'].errors?.['emailExists']"
+				>
+					Email already exist
+				</span>
+			</mat-error>
 		</mat-form-field>
 		<mat-form-field appearance="fill">
 			<mat-label>Password</mat-label>
