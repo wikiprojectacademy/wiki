@@ -92,28 +92,28 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				<span [matTooltip]="getTooltipTextForEdit(element)">
-					<button
-						[disabled]="element.id === '0'"
-						mat-mini-fab
-						color="primary"
-						matTooltip="Edit role {{ element.name }}"
-						(click)="onEdit(element.id)"
-					>
-						<mat-icon>edit</mat-icon>
-					</button>
-				</span>
-				<span [matTooltip]="getTooltipTextForDelete(element)">
-					<button
-						mat-mini-fab
-						color="warn"
-						[disabled]="element.id === '0' || element.hasUsers"
-						matTooltip="Delete role {{ element.name }}"
-						(click)="confirmationDelete(element)"
-					>
-						<mat-icon>delete</mat-icon>
-					</button>
-				</span>
+				<button
+					*ngIf="element.id !== '0'"
+					mat-mini-fab
+					color="primary"
+					matTooltip="Edit role {{ element.name }}"
+					(click)="onEdit(element.id)"
+				>
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button
+					mat-mini-fab
+					color="warn"
+					*ngIf="element.id !== '0'"
+					[matTooltip]="
+						element.hasUsers
+							? 'This role cannot delete because have users'
+							: 'Delete role  ' + element.name
+					"
+					(click)="confirmationDelete(element)"
+				>
+					<mat-icon>delete</mat-icon>
+				</button>
 			</td>
 		</ng-container>
 

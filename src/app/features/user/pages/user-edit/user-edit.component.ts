@@ -7,7 +7,7 @@ import {
 	ValidationErrors,
 	Validators
 } from '@angular/forms';
-import { map, Observable, Subscription, take } from 'rxjs';
+import { map, Observable, of, Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '@shared/services/snackbar.service';
 import { IRole } from '@core/models/Role';
@@ -63,6 +63,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
 	emailValidator(): AsyncValidatorFn {
 		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+			if (control.value == this.user.email) return of(null);
 			return this.userFirebaseService
 				.getUsersWhere('email', '==', control.value)
 				.pipe(

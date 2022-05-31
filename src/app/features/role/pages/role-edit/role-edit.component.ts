@@ -136,8 +136,8 @@ export class RoleEditComponent implements OnInit, OnDestroy {
 									});
 							});
 						}
-						this.router.navigate(['/role']);
 					}
+					this.router.navigate(['/role']);
 				});
 			} else {
 				this.snackBService.openSnackBar('This Super Admin role cannot edit');

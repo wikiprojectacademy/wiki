@@ -92,34 +92,24 @@
 				mat-cell
 				*matCellDef="let element"
 			>
-				<span
-					[matTooltip]="element.isAdmin ? 'Super Admin user cannot edit' : ''"
+				<button
+					mat-mini-fab
+					color="primary"
+					*ngIf="!element.isAdmin"
+					matTooltip="Edit user {{ element.firstName }}	{{ element.lastName }}"
+					routerLink="/user/edit/{{ element.id }}"
 				>
-					<button
-						mat-mini-fab
-						color="primary"
-						[disabled]="element.isAdmin"
-						matTooltip="Edit user {{ element.firstName }}	{{ element.lastName }}"
-						routerLink="/user/edit/{{ element.id }}"
-					>
-						<mat-icon>edit</mat-icon>
-					</button>
-				</span>
-				<span
-					[matTooltip]="element.isAdmin ? 'Super Admin user cannot delete' : ''"
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button
+					mat-mini-fab
+					color="warn"
+					*ngIf="!element.isAdmin"
+					matTooltip="Delete user {{ element.firstName }}	{{ element.lastName }}"
+					(click)="confirmationDelete(element)"
 				>
-					<button
-						mat-mini-fab
-						color="warn"
-						[disabled]="element.isAdmin"
-						matTooltip="Delete user {{ element.firstName }}	{{
-							element.lastName
-						}}"
-						(click)="confirmationDelete(element)"
-					>
-						<mat-icon>delete</mat-icon>
-					</button>
-				</span>
+					<mat-icon>delete</mat-icon>
+				</button>
 			</td>
 		</ng-container>
 
