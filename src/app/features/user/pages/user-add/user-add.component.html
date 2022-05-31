@@ -10,9 +10,8 @@
 					formControlName="firstName"
 				/>
 				<mat-error *ngIf="form.controls['firstName'].invalid"
-					>First name must be at least 2 characters long and at most
-					25</mat-error
-				>
+					>First name must be at least 2 characters long and at most 25
+				</mat-error>
 			</mat-form-field>
 
 			<mat-form-field appearance="outline">
@@ -23,11 +22,9 @@
 					formControlName="lastName"
 				/>
 				<mat-error *ngIf="form.controls['lastName'].invalid"
-					>Last name must be at least 2 characters long and at most
-					25</mat-error
-				>
+					>Last name must be at least 2 characters long and at most 25
+				</mat-error>
 			</mat-form-field>
-
 			<mat-form-field appearance="outline">
 				<mat-label>Enter your email</mat-label>
 				<input
@@ -35,9 +32,17 @@
 					placeholder="pat@example.com"
 					formControlName="email"
 				/>
-				<mat-error *ngIf="form.controls['email'].invalid"
-					>Enter the correct email</mat-error
-				>
+				<mat-error *ngIf="form.controls['email'].invalid">
+					<span *ngIf="form.controls['email'].errors?.['required']">
+						This field is required
+					</span>
+					<span *ngIf="form.controls['email'].errors?.['email']">
+						Enter the correct email
+					</span>
+					<span *ngIf="form.controls['email'].errors?.['emailExists']">
+						Email already exist
+					</span>
+				</mat-error>
 			</mat-form-field>
 
 			<mat-form-field appearance="outline">
@@ -58,9 +63,8 @@
 					<mat-icon>{{ isHide ? 'visibility_off' : 'visibility' }}</mat-icon>
 				</button>
 				<mat-error *ngIf="form.controls['password'].invalid"
-					>Required minimum eight characters, at least one letter and one
-					number</mat-error
-				>
+					>Required minimum eight characters, at least one letter and one number
+				</mat-error>
 			</mat-form-field>
 
 			<mat-form-field appearance="outline">

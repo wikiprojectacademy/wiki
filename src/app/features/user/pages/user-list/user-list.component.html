@@ -93,14 +93,12 @@
 				*matCellDef="let element"
 			>
 				<span
-					[matTooltip]="
-						element.id === '0' ? 'Super Admin user cannot edit' : ''
-					"
+					[matTooltip]="element.isAdmin ? 'Super Admin user cannot edit' : ''"
 				>
 					<button
 						mat-mini-fab
 						color="primary"
-						[disabled]="element.id === '0'"
+						[disabled]="element.isAdmin"
 						matTooltip="Edit user {{ element.firstName }}	{{ element.lastName }}"
 						routerLink="/user/edit/{{ element.id }}"
 					>
@@ -108,18 +106,16 @@
 					</button>
 				</span>
 				<span
-					[matTooltip]="
-						element.id === '0' ? 'Super Admin user cannot delete' : ''
-					"
+					[matTooltip]="element.isAdmin ? 'Super Admin user cannot delete' : ''"
 				>
 					<button
 						mat-mini-fab
 						color="warn"
-						[disabled]="element.id === '0'"
+						[disabled]="element.isAdmin"
 						matTooltip="Delete user {{ element.firstName }}	{{
 							element.lastName
 						}}"
-						(click)="onDelete(element)"
+						(click)="confirmationDelete(element)"
 					>
 						<mat-icon>delete</mat-icon>
 					</button>

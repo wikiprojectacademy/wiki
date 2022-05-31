@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import {
 	AbstractControl,
+	AsyncValidatorFn,
 	FormBuilder,
 	FormGroup,
+	ValidationErrors,
 	Validators
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,6 +12,7 @@ import { passwordValidation } from '@shared/validators/validations';
 import { SnackBarService } from '@shared/services/snackbar.service';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
+import { map, Observable, take } from 'rxjs';
 
 @Component({
 	selector: 'app-user-add',
@@ -39,20 +42,24 @@ export class UserAddComponent {
 				'',
 				[Validators.required, Validators.minLength(2), Validators.maxLength(25)]
 			],
-			email: ['', [Validators.required, Validators.email]],
+			email: [
+				'',
+				[Validators.required, Validators.email],
+				[this.emailValidator()]
+			],
 			password: [
 				'',
 				[
 					Validators.required,
 					passwordValidation,
-					control => this.validatePasswords(control, 'password1')
+					control => this.validatePasswords(control, 'password')
 				]
 			],
 			confirmPassword: [
 				'',
 				[
 					Validators.required,
-					control => this.validatePasswords(control, 'password2')
+					control => this.validatePasswords(control, 'confirmPassword')
 				]
 			],
 			roleId: [''],
@@ -99,6 +106,19 @@ export class UserAddComponent {
 				passwordMismatch: { value: 'The provided passwords do not match' }
 			};
 		}
+	}
+
+	emailValidator(): AsyncValidatorFn {
+		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+			return this.userFirebaseService
+				.getUsersWhere('email', '==', control.value)
+				.pipe(
+					take(1),
+					map(res => {
+						return res.length ? { emailExists: true } : null;
+					})
+				);
+		};
 	}
 
 	addUser(): void {
