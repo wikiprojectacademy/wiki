@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "wiki-project-d5644"
+    "default": "wiki-3fc1f",
+    "production": "wiki-production-b014c"
   }
 }
