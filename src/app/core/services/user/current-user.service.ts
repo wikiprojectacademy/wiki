@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
 	BehaviorSubject,
+	catchError,
 	map,
 	Observable,
 	of,
@@ -34,7 +35,9 @@ export class CurrentUserService {
 		this.currentUser$ = this.afAuth.user.pipe(
 			switchMap(user =>
 				user
-					? this.userFireStore.getUserData(user.uid)
+					? this.userFireStore
+							.getUserDataByEmail(user.email)
+							.pipe(catchError(() => of({ roleId: '' } as IUser)))
 					: of({ roleId: '' } as IUser)
 			),
 			shareReplay(1)
