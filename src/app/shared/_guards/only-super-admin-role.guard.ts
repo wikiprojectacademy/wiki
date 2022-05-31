@@ -23,6 +23,9 @@ export class OnlySuperAdminRoleGuard implements CanActivate {
 		// '0' role id for super admin
 		if (this.curRoleId === '0') {
 			return true;
+		} else if (typeof this.curRoleId === 'undefined') {
+			this.routes.navigateByUrl('/main');
+			return false;
 		} else {
 			this.routes.navigateByUrl('/main');
 			this.snackBarService.openSnackBar(
