@@ -19,39 +19,39 @@ export class CategoriesUpdateService {
 		private rolesService: RolesService
 	) {}
 
-	editCategory(modCategory: Category, origCategory: Category): void {
+	editCategory(modCategory: Category, origCategory: Category): Promise<void> {
+		const catID = modCategory.id;
 		const needToWrite = this.compareCategories(origCategory, modCategory);
 		const promisseArray: Promise<void>[] = [];
 
+		// Name
 		if (needToWrite.name) {
-			promisseArray.push(this.updateName(origCategory.id, modCategory.name));
+			promisseArray.push(this.updateName(catID, modCategory.name));
 		}
 
+		// SubCategories
 		if (needToWrite.subCategories) {
 			const [toAdd, toDelete] = this.getSubCategoriesDelta(
 				origCategory.subCategoriesFull,
 				modCategory.subCategoriesFull
 			);
-
-			console.log('%c--- SUB ---', 'color: #f00');
-			console.log('To add:');
-			console.log(toAdd);
-			console.log('To delete:');
-			console.log(toDelete);
+			promisseArray.push(this.updateSubCategories(catID, toAdd, toDelete));
 		}
 
+		// Roles
 		if (needToWrite.roles) {
 			const [toAdd, toDelete] = this.getRolesDelta(
 				origCategory.rolesFull,
 				modCategory.rolesFull
 			);
-
-			console.log('%c--- ROLES ---', 'color: #f00');
-			console.log('To add:');
-			console.log(toAdd);
-			console.log('To delete:');
-			console.log(toDelete);
+			promisseArray.push(this.updateJunctions(catID, toAdd, toDelete));
 		}
+
+		return new Promise<void>((resolve, reject) => {
+			Promise.all(promisseArray)
+				.then(() => resolve())
+				.catch(reason => reject(reason));
+		});
 	}
 
 	updateName(categoryID: string, newName: string): Promise<void> {
@@ -63,8 +63,8 @@ export class CategoriesUpdateService {
 
 	updateSubCategories(
 		categoryID: string,
-		subCategoriesToDelete: SubCategoryDB[],
-		subCategoriesToAdd: SubCategoryDB[]
+		subCategoriesToAdd: SubCategoryDB[],
+		subCategoriesToDelete: SubCategoryDB[]
 	): Promise<void> {
 		const deleting: Promise<void>[] = [];
 		const adding: Promise<void>[] = [];
@@ -88,9 +88,9 @@ export class CategoriesUpdateService {
 	}
 
 	updateJunctions(
-		rolesToDelete: RoleDB[],
+		categoryID: string,
 		rolesToAdd: RoleDB[],
-		categoryID: string
+		rolesToDelete: RoleDB[]
 	): Promise<void> {
 		const idToDelete: string[] = [];
 		rolesToDelete.forEach(role => {
@@ -103,7 +103,7 @@ export class CategoriesUpdateService {
 		});
 
 		const writingToDB: Promise<void>[] = [
-			this.rolesService.deleteJunctionByIds(idToDelete),
+			this.rolesService.removeJunctions(categoryID, idToDelete),
 			this.rolesService.addJunctions(categoryID, idToAdd)
 		];
 
@@ -125,7 +125,6 @@ export class CategoriesUpdateService {
 
 		roles.forEach(role => {
 			if (!rolesMod.includes(JSON.stringify(role))) {
-				console.log(role);
 				toDelete.push(role);
 			}
 		});

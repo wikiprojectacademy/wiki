@@ -15,11 +15,7 @@ export class RolesService {
 	constructor(
 		private roleFbService: RoleFirebaseService,
 		private junctionService: RoleCategoryFirebaseService
-	) {
-		// this.addJunctions('test category', ['test role1', 'test role 2'])
-		// 	.then(resp => console.log(resp))
-		// 	.catch(reas => console.log(reas));
-	}
+	) {}
 
 	getRolesAll(): Observable<RoleDB[]> {
 		return this.roleFbService.getRoles();
@@ -53,36 +49,25 @@ export class RolesService {
 		});
 	}
 
-	private removeJunctionsByIDs(junctionIDs: string[]) {
-		const removing: Promise<void>[] = [];
-
-		junctionIDs.forEach(juncId => {
-			removing.push(this.junctionService.deleteDoc(juncId));
-		});
-
-		return new Promise<void>((resolve, reject) => {
-			Promise.all(removing)
-				.then(() => resolve())
-				.catch(reason => reject(reason));
-		});
-	}
-
 	removeJunctions(categoryID: string, roleIDs: string[]): Promise<void> {
+		// console.log('roleIDs');
+		// console.log(roleIDs);
+		// console.log('in remove func');
 		return new Promise<void>((resolve, reject) => {
 			this.junctionService
 				.getCollection()
 				.pipe(take(1))
 				.subscribe(juncs => {
-					const junctionsToRemove: string[] = [];
+					const junctionsIdToRemove: string[] = [];
 
 					roleIDs.forEach(roleId => {
 						const rightJunc = juncs.filter(junc => {
-							junc.categoryId == categoryID && junc.roleId == roleId;
+							return junc.categoryId == categoryID && junc.roleId == roleId;
 						})[0];
-						junctionsToRemove.push(rightJunc.id);
+						junctionsIdToRemove.push(rightJunc.id);
 					});
 
-					this.deleteJunctionByIds(junctionsToRemove)
+					this.deleteJunctionByIds(junctionsIdToRemove)
 						.then(() => resolve())
 						.catch(reason => reject(reason));
 				});

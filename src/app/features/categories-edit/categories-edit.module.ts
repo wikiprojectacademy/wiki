@@ -16,13 +16,14 @@ import { EditCategoryComponent } from './pages/edit-category/edit-category.compo
 import { SubcategoriesNameListerPipe } from './pipes/subcategories-name-lister.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoaderComponent } from './components/loader/loader.component';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
 	declarations: [
 		CategoriesListComponent,
 		EditCategoryComponent,
 		SubcategoriesNameListerPipe,
-  LoaderComponent
+		LoaderComponent
 	],
 	imports: [
 		CommonModule,
@@ -35,7 +36,8 @@ import { LoaderComponent } from './components/loader/loader.component';
 		MatRippleModule,
 		MatFormFieldModule,
 		MatInputModule,
-		MatSelectModule
+		MatSelectModule,
+		SharedModule
 	]
 })
 export class CategoriesEditModule {}

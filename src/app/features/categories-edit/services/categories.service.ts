@@ -115,7 +115,7 @@ export class CategoryService {
 		});
 	}
 
-	editCategory(modCategory: Category, origCategory: Category): void {
+	editCategory(modCategory: Category, origCategory: Category): Promise<void> {
 		return this.categoriesUpdateService.editCategory(modCategory, origCategory);
 	}
 

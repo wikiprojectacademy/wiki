@@ -140,9 +140,12 @@ export class EditCategoryComponent {
 	}
 
 	editCategory(): void {
-		this.snackbarService.openSnackBar('In Development', 'OK', 3000);
-		this.isLoading = false;
-		this.categoryService.editCategory(this.category, this.categoryStartState);
+		this.isLoading = true;
+		this.categoryService
+			.editCategory(this.category, this.categoryStartState)
+			.then(() => {
+				this.navigateToList();
+			});
 	}
 
 	addCategory(): void {
