@@ -1,39 +1,25 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/user/current-user.service';
-import { SnackBarService } from '@shared/services/snackbar.service';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class OnlyLoggedInUserGuard implements CanActivate {
-	curRoleId: string;
-
 	constructor(
 		private currentUserService: CurrentUserService,
-		private routes: Router,
-		private snackBarService: SnackBarService
-	) {
-		this.currentUserService.currentUser$.subscribe(
-			curUser => (this.curRoleId = curUser.roleId)
-		);
-	}
+		private router: Router
+	) {}
 
-	canActivate() {
-		// '' role id for guest
-		if (this.curRoleId !== '' && typeof this.curRoleId !== 'undefined') {
-			return true;
-		} else if (typeof this.curRoleId === 'undefined') {
-			this.routes.navigateByUrl('/main');
-			return false;
-		} else {
-			this.routes.navigateByUrl('/main');
-			this.snackBarService.openSnackBar(
-				'This page available only for logged in users!',
-				'Got it',
-				2000
-			);
-			return false;
-		}
+	canActivate(): Observable<boolean> {
+		return this.currentUserService.isUserLogin$.pipe(
+			map(isLoggedIn => {
+				if (!isLoggedIn) {
+					this.router.navigateByUrl('/main');
+				}
+				return isLoggedIn;
+			})
+		);
 	}
 }

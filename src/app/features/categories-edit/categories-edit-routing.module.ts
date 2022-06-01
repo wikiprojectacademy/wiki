@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { OnlyLoggedInUserGuard } from '@shared/_guards/only-logged-in-user.guard';
+import { OnlyCanModifyCategoryGuard } from '@shared/_guards/only-can-modify-category.guard';
 import { CategoriesListComponent } from './pages/categories-list/categories-list.component';
 import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
 
 const routes: Routes = [
 	{
 		path: '',
-		// canActivate: [OnlyLoggedInUserGuard],
-		component: CategoriesListComponent
+		component: CategoriesListComponent,
+		canActivate: [OnlyCanModifyCategoryGuard]
 	},
 	{
 		path: 'edit/:id',
-		// canActivate: [OnlyLoggedInUserGuard],
-		component: EditCategoryComponent
+		component: EditCategoryComponent,
+		canActivate: [OnlyCanModifyCategoryGuard]
 	}
 ];
 
