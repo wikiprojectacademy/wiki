@@ -25,6 +25,7 @@ $sidebar-open-duration: 0.3s;
 		width: 0px;
 		position: absolute;
 		overflow-x: hidden;
+		overflow-y: auto;
 		&_opened {
 			width: 90vw;
 		}

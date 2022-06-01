@@ -17,28 +17,6 @@ export class MainComponent implements OnInit {
 		phrase: ''
 	};
 
-	mockedPosts: Post[] = [
-		{ categoryId: '6', contentHTML: '-', title: 'C++' },
-		{ categoryId: '6', contentHTML: '-', title: 'HTML' },
-		{ categoryId: '6', contentHTML: '-', title: 'JavaScript' },
-		{ categoryId: '7', contentHTML: '-', title: 'Audi' },
-		{ categoryId: '7', contentHTML: '-', title: 'BMW' },
-		{ categoryId: '7', contentHTML: '-', title: 'Mercedes' },
-		{ categoryId: '8', contentHTML: '-', title: 'How to repair notebook' },
-		{
-			categoryId: '8',
-			subCategory: 'CqJam3A7XkHnzQLzhjf0',
-			contentHTML: '-',
-			title: 'NT-5325'
-		},
-		{
-			categoryId: '8',
-			subCategory: 't8JPrF390yaEwtwGHiXM',
-			contentHTML: '-',
-			title: 'Mac Book'
-		}
-	];
-
 	isOpened: boolean = false;
 	isPostLoaded: boolean = false;
 	isCategoriesLoaded: boolean = false;
@@ -47,7 +25,6 @@ export class MainComponent implements OnInit {
 	posts: Post[];
 
 	constructor(
-		private firebaseStorage: FirebaseStorageService,
 		private categoryService: CategoryService,
 		private postFbService: PostFirebaseService
 	) {}

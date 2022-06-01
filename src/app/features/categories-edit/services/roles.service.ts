@@ -3,7 +3,7 @@ import { IRole as RoleDB } from '@core/models/Role';
 import { IRoleCategoryPair as RoleCategoryPairDB } from '@core/models/RoleCategoryPair';
 import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, take } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -49,6 +49,42 @@ export class RolesService {
 				})
 				.catch(reason => {
 					reject(reason);
+				});
+		});
+	}
+
+	private removeJunctionsByIDs(junctionIDs: string[]) {
+		const removing: Promise<void>[] = [];
+
+		junctionIDs.forEach(juncId => {
+			removing.push(this.junctionService.deleteDoc(juncId));
+		});
+
+		return new Promise<void>((resolve, reject) => {
+			Promise.all(removing)
+				.then(() => resolve())
+				.catch(reason => reject(reason));
+		});
+	}
+
+	removeJunctions(categoryID: string, roleIDs: string[]): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			this.junctionService
+				.getCollection()
+				.pipe(take(1))
+				.subscribe(juncs => {
+					const junctionsToRemove: string[] = [];
+
+					roleIDs.forEach(roleId => {
+						const rightJunc = juncs.filter(junc => {
+							junc.categoryId == categoryID && junc.roleId == roleId;
+						})[0];
+						junctionsToRemove.push(rightJunc.id);
+					});
+
+					this.deleteJunctionByIds(junctionsToRemove)
+						.then(() => resolve())
+						.catch(reason => reject(reason));
 				});
 		});
 	}

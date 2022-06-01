@@ -8,12 +8,16 @@ import { IUserInCategory as User } from '../models/userInCategory.interface';
 import { IRole as RoleDB } from '@core/models/Role';
 import { IRoleCategoryPair as RoleCategoryDB } from '@core/models/RoleCategoryPair';
 import { CategoryFirebaseService } from '@core/services/firebase/firebase-entities/categoryFirebase.service';
+import { RolesService } from './roles.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class CategoriesUpdateService {
-	constructor(private categoriesFbSevice: CategoryFirebaseService) {}
+	constructor(
+		private categoriesFbSevice: CategoryFirebaseService,
+		private rolesService: RolesService
+	) {}
 
 	editCategory(modCategory: Category, origCategory: Category): void {
 		const needToWrite = this.compareCategories(origCategory, modCategory);
@@ -61,9 +65,53 @@ export class CategoriesUpdateService {
 		categoryID: string,
 		subCategoriesToDelete: SubCategoryDB[],
 		subCategoriesToAdd: SubCategoryDB[]
-	) {
+	): Promise<void> {
 		const deleting: Promise<void>[] = [];
 		const adding: Promise<void>[] = [];
+
+		subCategoriesToDelete.forEach(sub => {
+			deleting.push(
+				this.categoriesFbSevice.deleteDocFromSubCollection(categoryID, sub.id)
+			);
+		});
+		subCategoriesToAdd.forEach(sub => {
+			adding.push(
+				this.categoriesFbSevice.addDocToSubCollection(categoryID, sub)
+			);
+		});
+
+		return new Promise<void>((resolve, reject) => {
+			Promise.all([...deleting, ...adding])
+				.then(() => resolve())
+				.catch(reason => reject(reason));
+		});
+	}
+
+	updateJunctions(
+		rolesToDelete: RoleDB[],
+		rolesToAdd: RoleDB[],
+		categoryID: string
+	): Promise<void> {
+		const idToDelete: string[] = [];
+		rolesToDelete.forEach(role => {
+			idToDelete.push(role.id);
+		});
+
+		const idToAdd: string[] = [];
+		rolesToAdd.forEach(role => {
+			idToAdd.push(role.id);
+		});
+
+		const writingToDB: Promise<void>[] = [
+			this.rolesService.deleteJunctionByIds(idToDelete),
+			this.rolesService.addJunctions(categoryID, idToAdd)
+		];
+
+		return new Promise<void>((resolve, reject) => {
+			Promise.all(writingToDB)
+				.then(() => resolve())
+				.catch(reason => reject(reason));
+		});
 	}
 
 	private getRolesDelta(roles: RoleDB[], modRoles: RoleDB[]) {

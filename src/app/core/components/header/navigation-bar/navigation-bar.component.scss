@@ -1,3 +1,9 @@
-button:hover {
-	background-color: #fff3;
+@import 'variable.scss';
+
+button {
+	@media screen and (max-width: $screen-width-small) {
+		&:hover {
+			background-color: #fff3;
+		}
+	}
 }
