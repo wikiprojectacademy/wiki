@@ -14,7 +14,7 @@ import { CurrentUserService } from '@core/services/user/current-user.service';
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 import { passwordValidation } from '@shared/validators/validations';
 import { SnackBarService } from '@shared/services/snackbar.service';
-import { map, Observable, take } from 'rxjs';
+import { map, Observable, of, take } from 'rxjs';
 import { AuthorizationService } from 'src/app/features/authorization/services/authorization.service';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog';
 import { ComponentCanDeactivate } from './_guard/pending-change.guard';
@@ -117,6 +117,7 @@ export class EditProfileComponent implements OnInit, ComponentCanDeactivate {
 
 	emailValidator(): AsyncValidatorFn {
 		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+			if (control.value === this.user.email) return of(null);
 			return this.userFirebaseService
 				.getUsersWhere('email', '==', control.value)
 				.pipe(

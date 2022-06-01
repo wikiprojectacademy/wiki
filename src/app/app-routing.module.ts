@@ -40,8 +40,7 @@ const routes: Routes = [
 		path: 'post',
 		loadChildren: () =>
 			import('./features/post/post.module').then(m => m.PostModule)
-	},
-	{ path: '**', redirectTo: '/main' }
+	}
 ];
 
 @NgModule({

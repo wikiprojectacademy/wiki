@@ -34,6 +34,14 @@ export const rolesMock: IRole[] = [
 export const usersMock: IUser[] = [
 	// New registered user
 	{
+		id: '10',
+		email: 'test.admin@mail.com',
+		firstName: 'test',
+		lastName: 'admin',
+		password: '1q2w3e4r',
+		roleId: '0'
+	},
+	{
 		id: '2',
 		email: 'user1@mail.com',
 		firstName: 'default',
