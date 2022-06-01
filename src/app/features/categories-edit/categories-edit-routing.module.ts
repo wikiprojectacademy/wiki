@@ -7,15 +7,6 @@ import { EditCategoryComponent } from './pages/edit-category/edit-category.compo
 const routes: Routes = [
 	{
 		path: '',
-<<<<<<< HEAD
-		// canActivate: [OnlyLoggedInUserGuard],
-		component: CategoriesListComponent
-	},
-	{
-		path: 'edit/:id',
-		// canActivate: [OnlyLoggedInUserGuard],
-		component: EditCategoryComponent
-=======
 		component: CategoriesListComponent,
 		canActivate: [OnlyCanModifyCategoryGuard]
 	},
@@ -23,7 +14,6 @@ const routes: Routes = [
 		path: 'edit/:id',
 		component: EditCategoryComponent,
 		canActivate: [OnlyCanModifyCategoryGuard]
->>>>>>> ff5a52dd5e7863cd4e1d281ae10ec90aeb729f2b
 	}
 ];
 
