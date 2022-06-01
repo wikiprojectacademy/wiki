@@ -14,13 +14,11 @@ const redirectLoggedInToMain = () => redirectLoggedInTo(['main']);
 const routes: Routes = [
 	{
 		path: 'login',
-		component: LoginComponent,
-		...canActivate(redirectLoggedInToMain)
+		component: LoginComponent
 	},
 	{
 		path: 'register',
-		component: RegisterComponent,
-		...canActivate(redirectLoggedInToMain)
+		component: RegisterComponent
 	}
 ];
 
