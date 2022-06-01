@@ -5,13 +5,6 @@
 export const environment = {
 	production: false,
 
-	/**
-	 *
-	 * ORIGINAL CREDENTIALS
-	 * UNCOMENT IT IF I FORGOT :D
-	 *
-	 * realy, it our main DB
-	 */
 	firebase: {
 		apiKey: 'AIzaSyAW7Nn9EFtOzzpLf5HMlqFGEfdGEkklgF4',
 		authDomain: 'wiki-3fc1f.firebaseapp.com',

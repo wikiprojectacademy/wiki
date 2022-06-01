@@ -18,14 +18,14 @@ import { ISubCategory as SubCategoryDB } from '@core/models/SubCategory';
 export class EditCategoryComponent {
 	form: FormGroup;
 	isLoading: boolean;
+
 	roles$: Observable<RoleDB[]>;
 	roles: RoleDB[];
+
 	category: Category = {
 		id: '',
 		name: '',
-		// createdBy: '0',
-		// uncoment in future
-		createdBy: '2',
+		createdBy: '0',
 		subCategories: [],
 		availableRolesToView: [],
 		subCategoriesFull: [],
@@ -33,19 +33,7 @@ export class EditCategoryComponent {
 		createdByFull: { firstName: 'NO', lastName: 'DATA' }
 	};
 	categoryStartState: Category;
-	// categorySnapshot: Category;
-	// FORMAT FOR DB
-	get categoryDB(): CategoryDB {
-		return {
-			id: this.category.id,
-			name: this.category.name,
-			createdBy: this.category.createdBy,
-			availableRolesToView: this.category.availableRolesToView
-		};
-	}
-	get subCategoriesDB(): SubCategoryDB[] {
-		return this.category.subCategoriesFull;
-	}
+
 	// FORM FIELDS
 	get subCategoriesArray() {
 		return this.form.get('subCategories') as FormArray;
@@ -98,15 +86,17 @@ export class EditCategoryComponent {
 		}
 	}
 
+	/**
+	 * Initialization
+	 */
+
 	loadCategoryFromDB(categoryId: string) {
 		this.isLoading = true;
 		const subscr = this.categoryService
 			.getCategoryById(categoryId)
 			.subscribe(cat => {
-				// console.log(cat);
 				this.category = cat;
 				this.categoryStartState = { ...this.category };
-				// console.log(this.categoryStartState);
 
 				this.updateForm();
 				this.isLoading = false;
@@ -139,6 +129,19 @@ export class EditCategoryComponent {
 		});
 	}
 
+	/**
+	 * Main actions
+	 */
+
+	addCategory(): void {
+		this.categoryService
+			.addCategory(this.category)
+			.then(() => {
+				this.navigateToList();
+			})
+			.catch(() => this.showError());
+	}
+
 	editCategory(): void {
 		this.isLoading = true;
 		this.categoryService
@@ -146,16 +149,6 @@ export class EditCategoryComponent {
 			.then(() => {
 				this.navigateToList();
 			});
-	}
-
-	addCategory(): void {
-		this.categoryService.addCategory(this.category).then(() => {
-			this.navigateToList();
-		});
-	}
-
-	navigateToList() {
-		this.router.navigateByUrl('/edit-categories');
 	}
 
 	deleteCategory() {
@@ -166,10 +159,24 @@ export class EditCategoryComponent {
 			.then(() => {
 				this.router.navigateByUrl('/edit-categories');
 			})
-			.catch(reason => {
-				console.log(reason);
-			});
+			.catch(() => this.showError());
 	}
+
+	/**
+	 * UI actions
+	 */
+
+	showError() {
+		this.snackbarService.openSnackBar('Something went wrong...', 'Ok', 10000);
+	}
+
+	navigateToList() {
+		this.router.navigateByUrl('/edit-categories');
+	}
+
+	/**
+	 * Form methods
+	 */
 
 	isRoleNotSelected(roleId): boolean {
 		return this.form.value.roles.includes(roleId);

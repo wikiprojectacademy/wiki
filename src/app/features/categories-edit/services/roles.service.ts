@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject, take } from 'rxjs';
+
 import { IRole as RoleDB } from '@core/models/Role';
 import { IRoleCategoryPair as RoleCategoryPairDB } from '@core/models/RoleCategoryPair';
+
 import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
-import { Observable, Subject, take } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -50,9 +52,6 @@ export class RolesService {
 	}
 
 	removeJunctions(categoryID: string, roleIDs: string[]): Promise<void> {
-		// console.log('roleIDs');
-		// console.log(roleIDs);
-		// console.log('in remove func');
 		return new Promise<void>((resolve, reject) => {
 			this.junctionService
 				.getCollection()
@@ -74,8 +73,12 @@ export class RolesService {
 		});
 	}
 
+	getJunctionsAll(): Observable<RoleCategoryPairDB[]> {
+		return this.junctionService.getCollection();
+	}
+
 	/**
-	 *	Delets junctions by their IDs
+	 *	Deletes junctions by their IDs
 
 	 * @param junctionsId - array of ID of Category-Role pairs
 	 */
@@ -96,7 +99,4 @@ export class RolesService {
 				});
 		});
 	}
-
-	deleteJunctionsForCategory(categoryID: string) {}
-	deleteSingleJunction(categoryID: string, roleID: string) {}
 }

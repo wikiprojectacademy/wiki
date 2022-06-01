@@ -8,12 +8,8 @@ export class PostSearchPipe implements PipeTransform {
 	transform(posts: Post[], searchText: string): Post[] {
 		return posts.filter(
 			post =>
-				post.title
-					.toLocaleLowerCase()
-					.includes(searchText.toLocaleLowerCase()) ||
-				post.contentHTML
-					.toLocaleLowerCase()
-					.includes(searchText.toLocaleLowerCase())
+				post.title.toLocaleLowerCase().includes(searchText.toLowerCase()) ||
+				post.contentHTML.toLocaleLowerCase().includes(searchText.toLowerCase())
 		);
 	}
 }

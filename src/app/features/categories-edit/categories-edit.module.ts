@@ -15,15 +15,13 @@ import { CategoriesListComponent } from './pages/categories-list/categories-list
 import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
 import { SubcategoriesNameListerPipe } from './pipes/subcategories-name-lister.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoaderComponent } from './components/loader/loader.component';
 import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
 	declarations: [
 		CategoriesListComponent,
 		EditCategoryComponent,
-		SubcategoriesNameListerPipe,
-		LoaderComponent
+		SubcategoriesNameListerPipe
 	],
 	imports: [
 		CommonModule,

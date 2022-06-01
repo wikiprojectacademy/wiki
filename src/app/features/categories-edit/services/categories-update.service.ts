@@ -3,10 +3,8 @@ import { Injectable } from '@angular/core';
 import { ICategory as CategoryDB } from '@core/models/Category';
 import { ISubCategory as SubCategoryDB } from '@core/models/SubCategory';
 import { ICategoryFull as Category } from '../models/icategory-full';
-import { IUser as UserDB } from '@core/models/User';
-import { IUserInCategory as User } from '../models/userInCategory.interface';
 import { IRole as RoleDB } from '@core/models/Role';
-import { IRoleCategoryPair as RoleCategoryDB } from '@core/models/RoleCategoryPair';
+
 import { CategoryFirebaseService } from '@core/services/firebase/firebase-entities/categoryFirebase.service';
 import { RolesService } from './roles.service';
 
@@ -54,14 +52,14 @@ export class CategoriesUpdateService {
 		});
 	}
 
-	updateName(categoryID: string, newName: string): Promise<void> {
+	private updateName(categoryID: string, newName: string): Promise<void> {
 		const categoryToDB: Partial<CategoryDB> = {
 			name: newName
 		};
 		return this.categoriesFbSevice.updateDoc(categoryID, categoryToDB);
 	}
 
-	updateSubCategories(
+	private updateSubCategories(
 		categoryID: string,
 		subCategoriesToAdd: SubCategoryDB[],
 		subCategoriesToDelete: SubCategoryDB[]
@@ -87,7 +85,7 @@ export class CategoriesUpdateService {
 		});
 	}
 
-	updateJunctions(
+	private updateJunctions(
 		categoryID: string,
 		rolesToAdd: RoleDB[],
 		rolesToDelete: RoleDB[]
