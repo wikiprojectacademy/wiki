@@ -18,13 +18,14 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class CurrentUserService {
 	public currentUser$: Observable<IUser> = this.afAuth.user.pipe(
-		switchMap(user =>
-			user
+		switchMap(user => {
+			console.log('new user action');
+			return user
 				? this.userFireStore
 						.getUserDataByEmail(user.email)
 						.pipe(catchError(() => of({ roleId: '' } as IUser)))
-				: of({ roleId: '' } as IUser)
-		),
+				: of({ roleId: '' } as IUser);
+		}),
 		shareReplay(1)
 	);
 	public isUserLogin$: Observable<boolean> = this.currentUser$.pipe(
