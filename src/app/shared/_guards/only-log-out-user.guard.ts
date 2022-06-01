@@ -6,21 +6,19 @@ import { map, Observable } from 'rxjs';
 @Injectable({
 	providedIn: 'root'
 })
-export class OnlySuperAdminRoleGuard implements CanActivate {
+export class OnlyLogOutUserGuard implements CanActivate {
 	constructor(
 		private currentUserService: CurrentUserService,
 		private router: Router
 	) {}
 
-	canActivate(): Observable<boolean> | boolean {
-		return this.currentUserService.currentUser$.pipe(
-			map(curUser => {
-				if (curUser.roleId === '0') {
-					return true;
-				} else {
+	canActivate(): Observable<boolean> {
+		return this.currentUserService.isUserLogin$.pipe(
+			map(isLoggedIn => {
+				if (isLoggedIn) {
 					this.router.navigateByUrl('/main');
-					return false;
 				}
+				return !isLoggedIn;
 			})
 		);
 	}
