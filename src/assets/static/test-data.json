@@ -24,6 +24,14 @@
 			"lastName": "user",
 			"password": "Password12345",
 			"roleId": "1"
+		},
+		{
+			"id": "4",
+			"email": "test.admin@mail.com",
+			"firstName": "test",
+			"lastName": "admin",
+			"password": "1q2w3e4r",
+			"roleId": "0"
 		}
 	],
 	"categories": [
