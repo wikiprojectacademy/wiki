@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IPost as Post } from '@core/models/Post';
 import { PostFirebaseService } from '@core/services/firebase/firebase-entities/postFirebase.service';
 import { CurrentUserService } from '@core/services/user/current-user.service';
@@ -34,8 +34,8 @@ export class MainComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		const categories$ = this.categoryService.getCategoryAll();
-		const posts$ = this.postFbService.getCollection();
+		const categories$ = this.categoryService.getCategoryAll().pipe(take(1));
+		const posts$ = this.postFbService.getCollection().pipe(take(1));
 		const currentUser$ = this.currentUserService.currentUser$;
 
 		combineLatest([categories$, posts$, currentUser$]).subscribe(
@@ -59,10 +59,6 @@ export class MainComponent implements OnInit {
 				this.isLoading = false;
 			}
 		);
-	}
-
-	ngOnDestroy() {
-		console.log('destroyed');
 	}
 
 	filterCategoriesByRoleID(categories: Category[], roleID: string): Category[] {
