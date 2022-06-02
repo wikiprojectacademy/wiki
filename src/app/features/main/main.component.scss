@@ -32,7 +32,6 @@ $sidebar-open-duration: 0.3s;
 
 	.header {
 		padding: 5px 15px;
-		// text-align: center;
 		@media screen and (max-width: $screen-width-small) {
 			padding: 5px 3px;
 		}
@@ -41,6 +40,10 @@ $sidebar-open-duration: 0.3s;
 	.categories__content {
 		width: clamp(250px, 20vw, 350px);
 		color: #555;
+
+		@media screen and (max-width: $screen-width-medium) {
+			width: 130px;
+		}
 
 		@media screen and (max-width: $screen-width-small) {
 			width: 90vw;
@@ -86,14 +89,59 @@ $sidebar-open-duration: 0.3s;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	padding: 5px;
 	transition: margin $sidebar-open-duration;
 	background-color: #f8f8f8;
+
+	@media screen and (max-width: $screen-width-small) {
+		box-shadow: -6px 0 24px #0003, 0 0 4px #0003;
+	}
+
+	.search-block {
+		display: flex;
+		justify-content: center;
+		background-color: #ddd;
+		position: sticky;
+		input {
+			transition: background 0.3s;
+			padding-left: 15px;
+			background-color: #fff8;
+			border: 1px solid #0002;
+			flex-grow: 1;
+			border-bottom: 2px solid #0003;
+
+			@media screen and (min-width: 960px) {
+				flex-grow: 0;
+				width: 500px;
+			}
+
+			&:focus {
+				outline: none;
+				background-color: #fff;
+				border-bottom: 2px solid #36a;
+				box-shadow: 0 1px 3px #36a8;
+			}
+		}
+
+		.button-add {
+			display: none;
+			@media screen and (min-width: $screen-width-medium) {
+				display: unset;
+			}
+		}
+
+		.button-add__icon {
+			display: unset;
+			@media screen and (min-width: $screen-width-medium) {
+				display: none;
+			}
+		}
+	}
 
 	.post-list__content {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 7px;
+		padding: 5px;
 
 		@media screen and (max-width: $screen-width-small) {
 			flex-direction: column;

@@ -6,6 +6,7 @@ import { UpdateDataSpinnerComponent } from './components/update-spinner/update-d
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { ArrayByKeyPipe } from './pipes/array-by-key.pipe';
+import { StripeLoaderComponent } from './components/stripe-loader/stripe-loader.component';
 
 @NgModule({
 	// Here are must list all components, that are inside shared folder
@@ -13,11 +14,17 @@ import { ArrayByKeyPipe } from './pipes/array-by-key.pipe';
 		LoadSpinnerComponent,
 		UpdateDataSpinnerComponent,
 		ConfirmationDialogComponent,
-		ArrayByKeyPipe
+		ArrayByKeyPipe,
+		StripeLoaderComponent
 	],
 	imports: [CommonModule, MatProgressSpinnerModule, MatButtonModule],
 	// Here are must list all components, that are inside shared folder, so when you import shared module in some of module,
 	// you have access for all shared components
-	exports: [LoadSpinnerComponent, UpdateDataSpinnerComponent, ArrayByKeyPipe]
+	exports: [
+		LoadSpinnerComponent,
+		UpdateDataSpinnerComponent,
+		ArrayByKeyPipe,
+		StripeLoaderComponent
+	]
 })
 export class SharedModule {}

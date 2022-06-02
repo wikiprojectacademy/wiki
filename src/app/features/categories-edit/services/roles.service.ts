@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject, take } from 'rxjs';
+
 import { IRole as RoleDB } from '@core/models/Role';
 import { IRoleCategoryPair as RoleCategoryPairDB } from '@core/models/RoleCategoryPair';
+
 import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
-import { Observable, Subject } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,11 +17,7 @@ export class RolesService {
 	constructor(
 		private roleFbService: RoleFirebaseService,
 		private junctionService: RoleCategoryFirebaseService
-	) {
-		// this.addJunctions('test category', ['test role1', 'test role 2'])
-		// 	.then(resp => console.log(resp))
-		// 	.catch(reas => console.log(reas));
-	}
+	) {}
 
 	getRolesAll(): Observable<RoleDB[]> {
 		return this.roleFbService.getRoles();
@@ -53,8 +51,34 @@ export class RolesService {
 		});
 	}
 
+	removeJunctions(categoryID: string, roleIDs: string[]): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			this.junctionService
+				.getCollection()
+				.pipe(take(1))
+				.subscribe(juncs => {
+					const junctionsIdToRemove: string[] = [];
+
+					roleIDs.forEach(roleId => {
+						const rightJunc = juncs.filter(junc => {
+							return junc.categoryId == categoryID && junc.roleId == roleId;
+						})[0];
+						junctionsIdToRemove.push(rightJunc.id);
+					});
+
+					this.deleteJunctionByIds(junctionsIdToRemove)
+						.then(() => resolve())
+						.catch(reason => reject(reason));
+				});
+		});
+	}
+
+	getJunctionsAll(): Observable<RoleCategoryPairDB[]> {
+		return this.junctionService.getCollection();
+	}
+
 	/**
-	 *	Delets junctions by their IDs
+	 *	Deletes junctions by their IDs
 
 	 * @param junctionsId - array of ID of Category-Role pairs
 	 */
@@ -75,7 +99,4 @@ export class RolesService {
 				});
 		});
 	}
-
-	deleteJunctionsForCategory(categoryID: string) {}
-	deleteSingleJunction(categoryID: string, roleID: string) {}
 }

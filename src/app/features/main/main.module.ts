@@ -9,13 +9,16 @@ import { ContentShortnerPipe } from './pipes/content-shortner.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { PostFilterPipe } from './pipes/post-filter.pipe';
 import { TagRemovePipe } from './pipes/tag-remove.pipe';
+import { PostSearchPipe } from './pipes/post-search.pipe';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
 	declarations: [
 		MainComponent,
 		ContentShortnerPipe,
 		PostFilterPipe,
-		TagRemovePipe
+		TagRemovePipe,
+		PostSearchPipe
 	],
 	imports: [
 		CommonModule,
@@ -23,7 +26,8 @@ import { TagRemovePipe } from './pipes/tag-remove.pipe';
 		MatCardModule,
 		MatRippleModule,
 		MatButtonModule,
-		MatIconModule
+		MatIconModule,
+		SharedModule
 	]
 })
 export class MainModule {}

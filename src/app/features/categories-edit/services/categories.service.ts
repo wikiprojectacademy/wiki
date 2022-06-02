@@ -1,13 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-	forkJoin,
-	Observable,
-	Subject,
-	tap,
-	take,
-	combineLatest,
-	zip
-} from 'rxjs';
+import { forkJoin, Observable, Subject, tap, take, combineLatest } from 'rxjs';
 
 import { ICategory as CategoryDB } from '@core/models/Category';
 import { ISubCategory as SubCategoryDB } from '@core/models/SubCategory';
@@ -19,9 +11,8 @@ import { IRoleCategoryPair as RoleCategoryDB } from '@core/models/RoleCategoryPa
 
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 import { CategoryFirebaseService } from '@core/services/firebase/firebase-entities/categoryFirebase.service';
-import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
-import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
 import { RolesService } from './roles.service';
+import { CategoriesUpdateService } from './categories-update.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -37,15 +28,15 @@ export class CategoryService {
 	constructor(
 		private categoriesFbSevice: CategoryFirebaseService,
 		private rolesService: RolesService,
-		private junctionService: RoleCategoryFirebaseService,
-		private userFbService: UserFirebaseService
+		private userFbService: UserFirebaseService,
+		private categoriesUpdateService: CategoriesUpdateService
 	) {}
 
 	getCategoryAll(): Observable<Category[]> {
 		const categoriesDB$ = this.categoriesFbSevice
 			.getStreamCategories()
 			.pipe(tap(categoriesFromDB => (this.categories = categoriesFromDB)));
-		const catRolesDB$ = this.junctionService.getCollection().pipe(
+		const catRolesDB$ = this.rolesService.getJunctionsAll().pipe(
 			tap(crPair => (this.roleCategoryPairs = crPair)),
 			take(1)
 		);
@@ -61,7 +52,7 @@ export class CategoryService {
 			tap(categoryFromDB => (this.singleCategory = categoryFromDB)),
 			take(1)
 		);
-		const catRolesDB$ = this.junctionService.getCollection().pipe(
+		const catRolesDB$ = this.rolesService.getJunctionsAll().pipe(
 			tap(catRolePairDB => (this.roleCategoryPairs = catRolePairDB)),
 			take(1)
 		);
@@ -72,7 +63,6 @@ export class CategoryService {
 		return this.singleCategory$.asObservable();
 	}
 
-	// addCategory(category: Category): Promise<string> {
 	addCategory(category: Category): Promise<void> {
 		console.log('input categoryfull:');
 		console.log(category);
@@ -113,8 +103,8 @@ export class CategoryService {
 		});
 	}
 
-	editCategory(category: Category): void {
-		console.log('got in service');
+	editCategory(modCategory: Category, origCategory: Category): Promise<void> {
+		return this.categoriesUpdateService.editCategory(modCategory, origCategory);
 	}
 
 	deleteCategory(category: Category): Promise<void> {
