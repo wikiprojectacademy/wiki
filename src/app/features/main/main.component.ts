@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { IPost as Post } from '@core/models/Post';
 import { PostFirebaseService } from '@core/services/firebase/firebase-entities/postFirebase.service';
-import { FirebaseStorageService } from '@core/services/firebase/firebase-init/firebaseStorage.service';
+import { CurrentUserService } from '@core/services/user/current-user.service';
+import { combineLatest, take } from 'rxjs';
 import { ICategoryFull as Category } from '../categories-edit/models/icategory-full';
 import { CategoryService } from '../categories-edit/services/categories.service';
+import { RolesService } from '../categories-edit/services/roles.service';
 
 @Component({
 	selector: 'app-main',
@@ -18,27 +20,84 @@ export class MainComponent implements OnInit {
 	};
 
 	isOpened: boolean = false;
-	isPostLoaded: boolean = false;
-	isCategoriesLoaded: boolean = false;
+	isLoading: boolean = true;
+	isUserCanModCat: boolean = false;
 
 	categories: Category[];
 	posts: Post[];
 
 	constructor(
 		private categoryService: CategoryService,
-		private postFbService: PostFirebaseService
+		private postFbService: PostFirebaseService,
+		private currentUserService: CurrentUserService,
+		private rolesService: RolesService
 	) {}
 
 	ngOnInit(): void {
-		this.categoryService.getCategoryAll().subscribe(response => {
-			this.categories = response;
-			this.isCategoriesLoaded = true;
+		const categories$ = this.categoryService.getCategoryAll().pipe(take(1));
+		const posts$ = this.postFbService.getCollection().pipe(take(1));
+		const currentUser$ = this.currentUserService.currentUser$;
+
+		combineLatest([categories$, posts$, currentUser$]).subscribe(
+			([categoriesFromDB, postsFromDB, currentUser]) => {
+				const roleID = currentUser.roleId;
+				this.updateUserPermisionCanEditCategory(roleID);
+
+				this.categories = this.filterCategoriesByRoleID(
+					categoriesFromDB,
+					roleID
+				);
+
+				this.posts = postsFromDB.filter(post => {
+					const id = post.categoryId;
+					for (let cat of this.categories) {
+						if (cat.id == id) return true;
+					}
+					return false;
+				});
+
+				this.isLoading = false;
+			}
+		);
+	}
+
+	filterCategoriesByRoleID(categories: Category[], roleID: string): Category[] {
+		if (!categories) return [];
+		if (roleID == '0') return categories;
+
+		const categoriesAviableForAll: Category[] = [];
+
+		categories.forEach(cat => {
+			if (!cat.rolesFull || !cat.rolesFull.length) {
+				categoriesAviableForAll.push(cat);
+			}
 		});
 
-		this.postFbService.getCollection().subscribe(postsFromDB => {
-			this.posts = postsFromDB;
-			this.isPostLoaded = true;
+		if (!roleID) return categoriesAviableForAll;
+		// --- --- --- --- --- --- --- --- --- --- --- ---
+		const categoriesAviableByRole: Category[] = categories.filter(cat => {
+			for (let role of cat.rolesFull) {
+				if (role.id == roleID) return true;
+			}
+			return false;
 		});
+		return [...categoriesAviableByRole, ...categoriesAviableForAll];
+	}
+
+	updateUserPermisionCanEditCategory(roleID: string) {
+		if (!roleID) {
+			this.isUserCanModCat = false;
+			return;
+		}
+		this.rolesService
+			.getRoleById(roleID)
+			.pipe(take(1))
+			.subscribe(role => {
+				const canModCategories = role.canModifyCategory;
+				if (canModCategories) {
+					this.isUserCanModCat = true;
+				}
+			});
 	}
 
 	changeSearchParams(categoryID: string, subCategoryID: string): void {

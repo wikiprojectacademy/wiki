@@ -13,6 +13,15 @@ export const environment = {
 		messagingSenderId: '667380241142',
 		appId: '1:667380241142:web:f9190dd857f4f322a492d7'
 	}
+	// firebase: {
+	// 	apiKey: 'AIzaSyAbhG5iZP2s2Ig1smIQiYLs0n2DLHs_V2s',
+	// 	authDomain: 'wiki-roman.firebaseapp.com',
+	// 	projectId: 'wiki-roman',
+	// 	storageBucket: 'wiki-roman.appspot.com',
+	// 	messagingSenderId: '36887117535',
+	// 	appId: '1:36887117535:web:34a158b004c08b2f2af36a',
+	// 	measurementId: 'G-216TM967GB'
+	// }
 };
 
 /*

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IPost } from '@core/models/Post';
 import firebase from 'firebase/compat';
 import Timestamp = firebase.firestore.Timestamp;
+import { take } from 'rxjs';
 
 @Component({
 	selector: 'app-post',
@@ -31,10 +32,13 @@ export class PostComponent implements OnInit {
 	}
 
 	getPost(id: string): void {
-		this.postService.getPost(id).subscribe(post => {
-			console.log(post);
-			this.post = post;
-		});
+		this.postService
+			.getPost(id)
+			.pipe(take(1))
+			.subscribe(post => {
+				console.log(post);
+				this.post = post;
+			});
 	}
 
 	toTimeStamp(date: any): Timestamp {

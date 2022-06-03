@@ -1,6 +1,4 @@
-<app-stripe-loader
-	[isLoading]="!isPostLoaded && !isCategoriesLoaded"
-></app-stripe-loader>
+<app-stripe-loader [isLoading]="isLoading"></app-stripe-loader>
 
 <nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
 	<div class="categories__content">
@@ -14,6 +12,7 @@
 			</button>
 			List of categories:
 			<button
+				*ngIf="isUserCanModCat"
 				mat-icon-button
 				routerLink="/edit-categories"
 			>
@@ -21,8 +20,9 @@
 			</button>
 		</h2>
 
-		<div class="category">
+		<div class="category category__all">
 			<div
+				mat-ripple
 				class="category-item category-head"
 				[class.category-item__selected]="searchParams.categoryId == 'all'"
 				(click)="changeSearchParams('all', null)"
@@ -35,6 +35,7 @@
 			*ngFor="let category of categories"
 		>
 			<div
+				mat-ripple
 				class="category-item category-head"
 				(click)="changeSearchParams(category.id, null)"
 				[class.category-item__selected]="searchParams.categoryId == category.id"
@@ -42,6 +43,7 @@
 				{{ category.name }}
 			</div>
 			<div
+				mat-ripple
 				class="subcategory category-item"
 				*ngFor="let sub of category.subCategoriesFull"
 				[class.category-item__selected]="searchParams.subCategoryId == sub.id"
