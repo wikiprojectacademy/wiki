@@ -1,6 +1,15 @@
 <app-stripe-loader [isLoading]="isLoading"></app-stripe-loader>
 
-<nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
+<app-sidebar
+	[categories]="categories"
+	[isOpened]="isOpened"
+	(closeSidebar)="isOpened = $event"
+	(currentCategory)="searchParams.categoryId = $event"
+	(currentSubCategory)="searchParams.subCategoryId = $event"
+>
+</app-sidebar>
+
+<!-- <nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
 	<div class="categories__content">
 		<h2 class="header">
 			<button
@@ -53,7 +62,7 @@
 			</div>
 		</div>
 	</div>
-</nav>
+</nav> -->
 
 <main [ngClass]="isOpened ? 'post-list post-list_opened' : ' post-list'">
 	<div class="search-block">

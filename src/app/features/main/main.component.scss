@@ -5,6 +5,12 @@ $sidebar-open-duration: 0.3s;
 	flex-grow: 1;
 	background-color: #eee;
 	display: flex;
+	max-height: calc(100vh - 64px);
+	overflow: hidden;
+
+	@media screen and (max-width: 600px) {
+		max-height: calc(100vh - 56px);
+	}
 
 	@media screen and (max-width: $screen-width-small) {
 		overflow-y: hidden;
@@ -19,80 +25,8 @@ $sidebar-open-duration: 0.3s;
 	}
 }
 
-.categories {
-	transition: width $sidebar-open-duration;
-	@media screen and (max-width: $screen-width-small) {
-		width: 0px;
-		position: absolute;
-		overflow-x: hidden;
-		&_opened {
-			width: 90vw;
-		}
-	}
-
-	.categories__content {
-		width: clamp(250px, 20vw, 350px);
-		color: #555;
-
-		@media screen and (max-width: $screen-width-medium) {
-			width: 130px;
-		}
-
-		@media screen and (max-width: $screen-width-small) {
-			width: 90vw;
-		}
-
-		.header {
-			padding: 5px 15px;
-			margin: 0px;
-			@media screen and (max-width: $screen-width-small) {
-				padding: 5px 3px;
-			}
-		}
-
-		.category {
-			border-top: 2px solid #0001;
-			// margin: 10px 0;
-			margin-bottom: 10px;
-			padding-top: 10px;
-
-			&__all {
-				border: none;
-			}
-		}
-
-		.category-item {
-			cursor: pointer;
-			width: 100%;
-			padding: 5px 15px;
-			transition: all 0.3s;
-			&:hover {
-				color: #06f;
-				background-color: #06f2;
-			}
-			&:active {
-				// box-shadow: inset 0 2px 2px 1px #0002, inset 0 1px 1px #0001;
-				background-color: #0001;
-			}
-
-			&__selected {
-				color: #06f;
-				background-color: #0001;
-			}
-		}
-
-		.category-head {
-			font-size: 1rem;
-			font-weight: 400;
-		}
-
-		.subcategory {
-			opacity: 0.8;
-		}
-	}
-}
-
 .post-list {
+	overflow-y: auto;
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
@@ -188,8 +122,8 @@ $sidebar-open-duration: 0.3s;
 	}
 
 	@media screen and (max-width: $screen-width-small) {
-		&_opened {
-			margin-left: 90vw;
-		}
+		// &_opened {
+		// 	margin-left: 90vw;
+		// }
 	}
 }

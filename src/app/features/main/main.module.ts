@@ -11,6 +11,7 @@ import { PostFilterPipe } from './pipes/post-filter.pipe';
 import { TagRemovePipe } from './pipes/tag-remove.pipe';
 import { PostSearchPipe } from './pipes/post-search.pipe';
 import { SharedModule } from '@shared/shared.module';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
 	declarations: [
@@ -18,7 +19,8 @@ import { SharedModule } from '@shared/shared.module';
 		ContentShortnerPipe,
 		PostFilterPipe,
 		TagRemovePipe,
-		PostSearchPipe
+		PostSearchPipe,
+  SidebarComponent
 	],
 	imports: [
 		CommonModule,
