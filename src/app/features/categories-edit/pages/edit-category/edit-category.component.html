@@ -145,7 +145,7 @@
 				</section>
 			</div>
 
-			<mat-card-subtitle>
+			<mat-card-subtitle *ngIf="category.createdByFull">
 				Created by:
 				{{
 					category.createdByFull.firstName +
@@ -153,7 +153,9 @@
 						category.createdByFull.lastName
 				}}
 			</mat-card-subtitle>
-			<mat-card-subtitle>Posts: {{ category.postAmout }}</mat-card-subtitle>
+			<mat-card-subtitle *ngIf="category.postAmout"
+				>Posts: {{ category.postAmout }}</mat-card-subtitle
+			>
 
 			<div
 				class="delete-message"
@@ -171,7 +173,7 @@
 						type="button"
 						(click)="deleteCategory()"
 						*ngIf="category.id != 'new'"
-						[disabled]="category.postAmout"
+						[disabled]="category.postAmout != 0"
 					>
 						<mat-icon>delete</mat-icon>
 						Delete

@@ -30,8 +30,8 @@ export class EditCategoryComponent {
 		subCategories: [],
 		availableRolesToView: [],
 		subCategoriesFull: [],
-		rolesFull: [],
-		createdByFull: { firstName: 'NO', lastName: 'DATA' }
+		rolesFull: []
+		// createdByFull: { firstName: 'NO', lastName: 'DATA' }
 	};
 	categoryStartState: Category;
 
@@ -195,10 +195,8 @@ export class EditCategoryComponent {
 
 	fillCategoryFromForm() {
 		const formOutput = this.form.value;
-		const subCategoriesArray: SubCategoryDB[] = [];
-		formOutput.subCategories.forEach(subCategoryName => {
-			subCategoriesArray.push({ name: subCategoryName });
-		});
+		this.fillSubcategories();
+
 		const rolesArray: RoleDB[] = [];
 		formOutput.roles.forEach(roleID => {
 			rolesArray.push(
@@ -208,10 +206,27 @@ export class EditCategoryComponent {
 			);
 		});
 
-		this.category.subCategoriesFull = subCategoriesArray;
 		this.category.availableRolesToView = formOutput.roles;
 		this.category.rolesFull = rolesArray;
 		this.category.name = formOutput.name;
+	}
+
+	fillSubcategories() {
+		const subCategoriesFromForm = this.form.value.subCategories;
+		const subCategoriesDistinctNames = [];
+		const subCategoriesArray: SubCategoryDB[] = [];
+
+		subCategoriesFromForm.forEach(subCatName => {
+			if (!subCategoriesDistinctNames.includes(subCatName)) {
+				subCategoriesDistinctNames.push(subCatName);
+			}
+		});
+
+		subCategoriesDistinctNames.forEach(subCatName => {
+			subCategoriesArray.push({ name: subCatName });
+		});
+
+		this.category.subCategoriesFull = subCategoriesArray;
 	}
 
 	addSubcategoryContoll() {
