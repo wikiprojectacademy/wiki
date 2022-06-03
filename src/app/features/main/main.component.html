@@ -3,68 +3,14 @@
 <app-sidebar
 	[categories]="categories"
 	[isOpened]="isOpened"
+	[isUserCanModCat]="isUserCanModCat"
 	(closeSidebar)="isOpened = $event"
 	(currentCategory)="searchParams.categoryId = $event"
 	(currentSubCategory)="searchParams.subCategoryId = $event"
 >
 </app-sidebar>
 
-<!-- <nav [ngClass]="isOpened ? 'categories categories_opened' : 'categories '">
-	<div class="categories__content">
-		<h2 class="header">
-			<button
-				mat-icon-button
-				(click)="isOpened = false"
-				class="small-screen-element"
-			>
-				x
-			</button>
-			List of categories:
-			<button
-				*ngIf="isUserCanModCat"
-				mat-icon-button
-				routerLink="/edit-categories"
-			>
-				<mat-icon>edit_note</mat-icon>
-			</button>
-		</h2>
-
-		<div class="category category__all">
-			<div
-				mat-ripple
-				class="category-item category-head"
-				[class.category-item__selected]="searchParams.categoryId == 'all'"
-				(click)="changeSearchParams('all', null)"
-			>
-				All
-			</div>
-		</div>
-		<div
-			class="category"
-			*ngFor="let category of categories"
-		>
-			<div
-				mat-ripple
-				class="category-item category-head"
-				(click)="changeSearchParams(category.id, null)"
-				[class.category-item__selected]="searchParams.categoryId == category.id"
-			>
-				{{ category.name }}
-			</div>
-			<div
-				mat-ripple
-				class="subcategory category-item"
-				*ngFor="let sub of category.subCategoriesFull"
-				[class.category-item__selected]="searchParams.subCategoryId == sub.id"
-				(click)="changeSearchParams(null, sub.id)"
-			>
-				{{ sub.name }}
-			</div>
-		</div>
-	</div>
-</nav> -->
-
-<main [ngClass]="isOpened ? 'post-list post-list_opened' : ' post-list'">
+<main class="post-list">
 	<div class="search-block">
 		<button
 			mat-icon-button

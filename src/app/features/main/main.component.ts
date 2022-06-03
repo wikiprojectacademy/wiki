@@ -100,15 +100,6 @@ export class MainComponent implements OnInit {
 			});
 	}
 
-	changeSearchParams(categoryID: string, subCategoryID: string): void {
-		this.isOpened = false;
-		this.searchParams = {
-			...this.searchParams,
-			categoryId: categoryID,
-			subCategoryId: subCategoryID
-		};
-	}
-
 	changeSearchPhrase(text: any) {
 		this.searchParams.phrase = text.value;
 	}

@@ -21,13 +21,24 @@ header {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	gap: 12px;
 
 	.category {
+		position: relative;
 		// display: flex;
-		margin-bottom: 7px;
+		// margin-bottom: 7px;
 		cursor: pointer;
 		transition: transform 0.1s;
 		width: clamp(300px, 95vw, 1200px);
+		border-left: 8px solid #888;
+
+		// ::before {
+		// 	// position: absolute;
+		// 	content: 'a';
+		// 	background-color: #f00;
+		// 	width: 6px;
+		// 	height: 100%;
+		// }
 
 		&:hover {
 			transform: translateY(-2px);
@@ -61,16 +72,27 @@ header {
 		}
 
 		.roles-list {
-			margin: 5px 0px -5px -5px;
+			margin: 8px -16px -16px -16px;
+			padding: 6px;
+			background-color: #f8f8f8;
 			display: flex;
+			align-items: center;
 			flex-wrap: wrap;
-			width: 100%;
 			gap: 5px;
+			border-top: 1px solid #0002;
+
+			.common-label {
+				font-weight: bold;
+				opacity: 0.8;
+				// margin-left: 5px;
+				margin: 0 8px;
+			}
 
 			.role {
 				background-color: #0001;
+				border: 1px solid #0002;
 				padding: 2px 10px;
-				border-radius: 15px;
+				border-radius: 3px;
 
 				&-all {
 					background-color: #0f03;
@@ -83,8 +105,8 @@ header {
 				}
 
 				&-admin {
-					background-color: #f0f3;
-					border: 1px solid #f0f3;
+					background-color: #fa03;
+					border: 1px solid #fa03;
 				}
 			}
 		}
