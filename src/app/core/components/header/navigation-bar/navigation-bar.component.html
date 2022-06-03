@@ -14,6 +14,7 @@
 <button
 	mat-button
 	routerLink="/main"
+	*ngIf="router.url !== '/main'"
 >
 	Home
 </button>
@@ -21,6 +22,7 @@
 <button
 	mat-button
 	routerLink="/profile"
+	*ngIf="isLoggedIn$ | async"
 >
 	Profile
 </button>
