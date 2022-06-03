@@ -18,7 +18,7 @@ import { PostFirebaseService } from '@core/services/firebase/firebase-entities/p
 })
 export class EditCategoryComponent {
 	form: FormGroup;
-	isLoading: boolean;
+	isLoading: boolean = true;
 
 	roles$: Observable<RoleDB[]>;
 	roles: RoleDB[];
