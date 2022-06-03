@@ -19,35 +19,49 @@
 
 <div class="categories__wrapper">
 	<!-- *ngIf="isLoading" -->
-
 	<div *ngFor="let cat of categories">
 		<mat-card
 			matRipple
 			class="category"
 			[routerLink]="['./edit/' + cat.id]"
 		>
-			<div class="labels">
-				<mat-card-title class="category-label"> {{ cat.name }} </mat-card-title>
-				<mat-card-subtitle>
-					<!-- {{ cat.subCategories.join(', ') }} -->
-					{{ cat.subCategoriesFull | subcategoriesNameLister }}
-				</mat-card-subtitle>
-			</div>
-
-			<div class="content">
-				<div>
-					<span class="common-label">Created by: </span>
-					{{ cat.createdByFull.firstName + ' ' + cat.createdByFull.lastName }}
+			<div class="category__content">
+				<div class="labels">
+					<mat-card-title class="category-label">
+						{{ cat.name }}
+					</mat-card-title>
+					<mat-card-subtitle>
+						{{ cat.subCategoriesFull | subcategoriesNameLister }}
+					</mat-card-subtitle>
 				</div>
 
-				<div>
-					<span class="common-label">Roles: </span>
-					<span
-						*ngFor="let role of cat.rolesFull"
-						class="role"
-					>
-						{{ role.name }}
-					</span>
+				<div class="content">
+					<div>
+						<span class="common-label">Created by: </span>
+						{{ cat.createdByFull.firstName + ' ' + cat.createdByFull.lastName }}
+					</div>
+
+					<div>
+						<span class="common-label">Posts: </span>
+						{{ cat.postAmout }}
+					</div>
+				</div>
+			</div>
+
+			<div class="roles-list">
+				<div
+					class="role role-all"
+					*ngIf="!cat.rolesFull.length"
+				>
+					For All
+				</div>
+				<div
+					*ngFor="let role of cat.rolesFull"
+					class="role"
+					[class.role-admin]="role.id == '0'"
+					[class.role-moderator]="role.canModifyCategory || role.canModifyPost"
+				>
+					{{ role.name }}
 				</div>
 			</div>
 		</mat-card>

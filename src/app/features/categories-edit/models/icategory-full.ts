@@ -7,4 +7,5 @@ export interface ICategoryFull extends ICategory {
 	subCategoriesFull?: Subcategory[];
 	rolesFull?: Role[];
 	createdByFull?: User;
+	postAmout?: number;
 }

@@ -23,7 +23,7 @@ header {
 	align-items: center;
 
 	.category {
-		display: flex;
+		// display: flex;
 		margin-bottom: 7px;
 		cursor: pointer;
 		transition: transform 0.1s;
@@ -36,28 +36,63 @@ header {
 			transform: translateY(0px);
 		}
 
-		.labels,
-		.content {
-			& * {
-				margin: 0;
+		&__content {
+			display: flex;
+			gap: 5px;
+
+			.labels,
+			.content {
+				& * {
+					margin: 0;
+				}
+			}
+			.labels {
+				width: 70%;
+			}
+
+			.content {
+				width: 30%;
+
+				.common-label {
+					opacity: 0.8;
+					font-weight: bold;
+				}
 			}
 		}
 
-		.labels {
-			width: 70%;
-		}
+		.roles-list {
+			margin: 5px 0px -5px -5px;
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+			gap: 5px;
 
-		.content {
-			width: 30%;
-		}
+			.role {
+				background-color: #0001;
+				padding: 2px 10px;
+				border-radius: 15px;
 
-		.common-label {
-			opacity: 0.8;
-			font-weight: bold;
+				&-all {
+					background-color: #0f03;
+					border: 1px solid #0f06;
+				}
+
+				&-moderator {
+					background-color: #06f3;
+					border: 1px solid #06f3;
+				}
+
+				&-admin {
+					background-color: #f0f3;
+					border: 1px solid #f0f3;
+				}
+			}
 		}
 
 		@media screen and (max-width: $screen-width-small) {
-			flex-direction: column;
+			&__content {
+				flex-direction: column;
+			}
 
 			.labels,
 			.content {
@@ -69,10 +104,6 @@ header {
 			}
 
 			.content {
-				margin-top: 5px;
-				width: 100%;
-				display: flex;
-				gap: 5px;
 				justify-content: space-between;
 				flex-wrap: wrap;
 			}

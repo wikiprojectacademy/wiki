@@ -145,28 +145,33 @@
 				</section>
 			</div>
 
-			<mat-card-subtitle
-				>Created by:
+			<mat-card-subtitle>
+				Created by:
 				{{
 					category.createdByFull.firstName +
 						' ' +
 						category.createdByFull.lastName
-				}}</mat-card-subtitle
-			>
+				}}
+			</mat-card-subtitle>
+			<mat-card-subtitle>Posts: {{ category.postAmout }}</mat-card-subtitle>
 
 			<div class="button-wrapper">
-				<button
-					mat-stroked-button
-					color="warn"
-					type="button"
-					(click)="deleteCategory()"
-					*ngIf="category.id != 'new'"
-				>
-					<mat-icon>delete</mat-icon>
-					Delete
-				</button>
+				<div class="button-wrapper__delete">
+					<!-- (click)="deleteCategory()" -->
+					<button
+						mat-stroked-button
+						color="warn"
+						type="button"
+						(click)="deleteCategory()"
+						*ngIf="category.id != 'new'"
+						[disabled]="category.postAmout"
+					>
+						<mat-icon>delete</mat-icon>
+						Delete
+					</button>
+				</div>
 
-				<div>
+				<div class="button-wrapper__save-cancel">
 					<button
 						mat-button
 						color="primary"
@@ -184,6 +189,13 @@
 						Save
 					</button>
 				</div>
+			</div>
+
+			<div
+				class="delete-message"
+				*ngIf="category.postAmout"
+			>
+				<mat-icon>info</mat-icon>You cant delete category, if it has posts.
 			</div>
 		</form>
 	</mat-card>

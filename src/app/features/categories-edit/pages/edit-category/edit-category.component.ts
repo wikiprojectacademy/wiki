@@ -7,8 +7,9 @@ import { SnackBarService } from '@shared/services/snackbar.service';
 import { CategoryService } from '../../services/categories.service';
 import { RolesService } from '../../services/roles.service';
 import { IRole as RoleDB } from '@core/models/Role';
-import { forkJoin, Observable, tap } from 'rxjs';
+import { combineLatest, forkJoin, Observable, take, tap } from 'rxjs';
 import { ISubCategory as SubCategoryDB } from '@core/models/SubCategory';
+import { PostFirebaseService } from '@core/services/firebase/firebase-entities/postFirebase.service';
 
 @Component({
 	selector: 'app-edit-category',
@@ -49,6 +50,7 @@ export class EditCategoryComponent {
 		private route: ActivatedRoute,
 		private categoryService: CategoryService,
 		private snackbarService: SnackBarService,
+		private postFbService: PostFirebaseService,
 		private roleService: RolesService,
 		private router: Router
 	) {
@@ -91,17 +93,26 @@ export class EditCategoryComponent {
 	 */
 
 	loadCategoryFromDB(categoryId: string) {
-		this.isLoading = true;
-		const subscr = this.categoryService
+		const category$ = this.categoryService
 			.getCategoryById(categoryId)
-			.subscribe(cat => {
-				this.category = cat;
-				this.categoryStartState = { ...this.category };
+			.pipe(take(1));
+		const posts$ = this.postFbService.getCollection().pipe(take(1));
+
+		combineLatest([category$, posts$]).subscribe(
+			([categoryFromDB, postsFromDB]) => {
+				this.category = { ...categoryFromDB, postAmout: 0 };
+				this.categoryStartState = { ...categoryFromDB };
+
+				postsFromDB.forEach(post => {
+					if (post.categoryId == this.category.id) {
+						this.category.postAmout++;
+					}
+				});
 
 				this.updateForm();
 				this.isLoading = false;
-				subscr.unsubscribe();
-			});
+			}
+		);
 	}
 
 	initForm() {

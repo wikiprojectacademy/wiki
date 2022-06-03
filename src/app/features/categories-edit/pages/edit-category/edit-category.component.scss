@@ -119,24 +119,39 @@ header {
 
 		.button-wrapper {
 			display: flex;
-			justify-content: space-between;
-			button,
-			div > button {
-				width: clamp(70px, 30%, 200px);
-				min-width: 70px;
+			flex-wrap: wrap;
+			& button {
+				width: clamp(70px, 30vw, 150px);
+			}
+			&__delete {
+				flex-grow: 1;
+			}
+
+			&__save-cancel {
+				flex-grow: 1;
+				text-align: right;
 			}
 
 			@media screen and (max-width: $screen-width-small) {
+				// flex-direction: column;
+				gap: 5px;
 				mat-icon {
 					display: none;
 				}
-			}
 
-			div {
-				display: flex;
-				flex-grow: 1;
-				justify-content: right;
+				&__delete {
+					button {
+						width: 100%;
+					}
+				}
 			}
+		}
+
+		.delete-message {
+			display: flex;
+			align-items: center;
+			padding-top: 15px;
+			opacity: 0.4;
 		}
 	}
 }
