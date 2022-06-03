@@ -41,7 +41,6 @@ header {
 
 		@media screen and (max-width: $screen-width-small) {
 			padding: 10px;
-			// width: 96%;
 			width: 100%;
 			border-radius: 0px;
 		}
@@ -142,7 +141,6 @@ header {
 			}
 
 			@media screen and (max-width: $screen-width-small) {
-				// flex-direction: column;
 				gap: 5px;
 				mat-icon {
 					display: none;

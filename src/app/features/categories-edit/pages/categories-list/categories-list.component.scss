@@ -25,20 +25,10 @@ header {
 
 	.category {
 		position: relative;
-		// display: flex;
-		// margin-bottom: 7px;
 		cursor: pointer;
 		transition: transform 0.1s;
 		width: clamp(300px, 95vw, 1200px);
 		border-left: 8px solid #888;
-
-		// ::before {
-		// 	// position: absolute;
-		// 	content: 'a';
-		// 	background-color: #f00;
-		// 	width: 6px;
-		// 	height: 100%;
-		// }
 
 		&:hover {
 			transform: translateY(-2px);
@@ -84,7 +74,6 @@ header {
 			.common-label {
 				font-weight: bold;
 				opacity: 0.8;
-				// margin-left: 5px;
 				margin: 0 8px;
 			}
 
