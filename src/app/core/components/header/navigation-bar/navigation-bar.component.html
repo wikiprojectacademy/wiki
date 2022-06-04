@@ -29,7 +29,7 @@
 <button
 	mat-button
 	routerLink="/user"
-	*ngIf="isAdmin | async"
+	*ngIf="isRegularAdmin | async"
 >
 	Users
 </button>
@@ -37,7 +37,7 @@
 <button
 	mat-button
 	routerLink="/role"
-	*ngIf="isAdmin | async"
+	*ngIf="isRegularAdmin | async"
 >
 	Roles
 </button>
