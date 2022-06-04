@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IPost as Post } from '@core/models/Post';
+import { IUser as UserDB } from '@core/models/User';
 import { PostFirebaseService } from '@core/services/firebase/firebase-entities/postFirebase.service';
 import { CurrentUserService } from '@core/services/user/current-user.service';
-import { combineLatest, take } from 'rxjs';
+import { combineLatest, Observable, take } from 'rxjs';
 import { ICategoryFull as Category } from '../categories-edit/models/icategory-full';
 import { CategoryService } from '../categories-edit/services/categories.service';
 import { RolesService } from '../categories-edit/services/roles.service';
@@ -22,8 +23,10 @@ export class MainComponent implements OnInit {
 	isOpened: boolean = false;
 	isLoading: boolean = true;
 	isUserCanModCat: boolean = false;
+	isUserLoggedIn;
 	isItEmpty: boolean = true;
 
+	// currentUser$: Observable<UserDB>;
 	categories: Category[];
 	posts: Post[];
 
@@ -43,7 +46,10 @@ export class MainComponent implements OnInit {
 		private postFbService: PostFirebaseService,
 		private currentUserService: CurrentUserService,
 		private rolesService: RolesService
-	) {}
+	) {
+		this.isUserLoggedIn = currentUserService.isUserLogin$;
+		// this.currentUser$ = this.currentUserService.currentUser$;
+	}
 
 	ngOnInit(): void {
 		const categories$ = this.categoryService.getCategoryAll().pipe(take(1));

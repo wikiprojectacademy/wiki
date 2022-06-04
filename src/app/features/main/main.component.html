@@ -30,8 +30,10 @@
 			mat-button
 			class="button-add"
 			routerLink="/post/add"
+			matTooltip="Add new post"
+			*ngIf="isUserLoggedIn | async"
 		>
-			<mat-icon>add</mat-icon>
+			<mat-icon>post_add</mat-icon>
 			Add new post
 		</button>
 
@@ -40,6 +42,7 @@
 			class="button-add__icon"
 			routerLink="/post/add"
 			matTooltip="Add new post"
+			*ngIf="isUserLoggedIn | async"
 		>
 			<mat-icon>add</mat-icon>
 		</button>

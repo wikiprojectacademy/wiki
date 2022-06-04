@@ -11,17 +11,108 @@
 -->
 <app-load-spinner [isLoading]="isLoading"></app-load-spinner>
 
-<button
-	mat-button
+<div
 	routerLink="/main"
+	matTooltip="Go to home page"
 >
-	Home
-</button>
+	<button
+		mat-button
+		class="button-normal"
+	>
+		<mat-icon>home</mat-icon>
+		Home
+	</button>
+	<button
+		mat-icon-button
+		class="button-small"
+	>
+		<mat-icon>home</mat-icon>
+	</button>
+</div>
+
+<div
+	routerLink="/profile"
+	matTooltip="View your profile"
+>
+	<button
+		mat-button
+		class="button-normal"
+	>
+		<mat-icon>person</mat-icon>
+		Profile
+	</button>
+	<button
+		mat-icon-button
+		class="button-small"
+	>
+		<mat-icon>person</mat-icon>
+	</button>
+</div>
+
+<div
+	routerLink="/user"
+	matTooltip="Edit users"
+>
+	<button
+		mat-button
+		class="button-normal"
+	>
+		<mat-icon>manage_accounts</mat-icon>
+		Users
+	</button>
+	<button
+		mat-icon-button
+		class="button-small"
+	>
+		<mat-icon>manage_accounts</mat-icon>
+	</button>
+</div>
+
+<div
+	routerLink="/role"
+	*ngIf="isAdmin | async"
+	matTooltip="Edit roles"
+>
+	<button
+		mat-button
+		class="button-normal"
+	>
+		<mat-icon>badge</mat-icon>
+		Roles
+	</button>
+	<button
+		mat-icon-button
+		class="button-small"
+	>
+		<mat-icon>badge</mat-icon>
+	</button>
+</div>
 
 <button
+	*ngIf="(isAdmin | async) && !isDBInitialized"
+	mat-button
+	[disabled]="isDBInitialized || isLoading"
+	(click)="initDB()"
+	matTooltip="Fill database with mocked data"
+>
+	<mat-icon>storage</mat-icon>
+	Init DB
+</button>
+<div
+	class="done-message"
+	*ngIf="(isAdmin | async) && isDBInitialized"
+>
+	<mat-icon>done</mat-icon>
+	DB Inited
+</div>
+
+<!-- sgfsefenfjkesfhejneskfnhewfjeifesbnjfkebfnjfiekfnaujirgbaublgarhyuo -->
+<!-- <button
 	mat-button
 	routerLink="/profile"
+	matTooltip="View your profile"
 >
+	<mat-icon>person</mat-icon>
 	Profile
 </button>
 
@@ -29,7 +120,9 @@
 	mat-button
 	routerLink="/user"
 	*ngIf="isAdmin | async"
+	matTooltip="Edit users"
 >
+	<mat-icon>group</mat-icon>
 	Users
 </button>
 
@@ -37,7 +130,9 @@
 	mat-button
 	routerLink="/role"
 	*ngIf="isAdmin | async"
+	matTooltip="Edit roles"
 >
+	<mat-icon>badge</mat-icon>
 	Roles
 </button>
 
@@ -46,6 +141,8 @@
 	mat-button
 	[disabled]="isDBInitialized || isLoading"
 	(click)="initDB()"
+	matTooltip="Fill database with mocked data"
 >
-	{{ 'Init database' }}
-</button>
+	<mat-icon>storage</mat-icon>
+	Init DB
+</button> -->

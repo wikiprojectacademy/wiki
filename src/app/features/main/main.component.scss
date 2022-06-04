@@ -43,6 +43,9 @@ $sidebar-open-duration: 0.3s;
 		justify-content: center;
 		background-color: #ddd;
 		position: sticky;
+		top: 0px;
+		z-index: 400;
+		height: 40px;
 		input {
 			transition: background 0.3s;
 			padding-left: 15px;

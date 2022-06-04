@@ -158,6 +158,7 @@ export class CategoryService {
 	 *
 	 */
 	private attachDataToCategories(): void {
+		if (!this.categories.length) this.processDataToComponent();
 		let subCategoriesArray$: Observable<SubCategoryDB[]>[] = [];
 		let rolesArray$: Observable<RoleDB>[] = [];
 		let usersArray$: Observable<UserDB>[] = [];
@@ -200,7 +201,6 @@ export class CategoryService {
 			...rolesArray$,
 			...usersArray$
 		]).subscribe(() => {
-			// console.log(this.categories);
 			this.processDataToComponent();
 		});
 	}
