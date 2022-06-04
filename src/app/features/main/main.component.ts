@@ -22,9 +22,21 @@ export class MainComponent implements OnInit {
 	isOpened: boolean = false;
 	isLoading: boolean = true;
 	isUserCanModCat: boolean = false;
+	isItEmpty: boolean = true;
 
 	categories: Category[];
 	posts: Post[];
+
+	// mock: Post[] = [
+	// 	{ categoryId: '8', contentHTML: '', title: 'test' },
+	// 	{ categoryId: '8', contentHTML: '', title: 'test' },
+	// 	{ categoryId: '8', contentHTML: '', title: 'test' },
+	// 	{ categoryId: '8', contentHTML: '', title: 'test' },
+	// 	{ categoryId: '8', contentHTML: '', title: 'test' },
+	// 	{ categoryId: '8', contentHTML: '', title: 'test' },
+	// 	{ categoryId: '8', contentHTML: '', title: 'test' },
+	// 	{ categoryId: '8', contentHTML: '', title: 'test' }
+	// ];
 
 	constructor(
 		private categoryService: CategoryService,
@@ -55,6 +67,7 @@ export class MainComponent implements OnInit {
 					}
 					return false;
 				});
+				// this.posts = this.mock;
 
 				this.isLoading = false;
 			}

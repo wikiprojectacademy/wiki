@@ -16,6 +16,7 @@
 			mat-icon-button
 			(click)="isOpened = true"
 			class="small-screen-element"
+			matTooltip="Open categories"
 		>
 			<mat-icon>menu</mat-icon>
 		</button>
@@ -38,11 +39,24 @@
 			mat-icon-button
 			class="button-add__icon"
 			routerLink="/post/add"
+			matTooltip="Add new post"
 		>
 			<mat-icon>add</mat-icon>
 		</button>
 	</div>
 
+	<div
+		class="no-content"
+		*ngIf="
+			(
+				posts
+				| postFilter: searchParams.categoryId:searchParams.subCategoryId
+				| postSearch: searchParams.phrase
+			).length === 0
+		"
+	>
+		No posts here
+	</div>
 	<div class="post-list__content">
 		<mat-card
 			matRipple
@@ -59,6 +73,5 @@
 				post.contentHTML | contentShortner | tagRemove
 			}}</mat-card-content>
 		</mat-card>
-		<div class="no-content">No posts here</div>
 	</div>
 </main>

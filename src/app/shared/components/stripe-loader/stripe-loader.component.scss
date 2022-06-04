@@ -1,7 +1,9 @@
-$color1: #0af;
-$color2: #0f6;
-$color3: #ff0;
-$color4: #f41;
+$main-color: #ff4081;
+
+$color1: $main-color; //#0af;
+$color2: $main-color; //#0f6;
+$color3: $main-color; //#ff0;
+$color4: $main-color; //#f41;
 
 $duration: 2s;
 
@@ -12,7 +14,7 @@ $duration: 2s;
 }
 
 @mixin stripe($color, $delay) {
-	$color-light: lighten($color, 40%);
+	$color-light: lighten($color, 30%);
 	$color-dark: darken($color, 40%);
 
 	background: linear-gradient(90deg, $color-dark, #{$color} 50%, $color-light);
@@ -23,7 +25,7 @@ $duration: 2s;
 
 .loader {
 	transition: all 0.5s;
-	height: 3px;
+	height: 5px;
 	background-color: #555;
 }
 
@@ -36,7 +38,7 @@ $duration: 2s;
 
 .stripe {
 	position: absolute;
-	height: 3px;
+	height: 5px;
 	width: 100%;
 	transform: translateX(-100%);
 

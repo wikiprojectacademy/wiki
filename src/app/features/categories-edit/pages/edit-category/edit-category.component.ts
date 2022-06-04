@@ -18,7 +18,7 @@ import { PostFirebaseService } from '@core/services/firebase/firebase-entities/p
 })
 export class EditCategoryComponent {
 	form: FormGroup;
-	isLoading: boolean = true;
+	isLoading: boolean = false;
 
 	roles$: Observable<RoleDB[]>;
 	roles: RoleDB[];
@@ -61,6 +61,7 @@ export class EditCategoryComponent {
 		});
 
 		if (id !== 'new') {
+			this.isLoading = true;
 			this.loadCategoryFromDB(id);
 		} else {
 			this.category.id = 'new';
