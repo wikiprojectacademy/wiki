@@ -1,16 +1,6 @@
-<!--
-	EXAMPLE:
-
-			<button
-				mat-button
-				routerLink="/your/path"
-			>
-				button text
-			</button>
-
--->
 <app-load-spinner [isLoading]="isLoading"></app-load-spinner>
 
+<!-- HOME PAGE -->
 <div
 	routerLink="/main"
 	matTooltip="Go to home page"
@@ -30,9 +20,11 @@
 	</button>
 </div>
 
+<!-- PROFILE PAGE -->
 <div
 	routerLink="/profile"
 	matTooltip="View your profile"
+	*ngIf="isLoggedIn$ | async"
 >
 	<button
 		mat-button
@@ -49,8 +41,10 @@
 	</button>
 </div>
 
+<!-- USERS EDIT PAGE -->
 <div
 	routerLink="/user"
+	*ngIf="isAdmin | async"
 	matTooltip="Edit users"
 >
 	<button
@@ -68,6 +62,7 @@
 	</button>
 </div>
 
+<!-- ROLE EDIT PAGE -->
 <div
 	routerLink="/role"
 	*ngIf="isAdmin | async"
@@ -88,6 +83,7 @@
 	</button>
 </div>
 
+<!-- DATABASE INITIALIZATION CONTOL -->
 <button
 	*ngIf="(isAdmin | async) && !isDBInitialized"
 	mat-button
@@ -105,44 +101,3 @@
 	<mat-icon>done</mat-icon>
 	DB Inited
 </div>
-
-<!-- sgfsefenfjkesfhejneskfnhewfjeifesbnjfkebfnjfiekfnaujirgbaublgarhyuo -->
-<!-- <button
-	mat-button
-	routerLink="/profile"
-	matTooltip="View your profile"
->
-	<mat-icon>person</mat-icon>
-	Profile
-</button>
-
-<button
-	mat-button
-	routerLink="/user"
-	*ngIf="isAdmin | async"
-	matTooltip="Edit users"
->
-	<mat-icon>group</mat-icon>
-	Users
-</button>
-
-<button
-	mat-button
-	routerLink="/role"
-	*ngIf="isAdmin | async"
-	matTooltip="Edit roles"
->
-	<mat-icon>badge</mat-icon>
-	Roles
-</button>
-
-<button
-	*ngIf="isAdmin | async"
-	mat-button
-	[disabled]="isDBInitialized || isLoading"
-	(click)="initDB()"
-	matTooltip="Fill database with mocked data"
->
-	<mat-icon>storage</mat-icon>
-	Init DB
-</button> -->

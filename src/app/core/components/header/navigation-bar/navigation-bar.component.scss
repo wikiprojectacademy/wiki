@@ -2,9 +2,11 @@
 
 button {
 	@media screen and (max-width: $screen-width-small) {
-		&:hover {
-			background-color: #fff3;
-		}
+		width: 95vw;
+		margin: 10px;
+		// &:hover {
+		// 	background-color: #fff3;
+		// }
 	}
 }
 
@@ -19,7 +21,7 @@ button {
 	font-size: 1rem;
 	display: flex;
 	align-items: center;
-	color: #fff8;
+	color: #fff6;
 }
 
 @media screen and (max-width: 700px) {
