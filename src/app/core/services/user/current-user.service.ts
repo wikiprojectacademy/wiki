@@ -18,7 +18,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class CurrentUserService {
 	public isAdmin: BehaviorSubject<boolean>;
+	public isRegularAdmin: BehaviorSubject<boolean>;
+
 	public isDatabaseInitialized: BehaviorSubject<boolean>;
+	public otherCurrentUser: any;
 	public currentUser$: Observable<IUser>;
 	public isUserLogin$: Observable<boolean>;
 
@@ -27,12 +30,11 @@ export class CurrentUserService {
 		private userFireStore: UserFirebaseService
 	) {
 		this.isAdmin = new BehaviorSubject<boolean>(false);
+		this.isRegularAdmin = new BehaviorSubject<boolean>(false);
 		this.isDatabaseInitialized = new BehaviorSubject<boolean>(true);
 
 		this.currentUser$ = this.afAuth.user.pipe(
 			switchMap(user => {
-				console.log('user: ', user?.email);
-				console.log('new user action');
 				return user
 					? this.userFireStore
 							.getUserDataByEmail(user.email)
@@ -49,6 +51,12 @@ export class CurrentUserService {
 					this.isDatabaseInitialized.next(userData?.isDatabaseInitialized);
 				} else {
 					this.isAdmin.next(false);
+				}
+
+				if (userData?.roleId == '0') {
+					this.isRegularAdmin.next(true);
+				} else {
+					this.isRegularAdmin.next(false);
 				}
 			}),
 			map(user => user?.roleId !== '')

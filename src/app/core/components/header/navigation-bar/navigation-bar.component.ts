@@ -30,6 +30,10 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 		return this.currentUserService.isAdmin;
 	}
 
+	get isRegularAdmin(): BehaviorSubject<boolean> {
+		return this.currentUserService.isRegularAdmin;
+	}
+
 	get isDBInitialized(): boolean {
 		return this.currentUserService.isDatabaseInitialized.value;
 	}

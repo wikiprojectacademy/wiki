@@ -3,7 +3,6 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { IUser } from '@core/models/User';
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 import firebase from 'firebase/compat/app';
-import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
 	providedIn: 'root'
