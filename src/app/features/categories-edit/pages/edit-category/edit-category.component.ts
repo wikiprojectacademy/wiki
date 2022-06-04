@@ -7,8 +7,9 @@ import { SnackBarService } from '@shared/services/snackbar.service';
 import { CategoryService } from '../../services/categories.service';
 import { RolesService } from '../../services/roles.service';
 import { IRole as RoleDB } from '@core/models/Role';
-import { forkJoin, Observable, tap } from 'rxjs';
+import { combineLatest, forkJoin, Observable, take, tap } from 'rxjs';
 import { ISubCategory as SubCategoryDB } from '@core/models/SubCategory';
+import { PostFirebaseService } from '@core/services/firebase/firebase-entities/postFirebase.service';
 
 @Component({
 	selector: 'app-edit-category',
@@ -17,7 +18,7 @@ import { ISubCategory as SubCategoryDB } from '@core/models/SubCategory';
 })
 export class EditCategoryComponent {
 	form: FormGroup;
-	isLoading: boolean;
+	isLoading: boolean = true;
 
 	roles$: Observable<RoleDB[]>;
 	roles: RoleDB[];
@@ -29,8 +30,8 @@ export class EditCategoryComponent {
 		subCategories: [],
 		availableRolesToView: [],
 		subCategoriesFull: [],
-		rolesFull: [],
-		createdByFull: { firstName: 'NO', lastName: 'DATA' }
+		rolesFull: []
+		// createdByFull: { firstName: 'NO', lastName: 'DATA' }
 	};
 	categoryStartState: Category;
 
@@ -49,6 +50,7 @@ export class EditCategoryComponent {
 		private route: ActivatedRoute,
 		private categoryService: CategoryService,
 		private snackbarService: SnackBarService,
+		private postFbService: PostFirebaseService,
 		private roleService: RolesService,
 		private router: Router
 	) {
@@ -91,17 +93,26 @@ export class EditCategoryComponent {
 	 */
 
 	loadCategoryFromDB(categoryId: string) {
-		this.isLoading = true;
-		const subscr = this.categoryService
+		const category$ = this.categoryService
 			.getCategoryById(categoryId)
-			.subscribe(cat => {
-				this.category = cat;
-				this.categoryStartState = { ...this.category };
+			.pipe(take(1));
+		const posts$ = this.postFbService.getCollection().pipe(take(1));
+
+		combineLatest([category$, posts$]).subscribe(
+			([categoryFromDB, postsFromDB]) => {
+				this.category = { ...categoryFromDB, postAmout: 0 };
+				this.categoryStartState = { ...categoryFromDB };
+
+				postsFromDB.forEach(post => {
+					if (post.categoryId == this.category.id) {
+						this.category.postAmout++;
+					}
+				});
 
 				this.updateForm();
 				this.isLoading = false;
-				subscr.unsubscribe();
-			});
+			}
+		);
 	}
 
 	initForm() {
@@ -184,10 +195,8 @@ export class EditCategoryComponent {
 
 	fillCategoryFromForm() {
 		const formOutput = this.form.value;
-		const subCategoriesArray: SubCategoryDB[] = [];
-		formOutput.subCategories.forEach(subCategoryName => {
-			subCategoriesArray.push({ name: subCategoryName });
-		});
+		this.fillSubcategories();
+
 		const rolesArray: RoleDB[] = [];
 		formOutput.roles.forEach(roleID => {
 			rolesArray.push(
@@ -197,10 +206,27 @@ export class EditCategoryComponent {
 			);
 		});
 
-		this.category.subCategoriesFull = subCategoriesArray;
 		this.category.availableRolesToView = formOutput.roles;
 		this.category.rolesFull = rolesArray;
 		this.category.name = formOutput.name;
+	}
+
+	fillSubcategories() {
+		const subCategoriesFromForm = this.form.value.subCategories;
+		const subCategoriesDistinctNames = [];
+		const subCategoriesArray: SubCategoryDB[] = [];
+
+		subCategoriesFromForm.forEach(subCatName => {
+			if (!subCategoriesDistinctNames.includes(subCatName)) {
+				subCategoriesDistinctNames.push(subCatName);
+			}
+		});
+
+		subCategoriesDistinctNames.forEach(subCatName => {
+			subCategoriesArray.push({ name: subCatName });
+		});
+
+		this.category.subCategoriesFull = subCategoriesArray;
 	}
 
 	addSubcategoryContoll() {

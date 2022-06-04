@@ -41,13 +41,19 @@ header {
 
 		@media screen and (max-width: $screen-width-small) {
 			padding: 10px;
-			width: 96%;
+			width: 100%;
+			border-radius: 0px;
 		}
 
 		.section__wrapper {
 			@media screen and (min-width: 960px) {
 				display: flex;
 				gap: 15px;
+			}
+
+			@media screen and (max-width: $screen-width-small) {
+				margin: 0 -10px;
+				border-radius: 0px;
 			}
 			.section {
 				$background: #f8f8f8;
@@ -85,8 +91,10 @@ header {
 
 				@media screen and (max-width: $screen-width-small) {
 					padding: 0px 10px;
+					border-radius: 0px;
 					&__header {
 						margin: 0 -10px;
+						border-radius: 0px;
 					}
 				}
 
@@ -119,24 +127,39 @@ header {
 
 		.button-wrapper {
 			display: flex;
-			justify-content: space-between;
-			button,
-			div > button {
-				width: clamp(70px, 30%, 200px);
-				min-width: 70px;
+			flex-wrap: wrap;
+			& button {
+				width: clamp(70px, 30vw, 150px);
+			}
+			&__delete {
+				flex-grow: 1;
+			}
+
+			&__save-cancel {
+				flex-grow: 1;
+				text-align: right;
 			}
 
 			@media screen and (max-width: $screen-width-small) {
+				gap: 5px;
 				mat-icon {
 					display: none;
 				}
-			}
 
-			div {
-				display: flex;
-				flex-grow: 1;
-				justify-content: right;
+				&__delete {
+					button {
+						width: 100%;
+					}
+				}
 			}
+		}
+
+		.delete-message {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding-bottom: 15px;
+			opacity: 0.4;
 		}
 	}
 }
