@@ -101,15 +101,18 @@
 				<button
 					mat-mini-fab
 					color="warn"
-					*ngIf="element.id !== '0' && !element.hasUsers"
-					[matTooltip]="
-						element.hasUsers
-							? 'This role cannot delete because have users'
-							: 'Delete role  ' + element.name
-					"
+					*ngIf="element.id !== '0'"
+					[disabled]="element.hasUsers"
 					(click)="confirmationDelete(element)"
 				>
-					<mat-icon>delete</mat-icon>
+					<mat-icon
+						[matTooltip]="
+							element.hasUsers
+								? 'This role cannot delete because have users'
+								: 'Delete role  ' + element.name
+						"
+						>delete</mat-icon
+					>
 				</button>
 			</td>
 		</ng-container>
