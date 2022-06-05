@@ -1,18 +1,23 @@
 <div class="not-found">
-	<div class="not-found__header">
-		<h1>Lost your way?</h1>
-		<h2>
-			Sorry, we can't find that page. You will find loads to explore on the home
-			page
-		</h2>
+	<!-- <div class="not-found__header"> -->
+	<div class="error-ico">
+		<mat-icon>error</mat-icon>
 	</div>
-	<div class="not-found__button">
-		<button
-			mat-raised-button
-			type="button"
-			[routerLink]="['/main']"
-		>
-			Back to Home
-		</button>
-	</div>
+	<h1>Page not found..</h1>
+	<h2>
+		Sorry, we can't find that page. You will find loads to explore on the home
+		page
+	</h2>
+	<!-- </div> -->
+	<!-- <div class="not-found__button"> -->
+	<button
+		mat-raised-button
+		type="button"
+		[routerLink]="['/main']"
+		color="primary"
+	>
+		<mat-icon>arrow_back</mat-icon>
+		Back to Home
+	</button>
+	<!-- </div> -->
 </div>
