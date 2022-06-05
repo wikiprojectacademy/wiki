@@ -86,7 +86,7 @@
 <!-- DATABASE INITIALIZATION CONTOL -->
 <button
 	*ngIf="(isAdmin | async) && !isDBInitialized"
-	mat-button
+	mat-flat-button
 	[disabled]="isDBInitialized || isLoading"
 	(click)="initDB()"
 	matTooltip="Fill database with mocked data"

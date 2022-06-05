@@ -64,9 +64,6 @@ export class CategoryService {
 	}
 
 	addCategory(category: Category): Promise<void> {
-		console.log('input categoryfull:');
-		console.log(category);
-
 		const categoryToDB: CategoryDB = {
 			name: category.name,
 			createdBy: category.createdBy

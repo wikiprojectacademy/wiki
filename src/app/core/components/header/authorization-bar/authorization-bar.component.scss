@@ -1,0 +1,19 @@
+@import 'variable.scss';
+
+.small-button {
+	display: none;
+}
+
+.normal-button {
+	display: unset;
+}
+
+@media screen and (max-width: $screen-width-small) {
+	.small-button {
+		display: unset;
+	}
+
+	.normal-button {
+		display: none;
+	}
+}

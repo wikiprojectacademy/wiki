@@ -21,7 +21,12 @@ $duration: calc($step-duration * 4);
 	$color-light: lighten($color, $sharpness);
 	$color-dark: darken($color, $sharpness);
 
-	background: linear-gradient(90deg, $color-dark, #{$color} 50%, $color-light);
+	background: linear-gradient(
+		90deg,
+		rgba($color-dark, 0%),
+		#{$color} 40%,
+		$color-light
+	);
 	box-shadow: 0 5px 5px rgba($color, $alpha: 0.3),
 		0 2px 2px rgba($color, $alpha: 0.3);
 	animation: movement ease-in $duration #{$delay} infinite;

@@ -130,7 +130,6 @@ export class CategoriesUpdateService {
 		modRoles.forEach(modRole => {
 			if (!rolesOrig.includes(JSON.stringify(modRole))) {
 				toAdd.push(modRole);
-				console.log(modRole);
 			}
 		});
 

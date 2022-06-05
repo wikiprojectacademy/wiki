@@ -20,7 +20,6 @@
 		&__buttons {
 			display: flex;
 			align-items: center;
-			// background-color: #f00;
 
 			.open-button {
 				display: none;
@@ -40,10 +39,6 @@
 			.button-list {
 				display: flex;
 				transition: all 0.3s;
-
-				&__opened {
-					// background-color: #000;
-				}
 			}
 		}
 
@@ -53,32 +48,26 @@
 			}
 
 			.button-list {
-				// display: none;
-				background: linear-gradient(#333c, #aaa3);
-
-				backdrop-filter: blur(8px);
-
-				overflow: hidden;
-				align-items: center;
-				height: 0vh;
-				opacity: 0;
-				flex-direction: column;
 				position: absolute;
+				flex-direction: column;
+				align-items: center;
+				height: 0;
 				top: 56px;
 				left: 0;
 				width: 100%;
+				overflow: hidden;
 
-				// & * {
-				// 	width: 100vw;
-				// 	border: 1px solid #f00;
-				// }
+				background: linear-gradient(#555d, #aaa5);
+				opacity: 0;
+
+				@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+					background: linear-gradient(#3338, #aaa3);
+					backdrop-filter: blur(8px);
+					-webkit-backdrop-filter: blur(8px);
+				}
 
 				&__opened {
 					height: calc(100vh - 56px);
-					// height: auto;
-
-					// display: flex;
-					// background-color: #aaa;
 					opacity: 1;
 				}
 			}

@@ -55,10 +55,19 @@
 				posts
 				| postFilter: searchParams.categoryId:searchParams.subCategoryId
 				| postSearch: searchParams.phrase
-			).length === 0
+			).length === 0 &&
+			categories !== undefined &&
+			categories.length
 		"
 	>
 		No posts here
+	</div>
+
+	<div
+		class="no-content"
+		*ngIf="categories !== undefined && !categories.length"
+	>
+		Database not initialized
 	</div>
 	<div class="post-list__content">
 		<mat-card
