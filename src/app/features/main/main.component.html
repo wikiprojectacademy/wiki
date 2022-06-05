@@ -23,7 +23,7 @@
 		<input
 			type="text"
 			class="search"
-			placeholder="🔍 search"
+			placeholder="Search..."
 			(input)="changeSearchPhrase($event.target)"
 		/>
 		<button
@@ -44,7 +44,7 @@
 			matTooltip="Add new post"
 			*ngIf="isUserLoggedIn | async"
 		>
-			<mat-icon>add</mat-icon>
+			<mat-icon>post_add</mat-icon>
 		</button>
 	</div>
 
