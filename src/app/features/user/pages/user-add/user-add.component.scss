@@ -1,10 +1,14 @@
+@import 'variable.scss';
 :host {
 	width: 100%;
 }
-
-.user-add {
+.header {
+	display: block;
+	height: 65px;
+}
+.user--add {
 	position: relative;
-	margin: 5vw auto 0;
+	margin: 0 auto;
 	width: 80vw;
 
 	border-radius: 23px;
@@ -92,7 +96,10 @@ button {
 	justify-self: center;
 	width: 80%;
 }
-
+.footer {
+	display: block;
+	height: 65px;
+}
 @keyframes move-up {
 	to {
 		transform: translateY(-10px) rotate(-20deg);
@@ -102,5 +109,42 @@ button {
 @keyframes move-down {
 	to {
 		transform: translateY(10px) rotate(20deg);
+	}
+}
+
+@media (max-width: 576px) {
+	.user--add {
+		&:before {
+			display: none;
+		}
+
+		&:after {
+			display: none;
+		}
+	}
+	form {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+
+		mat-form-field {
+			width: 90%;
+		}
+	}
+	button {
+		margin: 10px 0;
+	}
+	.footer {
+		display: none;
+	}
+}
+@media (max-width: 960px) {
+	img {
+		display: none;
+	}
+}
+@media (min-width: 1400px) {
+	.user--add {
+		width: 900px;
 	}
 }

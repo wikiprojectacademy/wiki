@@ -2,15 +2,39 @@
 	width: 100%;
 }
 
-.add-btn {
+.header {
 	display: flex;
-	flex-direction: row-reverse;
-	margin: 15px;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px;
+	&--title {
+		font-size: 32px;
+		font-weight: 500;
+		color: #3f51b5;
+		text-align: center;
+	}
 }
+
 table {
 	width: 100%;
 }
+.table-container {
+	overflow: auto;
+}
 
+td.mat-cell {
+	padding-right: 15px;
+}
 th.mat-sort-header-sorted {
 	color: black;
+}
+@media (min-width: 1400px) {
+	.header {
+		width: 1024px;
+		margin: 0 auto;
+	}
+	.table-container {
+		width: 1024px;
+		margin: 0 auto;
+	}
 }
