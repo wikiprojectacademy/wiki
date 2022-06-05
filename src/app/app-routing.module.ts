@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './features/main/main.component';
+import { PageNotFoundComponent } from '@shared/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
 	{ path: 'main', component: MainComponent },
@@ -40,6 +41,14 @@ const routes: Routes = [
 		path: 'post',
 		loadChildren: () =>
 			import('./features/post/post.module').then(m => m.PostModule)
+	},
+	{
+		path: 'not-found',
+		component: PageNotFoundComponent
+	},
+	{
+		path: '**',
+		redirectTo: 'not-found'
 	}
 ];
 
