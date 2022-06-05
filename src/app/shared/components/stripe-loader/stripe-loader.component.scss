@@ -1,9 +1,15 @@
-$color1: #0af;
-$color2: #0f6;
-$color3: #ff0;
-$color4: #f41;
+// Main configuration
+$main-color: #ff4081;
+$step-duration: 500ms;
+$height: 4px;
+$sharpness: 20%;
 
-$duration: 2s;
+// Supports up to 4 colors
+$color1: $main-color; //#0af;
+$color2: $main-color; //#0f6;
+$color3: $main-color; //#ff0;
+$color4: $main-color; //#f41;
+$duration: calc($step-duration * 4);
 
 :host {
 	z-index: 1000;
@@ -12,31 +18,39 @@ $duration: 2s;
 }
 
 @mixin stripe($color, $delay) {
-	$color-light: lighten($color, 40%);
-	$color-dark: darken($color, 40%);
+	$color-light: lighten($color, $sharpness);
+	$color-dark: darken($color, $sharpness);
 
-	background: linear-gradient(90deg, $color-dark, #{$color} 50%, $color-light);
+	background: linear-gradient(
+		90deg,
+		rgba($color-dark, 0%),
+		#{$color} 40%,
+		$color-light
+	);
 	box-shadow: 0 5px 5px rgba($color, $alpha: 0.3),
 		0 2px 2px rgba($color, $alpha: 0.3);
 	animation: movement ease-in $duration #{$delay} infinite;
 }
 
 .loader {
-	transition: all 0.5s;
-	height: 3px;
+	transition: all 0.2s;
+	height: $height;
 	background-color: #555;
 }
 
 .hidden {
 	height: 0px;
 	& * {
-		display: none;
+		height: 0px;
 	}
+	// & * {
+	// 	display: none;
+	// }
 }
 
 .stripe {
 	position: absolute;
-	height: 3px;
+	height: $height;
 	width: 100%;
 	transform: translateX(-100%);
 

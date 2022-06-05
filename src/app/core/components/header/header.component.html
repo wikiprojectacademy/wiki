@@ -16,18 +16,22 @@
 			Wiki
 		</div>
 
-		<!-- MENU FOR SMALL SCREENS -->
-		<div class="navigation-menu">
-			<mat-icon>expand_more</mat-icon>
+		<!-- NAVIGATION -->
+		<div class="navigation__buttons">
+			<button
+				mat-icon-button
+				class="open-button"
+				(click)="isOpened = !isOpened"
+				[class.open-button__active]="isOpened"
+			>
+				<mat-icon [class.rotated]="isOpened">expand_more</mat-icon>
+			</button>
 			<app-navigation-bar
-				class="navigation-buttons__small"
+				class="button-list"
+				(click)="isOpened = false"
+				[class.button-list__opened]="isOpened"
 			></app-navigation-bar>
 		</div>
-
-		<!-- MENU FOR BIG SCREENS -->
-		<!-- <div class="navigation-buttons"> -->
-		<app-navigation-bar class="navigation-buttons"></app-navigation-bar>
-		<!-- </div> -->
 	</nav>
 
 	<!-- LOG IN/ LOG OUT -->

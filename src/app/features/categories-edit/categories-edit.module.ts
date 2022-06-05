@@ -10,6 +10,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { CategoriesListComponent } from './pages/categories-list/categories-list.component';
 import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
@@ -35,7 +36,8 @@ import { SharedModule } from '@shared/shared.module';
 		MatFormFieldModule,
 		MatInputModule,
 		MatSelectModule,
-		SharedModule
+		SharedModule,
+		MatTooltipModule
 	]
 })
 export class CategoriesEditModule {}

@@ -1,52 +1,111 @@
-<!--
-	EXAMPLE:
-
-			<button
-				mat-button
-				routerLink="/your/path"
-			>
-				button text
-			</button>
-
--->
 <app-load-spinner [isLoading]="isLoading"></app-load-spinner>
 
-<button
-	mat-button
+<!-- HOME PAGE -->
+<div
 	routerLink="/main"
+	matTooltip="Go to home page"
 >
-	Home
-</button>
+	<button
+		mat-button
+		class="button-normal"
+		[disabled]="!isDBInitialized"
+	>
+		<mat-icon>home</mat-icon>
+		Home
+	</button>
+	<button
+		mat-icon-button
+		class="button-small"
+		[disabled]="!isDBInitialized"
+	>
+		<mat-icon>home</mat-icon>
+	</button>
+</div>
 
-<button
-	mat-button
+<!-- PROFILE PAGE -->
+<div
 	routerLink="/profile"
+	matTooltip="View your profile"
 	*ngIf="isLoggedIn$ | async"
 >
-	Profile
-</button>
+	<button
+		mat-button
+		class="button-normal"
+		[disabled]="!isDBInitialized"
+	>
+		<mat-icon>person</mat-icon>
+		Profile
+	</button>
+	<button
+		mat-icon-button
+		class="button-small"
+		[disabled]="!isDBInitialized"
+	>
+		<mat-icon>person</mat-icon>
+	</button>
+</div>
 
-<button
-	mat-button
+<!-- USERS EDIT PAGE -->
+<div
 	routerLink="/user"
 	*ngIf="isRegularAdmin | async"
+	matTooltip="Edit users"
 >
-	Users
-</button>
+	<button
+		mat-button
+		class="button-normal"
+		[disabled]="!isDBInitialized"
+	>
+		<mat-icon>manage_accounts</mat-icon>
+		Users
+	</button>
+	<button
+		mat-icon-button
+		class="button-small"
+		[disabled]="!isDBInitialized"
+	>
+		<mat-icon>manage_accounts</mat-icon>
+	</button>
+</div>
 
-<button
-	mat-button
+<!-- ROLE EDIT PAGE -->
+<div
 	routerLink="/role"
 	*ngIf="isRegularAdmin | async"
+	matTooltip="Edit roles"
 >
-	Roles
-</button>
+	<button
+		mat-button
+		class="button-normal"
+		[disabled]="!isDBInitialized"
+	>
+		<mat-icon>badge</mat-icon>
+		Roles
+	</button>
+	<button
+		mat-icon-button
+		class="button-small"
+		[disabled]="!isDBInitialized"
+	>
+		<mat-icon>badge</mat-icon>
+	</button>
+</div>
 
+<!-- DATABASE INITIALIZATION CONTOL -->
 <button
-	*ngIf="isAdmin | async"
-	mat-button
+	*ngIf="(isAdmin | async) && !isDBInitialized"
+	mat-flat-button
 	[disabled]="isDBInitialized || isLoading"
 	(click)="initDB()"
+	matTooltip="Fill database with mocked data"
 >
-	{{ 'Init database' }}
+	<mat-icon>storage</mat-icon>
+	Init DB
 </button>
+<div
+	class="done-message"
+	*ngIf="(isAdmin | async) && isDBInitialized"
+>
+	<mat-icon>done</mat-icon>
+	DB Inited
+</div>

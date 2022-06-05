@@ -1,6 +1,15 @@
 <div *ngIf="isLoggedIn">
 	<button
+		mat-icon-button
+		class="small-button"
+		(click)="logout()"
+	>
+		<mat-icon>logout</mat-icon>
+	</button>
+
+	<button
 		mat-button
+		class="normal-button"
 		(click)="logout()"
 	>
 		Log out
@@ -9,13 +18,22 @@
 
 <div *ngIf="!isLoggedIn">
 	<button
+		mat-icon-button
+		class="small-button"
+		routerLink="/authorization/login"
+	>
+		<mat-icon>login</mat-icon>
+	</button>
+	<button
 		mat-button
+		class="normal-button"
 		routerLink="/authorization/login"
 	>
 		Log in
 	</button>
 	<button
 		mat-button
+		class="normal-button"
 		routerLink="/authorization/register"
 	>
 		Sign up

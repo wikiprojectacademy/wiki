@@ -2,8 +2,42 @@
 
 button {
 	@media screen and (max-width: $screen-width-small) {
-		&:hover {
-			background-color: #fff3;
-		}
+		width: 95vw;
+		margin: 10px;
+		// &:hover {
+		// 	background-color: #fff3;
+		// }
+	}
+}
+
+.button-normal {
+	display: unset;
+}
+.button-small {
+	display: none;
+}
+
+.done-message {
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	color: #fff6;
+}
+
+@media screen and (max-width: 700px) {
+	.button-normal {
+		display: none;
+	}
+	.button-small {
+		display: unset;
+	}
+}
+
+@media screen and (max-width: $screen-width-small) {
+	.button-normal {
+		display: unset;
+	}
+	.button-small {
+		display: none;
 	}
 }

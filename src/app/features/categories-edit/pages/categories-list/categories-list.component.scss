@@ -27,8 +27,8 @@ header {
 		position: relative;
 		cursor: pointer;
 		transition: transform 0.1s;
-		width: clamp(300px, 95vw, 1200px);
-		border-left: 8px solid #888;
+		width: clamp(200px, 95vw, 1200px);
+		// border-left: 8px solid #888;
 
 		&:hover {
 			transform: translateY(-2px);
@@ -64,7 +64,7 @@ header {
 		.roles-list {
 			margin: 8px -16px -16px -16px;
 			padding: 6px;
-			background-color: #f8f8f8;
+			background-color: #fefefe;
 			display: flex;
 			align-items: center;
 			flex-wrap: wrap;

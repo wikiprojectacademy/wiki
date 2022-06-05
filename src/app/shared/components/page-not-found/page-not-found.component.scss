@@ -4,51 +4,44 @@
 	flex-grow: 1;
 	background-color: #eee;
 	display: flex;
-	max-height: calc(100vh - 64px);
-	overflow: hidden;
-
-	@media screen and (max-width: 600px) {
-		max-height: calc(100vh - 56px);
-	}
-}
-
-.not-found {
-	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	width: 100%;
-	&__header {
-		h1 {
-			color: black;
-			text-align: center;
-			font-size: 9em;
-			line-height: 1em;
-			padding: 20px;
-			@media screen and (max-width: $screen-width-medium) {
-				font-size: 6em;
-			}
-		}
+	padding: 15px;
+}
 
-		h2 {
-			color: black;
-			text-align: center;
-			font-size: 4em;
-			line-height: 1em;
-			padding: 30px 10px 10px 10px;
+* {
+	text-align: center;
+}
 
-			@media screen and (max-width: $screen-width-medium) {
-				font-size: 3em;
-			}
+.error-ico {
+	mat-icon {
+		width: 100px;
+		font-size: 8em;
+		line-height: 1em;
+		text-align: center;
+		opacity: 0.2;
+
+		@media screen and (max-width: 600px) {
+			font-size: 4rem;
 		}
 	}
+}
 
-	&__button {
-		box-shadow: -6px 0 24px #0003, 0 0 4px #0003;
-
-		button {
-			width: 120px;
-			height: 40px;
-		}
+h1 {
+	font-size: 4em;
+	line-height: 1em;
+	opacity: 0.6;
+	@media screen and (max-width: 600px) {
+		font-size: 2.5rem;
 	}
+}
+
+h2 {
+	opacity: 0.4;
+	font-weight: 400;
+}
+
+button {
+	margin-bottom: 30px;
 }

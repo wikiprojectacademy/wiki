@@ -64,9 +64,6 @@ export class CategoryService {
 	}
 
 	addCategory(category: Category): Promise<void> {
-		console.log('input categoryfull:');
-		console.log(category);
-
 		const categoryToDB: CategoryDB = {
 			name: category.name,
 			createdBy: category.createdBy
@@ -158,6 +155,7 @@ export class CategoryService {
 	 *
 	 */
 	private attachDataToCategories(): void {
+		if (!this.categories.length) this.processDataToComponent();
 		let subCategoriesArray$: Observable<SubCategoryDB[]>[] = [];
 		let rolesArray$: Observable<RoleDB>[] = [];
 		let usersArray$: Observable<UserDB>[] = [];
@@ -200,7 +198,6 @@ export class CategoryService {
 			...rolesArray$,
 			...usersArray$
 		]).subscribe(() => {
-			// console.log(this.categories);
 			this.processDataToComponent();
 		});
 	}

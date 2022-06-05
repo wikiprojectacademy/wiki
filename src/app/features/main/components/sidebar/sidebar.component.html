@@ -5,14 +5,16 @@
 				mat-icon-button
 				(click)="close()"
 				class="small-screen-element"
+				matTooltip="Close this menu"
 			>
-				x
+				<mat-icon>close</mat-icon>
 			</button>
-			List of categories:
+			Categories:
 			<button
 				*ngIf="isUserCanModCat"
 				mat-icon-button
 				routerLink="/edit-categories"
+				matTooltip="Edit categories list"
 			>
 				<mat-icon>edit_note</mat-icon>
 			</button>

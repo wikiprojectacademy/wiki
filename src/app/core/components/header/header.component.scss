@@ -17,50 +17,59 @@
 			cursor: pointer;
 		}
 
-		.navigation-buttons {
+		&__buttons {
 			display: flex;
 			align-items: center;
 
-			&__small {
+			.open-button {
 				display: none;
-				position: absolute;
-				display: flex;
-				flex-direction: column;
-				// transition: opacity 0.2s;
-				transition: opacity 0.1s;
-				top: 40px;
-
-				opacity: 0;
-				background-color: #333;
-				border-radius: 5px;
-			}
-		}
-
-		.navigation-menu {
-			display: none;
-			position: relative;
-			overflow: hidden;
-			// transition: overflow 200ms 200ms;
-			// background-color: #f00;
-
-			&:hover {
-				overflow: visible;
-				.navigation-buttons__small {
-					opacity: 1;
+				mat-icon {
+					transition: all 0.4s;
 				}
+
+				&__active {
+					background-color: #0003;
+					box-shadow: inset 0 2px 2px #0003, inset 0 1px 1px #0002;
+				}
+				.rotated {
+					transform: rotate3d(1, 0, 0, 180deg);
+				}
+			}
+
+			.button-list {
+				display: flex;
+				transition: all 0.3s;
 			}
 		}
 
 		@media screen and (max-width: $screen-width-small) {
-			.navigation-menu {
-				display: inline;
-				display: flex;
-				// justify-content: center;
-				align-items: center;
+			.open-button {
+				display: unset;
 			}
 
-			.navigation-buttons {
-				display: none;
+			.button-list {
+				position: absolute;
+				flex-direction: column;
+				align-items: center;
+				height: 0;
+				top: 56px;
+				left: 0;
+				width: 100%;
+				overflow: hidden;
+
+				background: linear-gradient(#555d, #aaa5);
+				opacity: 0;
+
+				@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+					background: linear-gradient(#3338, #aaa3);
+					backdrop-filter: blur(8px);
+					-webkit-backdrop-filter: blur(8px);
+				}
+
+				&__opened {
+					height: calc(100vh - 56px);
+					opacity: 1;
+				}
 			}
 		}
 	}

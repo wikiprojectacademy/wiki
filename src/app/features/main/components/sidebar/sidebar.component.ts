@@ -27,6 +27,7 @@ export class SidebarComponent implements OnInit {
 		this.currentSubCategory.emit(subCategoryID);
 		this.searchParams.categoryId = categoryID;
 		this.searchParams.subCategoryId = subCategoryID;
+		this.close();
 	}
 
 	close() {

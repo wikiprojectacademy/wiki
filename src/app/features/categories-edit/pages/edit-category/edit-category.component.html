@@ -3,6 +3,7 @@
 	<button
 		mat-icon-button
 		routerLink="/edit-categories"
+		matTooltip="Back to categories list"
 	>
 		<mat-icon>arrow_back</mat-icon>
 	</button>
@@ -46,6 +47,7 @@
 							mat-button
 							class="add-button"
 							type="button"
+							matTooltip="Add new subcategory"
 							(click)="addSubcategoryContoll()"
 						>
 							+<mat-icon>category</mat-icon> Add more
@@ -72,6 +74,7 @@
 						<button
 							type="button"
 							class="delete-button"
+							matTooltip="Remove this subcategory"
 							mat-icon-button
 							(click)="removeSubcategoryControll(i)"
 						>
@@ -98,6 +101,7 @@
 					<div class="section__header">
 						<mat-card-subtitle>Roles:</mat-card-subtitle>
 						<button
+							matTooltip="Add new role, who can view this category"
 							mat-button
 							class="add-button"
 							type="button"
@@ -127,6 +131,7 @@
 							<mat-error>Not need it? Delete it.</mat-error>
 						</mat-form-field>
 						<button
+							matTooltip="Remove this role from list, who can view this category"
 							type="button"
 							class="delete-button"
 							mat-icon-button
@@ -174,6 +179,7 @@
 						(click)="deleteCategory()"
 						*ngIf="category.id != 'new'"
 						[disabled]="category.postAmout != 0"
+						matTooltip="Delete this category"
 					>
 						<mat-icon>delete</mat-icon>
 						Delete
@@ -186,6 +192,7 @@
 						color="primary"
 						type="button"
 						routerLink="/edit-categories"
+						matTooltip="Ignore changes and go back to categories list"
 					>
 						Cancel
 					</button>
@@ -193,6 +200,7 @@
 						mat-raised-button
 						color="primary"
 						type="submit"
+						matTooltip="Save changes"
 					>
 						<mat-icon>save</mat-icon>
 						Save

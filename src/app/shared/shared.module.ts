@@ -9,6 +9,7 @@ import { ArrayByKeyPipe } from './pipes/array-by-key.pipe';
 import { StripeLoaderComponent } from './components/stripe-loader/stripe-loader.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
 	// Here are must list all components, that are inside shared folder
@@ -24,6 +25,7 @@ import { RouterModule } from '@angular/router';
 		CommonModule,
 		MatProgressSpinnerModule,
 		MatButtonModule,
+		MatIconModule,
 		RouterModule
 	],
 	// Here are must list all components, that are inside shared folder, so when you import shared module in some of module,
