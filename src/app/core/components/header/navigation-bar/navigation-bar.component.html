@@ -8,6 +8,7 @@
 	<button
 		mat-button
 		class="button-normal"
+		[disabled]="!isDBInitialized"
 	>
 		<mat-icon>home</mat-icon>
 		Home
@@ -15,6 +16,7 @@
 	<button
 		mat-icon-button
 		class="button-small"
+		[disabled]="!isDBInitialized"
 	>
 		<mat-icon>home</mat-icon>
 	</button>
@@ -29,6 +31,7 @@
 	<button
 		mat-button
 		class="button-normal"
+		[disabled]="!isDBInitialized"
 	>
 		<mat-icon>person</mat-icon>
 		Profile
@@ -36,6 +39,7 @@
 	<button
 		mat-icon-button
 		class="button-small"
+		[disabled]="!isDBInitialized"
 	>
 		<mat-icon>person</mat-icon>
 	</button>
@@ -50,6 +54,7 @@
 	<button
 		mat-button
 		class="button-normal"
+		[disabled]="!isDBInitialized"
 	>
 		<mat-icon>manage_accounts</mat-icon>
 		Users
@@ -57,6 +62,7 @@
 	<button
 		mat-icon-button
 		class="button-small"
+		[disabled]="!isDBInitialized"
 	>
 		<mat-icon>manage_accounts</mat-icon>
 	</button>
@@ -71,6 +77,7 @@
 	<button
 		mat-button
 		class="button-normal"
+		[disabled]="!isDBInitialized"
 	>
 		<mat-icon>badge</mat-icon>
 		Roles
@@ -78,6 +85,7 @@
 	<button
 		mat-icon-button
 		class="button-small"
+		[disabled]="!isDBInitialized"
 	>
 		<mat-icon>badge</mat-icon>
 	</button>

@@ -50,6 +50,10 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 		this.userSubscription.unsubscribe();
 	}
 
+	reloadPage() {
+		window.location.reload();
+	}
+
 	/**
 	 * This method initialize database, with test data. Until the call of that method
 	 * in database, already should be admin role and admin user.
@@ -71,6 +75,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 						this.snackBarService.openSnackBar(
 							'Database was successfully initialized'
 						);
+						this.reloadPage();
 					});
 			})
 			.catch(error => {
