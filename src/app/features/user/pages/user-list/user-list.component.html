@@ -1,14 +1,17 @@
-<div class="add-btn">
-	<button
-		mat-raised-button
-		color="primary"
-		routerLink="add"
-		routerLinkActive="active"
-	>
-		Add new user
-	</button>
+<div class="header">
+	<div class="header--title">Users list</div>
+	<div>
+		<button
+			mat-raised-button
+			color="primary"
+			routerLink="add"
+			routerLinkActive="active"
+		>
+			Add new user
+		</button>
+	</div>
 </div>
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 table-container">
 	<table
 		mat-table
 		[dataSource]="dataSource"

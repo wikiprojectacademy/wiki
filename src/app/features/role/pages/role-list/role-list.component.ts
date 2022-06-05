@@ -120,21 +120,4 @@ export class RoleListComponent implements AfterViewInit {
 	onEdit(id: string): void {
 		this.router.navigate([`/role/edit/${id}`]);
 	}
-
-	getTooltipTextForDelete(element): string {
-		if (element.id === '0') {
-			return 'Super Admin role cannot delete';
-		}
-		if (element.hasUsers) {
-			return 'This role cannot delete because have users';
-		}
-		return '';
-	}
-
-	getTooltipTextForEdit(element): string {
-		if (element.id === '0') {
-			return 'Super Admin role cannot edit';
-		}
-		return '';
-	}
 }
