@@ -44,7 +44,7 @@
 <!-- USERS EDIT PAGE -->
 <div
 	routerLink="/user"
-	*ngIf="isAdmin | async"
+	*ngIf="isRegularAdmin | async"
 	matTooltip="Edit users"
 >
 	<button
@@ -65,7 +65,7 @@
 <!-- ROLE EDIT PAGE -->
 <div
 	routerLink="/role"
-	*ngIf="isAdmin | async"
+	*ngIf="isRegularAdmin | async"
 	matTooltip="Edit roles"
 >
 	<button

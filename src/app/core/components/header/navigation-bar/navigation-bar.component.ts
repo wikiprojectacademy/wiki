@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FirebaseStorageService } from '@core/services/firebase/firebase-init/firebaseStorage.service';
 import { CurrentUserService } from '@core/services/user/current-user.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -18,6 +19,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 	isLoading: boolean;
 
 	constructor(
+		public router: Router,
 		private firebaseStorageService: FirebaseStorageService,
 		private currentUserService: CurrentUserService,
 		private snackBarService: SnackBarService,
@@ -26,6 +28,10 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
 	get isAdmin(): BehaviorSubject<boolean> {
 		return this.currentUserService.isAdmin;
+	}
+
+	get isRegularAdmin(): BehaviorSubject<boolean> {
+		return this.currentUserService.isRegularAdmin;
 	}
 
 	get isDBInitialized(): boolean {

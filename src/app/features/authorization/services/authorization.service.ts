@@ -3,7 +3,6 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { IUser } from '@core/models/User';
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 import firebase from 'firebase/compat/app';
-import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
 	providedIn: 'root'
@@ -13,6 +12,43 @@ export class AuthorizationService {
 		private afAuth: AngularFireAuth,
 		private userFireStore: UserFirebaseService
 	) {}
+
+	async registerUser(registerUser: IUser): Promise<any> {
+		try {
+			const { user } = await this.afAuth.createUserWithEmailAndPassword(
+				registerUser.email,
+				registerUser.password
+			);
+			user.updateProfile({
+				displayName: registerUser.firstName + ' ' + registerUser.lastName,
+				photoURL:
+					'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
+			});
+
+			const userId = user.uid;
+			registerUser.roleId = '1';
+			registerUser.id = userId;
+			registerUser.isActivated = true;
+
+			// add user to Firestore
+			await this.userFireStore.addUserWithCustomId(userId, registerUser);
+			return user;
+		} catch (error) {
+			return error.code ? { isValid: false, message: error.message } : error;
+		}
+	}
+
+	async loginUser(email: string, password: string): Promise<any> {
+		try {
+			const { user } = await this.afAuth.signInWithEmailAndPassword(
+				email,
+				password
+			);
+			return user;
+		} catch (error) {
+			return error.code ? { isValid: false, message: error.message } : error;
+		}
+	}
 
 	async updateUser(newUsersData: IUser, currentUsersData: IUser): Promise<any> {
 		//get User
@@ -60,52 +96,23 @@ export class AuthorizationService {
 		}
 	}
 
-	registerUser(user: IUser): Promise<any> {
-		return this.afAuth
-			.createUserWithEmailAndPassword(user.email, user.password)
-			.then((result: UserCredential) => {
-				result.user.updateProfile({
-					displayName: user.firstName + ' ' + user.lastName,
-					photoURL:
-						'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
-				});
-				const userId = result.user.uid;
-				user.roleId = '1';
-				user.id = userId;
-				user.isActivated = true;
-				// add user to Firestore
-				this.userFireStore.addUserWithCustomId(userId, user);
-				return result;
-			})
-			.catch(error => {
-				return error.code ? { isValid: false, message: error.message } : error;
+	private async registerUserFromDatabase(registerUser: IUser): Promise<any> {
+		try {
+			const { user } = await this.afAuth.createUserWithEmailAndPassword(
+				registerUser.email,
+				registerUser.password
+			);
+			user.updateProfile({
+				displayName: registerUser.firstName + ' ' + registerUser.lastName,
+				photoURL:
+					'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
 			});
-	}
 
-	loginUser(email: string, password: string): Promise<any> {
-		return this.afAuth
-			.signInWithEmailAndPassword(email, password)
-			.then((result: UserCredential) => result)
-			.catch(error => {
-				return error.code ? { isValid: false, message: error.message } : error;
-			});
-	}
-
-	private registerUserFromDatabase(user: IUser): Promise<any> {
-		return this.afAuth
-			.createUserWithEmailAndPassword(user.email, user.password)
-			.then((result: UserCredential) => {
-				result.user.updateProfile({
-					displayName: user.firstName + ' ' + user.lastName,
-					photoURL:
-						'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
-				});
-				this.userFireStore.updateUser(user.id, { isActivated: true });
-				return result;
-			})
-			.catch(error => {
-				return error.code ? { isValid: false, message: error.message } : error;
-			});
+			this.userFireStore.updateUser(registerUser.id, { isActivated: true });
+			return user;
+		} catch (error) {
+			return error.code ? { isValid: false, message: error.message } : error;
+		}
 	}
 
 	async loginUserFromDatabase(email: string, password: string): Promise<any> {
