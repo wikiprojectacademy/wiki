@@ -62,7 +62,7 @@ export class PostComponent implements OnInit {
 		if (this.category) {
 			return this.category.subCategoriesFull.filter(
 				category => category?.id === this.post.subCategory
-			)[0].name;
+			)[0]?.name;
 		}
 		return '';
 	}
