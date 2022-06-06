@@ -75,19 +75,6 @@ export class MainComponent implements OnInit {
 					return false;
 				});
 
-				// this.posts.forEach(post => {
-				// 	const currentCat = this.categories.filter(
-				// 		cat => cat.id == post.categoryId
-				// 	)[0];
-				// 	post.categoryName = currentCat.name;
-				// 	// if (post.subCategory) {
-				// 	// 	post.subCategoryName = currentCat.subCategoriesFull.filter(
-				// 	// 		sub => sub.id == post.subCategory
-				// 	// 	)[0].name;
-				// 	// }
-				// });
-				// this.posts = this.mock;
-
 				this.isLoading = false;
 			}
 		);
