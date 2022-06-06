@@ -13,7 +13,12 @@ const routes: Routes = [
 				component: PostAddComponent,
 				canActivate: [OnlyLoggedInUserGuard]
 			},
-			{ path: ':id', component: PostComponent }
+			{ path: ':id', component: PostComponent },
+			{
+				path: 'edit/:id',
+				component: PostAddComponent,
+				canActivate: [OnlyLoggedInUserGuard]
+			}
 		]
 	}
 ];

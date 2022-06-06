@@ -17,7 +17,10 @@
 
 				<mat-form-field appearance="outline">
 					<mat-label>Available categories</mat-label>
-					<mat-select formControlName="categories">
+					<mat-select
+						formControlName="categories"
+						[compareWith]="compareWithFn"
+					>
 						<mat-option
 							[value]="category"
 							*ngFor="let category of categories"
@@ -28,13 +31,16 @@
 						Categories is required field
 					</mat-error>
 				</mat-form-field>
-				<mat-form-field appearance="outline">
+				<mat-form-field
+					appearance="outline"
+					*ngIf="getSubCategories().length"
+				>
 					<mat-label>Available subcategories</mat-label>
 					<mat-select formControlName="subcategories">
 						<mat-option
 							[value]="category"
 							*ngFor="let category of getSubCategories()"
-							>{{ category }}</mat-option
+							>{{ category.name }}</mat-option
 						>
 					</mat-select>
 					<mat-error
