@@ -77,13 +77,15 @@
 			*ngFor="
 				let post of posts
 					| postFilter: searchParams.categoryId:searchParams.subCategoryId
+					| tagRemove
 					| postSearch: searchParams.phrase
 			"
 		>
 			<mat-card-title>{{ post.title }}</mat-card-title>
 			<mat-card-content>{{
-				post.contentHTML | contentShortner | tagRemove
+				post.contentHTML | contentShortner
 			}}</mat-card-content>
+			<div class="white-gradient"></div>
 		</mat-card>
 	</div>
 </main>

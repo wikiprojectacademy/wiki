@@ -93,7 +93,8 @@ $sidebar-open-duration: 0.3s;
 			grid-template-columns: 1fr;
 		}
 		.post {
-			height: 100px;
+			height: 120px;
+			position: relative;
 			// width: 300px;
 			// flex-basis: 300px;
 			// max-width: 400px;
@@ -113,6 +114,19 @@ $sidebar-open-duration: 0.3s;
 				flex-basis: unset;
 				height: 85px;
 				width: 100%;
+			}
+
+			.white-gradient {
+				// display: ;
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				bottom: 0px;
+				height: 30px;
+				background-color: #f003;
+				background: linear-gradient(#fff0, #fff);
+				border-bottom: 5px solid #fff;
+				// border-top: 1px solid #f00;
 			}
 		}
 	}
