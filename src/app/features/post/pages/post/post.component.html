@@ -11,26 +11,28 @@
 		<div class="title-container">
 			<h1 class="title">{{ post?.title }}</h1>
 			<div class="dates">
-				<span class="created-at"
-					>Created at: {{ post?.createdAt | date: 'MMMM d, y' }}</span
+				<span
+					class="created-at"
+					*ngIf="post?.createdAt"
+					>Created at: {{ newDate(post?.createdAt) | date: 'MMMM d, y' }}</span
 				>
 				<span
 					class="updated-at"
 					*ngIf="post?.updatedAt"
-					>Updated at: {{ post?.updatedAt | date: 'MMMM d, y' }}</span
+					>Updated at: {{ newDate(post?.updatedAt) | date: 'MMMM d, y' }}</span
 				>
 			</div>
 		</div>
 
 		<div class="category">
 			<!--    todo: getcategorybyId to display name after category service will be finished -->
-			<span>{{ post?.categoryId }}</span>
+			<span>{{ category?.name }}</span>
 		</div>
 		<div
 			class="subcategory"
-			*ngIf="post?.subCategory"
+			*ngIf="getSubCategory()"
 		>
-			<span>{{ post?.subCategory }}</span>
+			<span>{{ getSubCategory() }}</span>
 		</div>
 		<mat-divider class="divider"></mat-divider>
 		<div

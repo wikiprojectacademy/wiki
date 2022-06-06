@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Editor, Toolbar } from 'ngx-editor';
-import { ICategory as Category } from '@core/models/Category';
-import { CategoriesMock } from '../../mocks/post-page.mock';
+import { ICategory, ICategory as Category } from '@core/models/Category';
 import { PostFirebaseService } from '@core/services/firebase/firebase-entities/postFirebase.service';
 import { IPost } from '@core/models/Post';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { take } from 'rxjs';
+import { CategoryService } from '../../../categories-edit/services/categories.service';
+import { ISubCategory } from '@core/models/SubCategory';
+import { ActivatedRoute } from '@angular/router';
+import { ICategoryFull } from '../../../categories-edit/models/icategory-full';
 
 @Component({
 	selector: 'app-post-add',
@@ -14,9 +18,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class PostAddComponent implements OnInit {
 	public form: FormGroup;
-	categories: Category[] = CategoriesMock;
+	categories: Category[];
 	editor: Editor;
 	html: '';
+	post: IPost;
+	category: ICategoryFull;
 	toolbar: Toolbar = [
 		['bold', 'italic'],
 		['underline', 'strike'],
@@ -31,7 +37,9 @@ export class PostAddComponent implements OnInit {
 	constructor(
 		private formBuilder: FormBuilder,
 		private postService: PostFirebaseService,
-		private snackBar: MatSnackBar
+		private snackBar: MatSnackBar,
+		private activatedRoute: ActivatedRoute,
+		private categoryService: CategoryService
 	) {
 		this.form = formBuilder.group({
 			title: ['', [Validators.required]],
@@ -43,13 +51,24 @@ export class PostAddComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.editor = new Editor();
+		this.categoryService
+			.getCategoryAll()
+			.pipe(take(1))
+			.subscribe(c => {
+				this.categories = c;
+			});
+		this.getPostId();
 	}
 
-	getSubCategories(): string[] {
+	getSubCategories(): ISubCategory[] {
 		if (!this.form.controls['categories'].value) {
 			return [];
 		}
-		return this.form.controls['categories'].value.subCategories;
+		return this.form.controls['categories'].value.subCategoriesFull;
+	}
+
+	displayFn(category: Category | ISubCategory): string {
+		return category && category.name ? category.name : '';
 	}
 
 	onSave(): void {
@@ -58,7 +77,7 @@ export class PostAddComponent implements OnInit {
 			contentHTML: this.form.controls['contentHTML'].value,
 			categoryId: this.form.controls['categories'].value.id,
 			createdAt: new Date(),
-			subCategory: this.form.controls['subcategories'].value
+			subCategory: this.form.controls['subcategories'].value.id
 		};
 		this.postService.addPost(post).then(resp => {
 			if (resp) {
@@ -74,6 +93,28 @@ export class PostAddComponent implements OnInit {
 		});
 	}
 
+	getPostId() {
+		if (this.activatedRoute.snapshot.params?.['id']) {
+			this.getPost(this.activatedRoute.snapshot.params?.['id']);
+		}
+	}
+
+	getPost(id: string): void {
+		this.postService
+			.getPost(id)
+			.pipe(take(1))
+			.subscribe(post => {
+				this.post = post;
+				this.categoryService
+					.getCategoryById(post.categoryId)
+					.pipe(take(1))
+					.subscribe(c => {
+						this.category = c;
+					});
+				this.form.patchValue({ ...post, category: post.categoryId });
+			});
+	}
+
 	isValidForm(): boolean {
 		return this.form.pristine || this.form.invalid;
 	}
@@ -81,4 +122,6 @@ export class PostAddComponent implements OnInit {
 	ngOnDestroy(): void {
 		this.editor.destroy();
 	}
+	compareWithFn = (el1: ICategory, el2: ICategory) =>
+		el1 && el2 && el1.id === el2.id;
 }
