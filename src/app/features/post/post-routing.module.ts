@@ -7,10 +7,18 @@ import { PostComponent } from './pages/post/post.component';
 const routes: Routes = [
 	{
 		path: '',
-		// canActivate: [OnlyLoggedInUserGuard],
 		children: [
-			{ path: 'add', component: PostAddComponent },
-			{ path: ':id', component: PostComponent }
+			{
+				path: 'add',
+				component: PostAddComponent,
+				canActivate: [OnlyLoggedInUserGuard]
+			},
+			{ path: ':id', component: PostComponent },
+			{
+				path: 'edit/:id',
+				component: PostAddComponent,
+				canActivate: [OnlyLoggedInUserGuard]
+			}
 		]
 	}
 ];

@@ -1,14 +1,17 @@
-<div class="add-btn">
-	<button
-		mat-raised-button
-		color="primary"
-		routerLink="add"
-		routerLinkActive="active"
-	>
-		Add new role
-	</button>
+<div class="header">
+	<div class="header--title">Roles list</div>
+	<div>
+		<button
+			mat-raised-button
+			color="primary"
+			routerLink="add"
+			routerLinkActive="active"
+		>
+			Add new role
+		</button>
+	</div>
 </div>
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 table-container">
 	<table
 		mat-table
 		[dataSource]="dataSource"
@@ -35,8 +38,6 @@
 		<ng-container matColumnDef="modificationCategory">
 			<th
 				mat-header-cell
-				mat-sort-header="modificationCategory"
-				sortActionDescription="Sort by modificationCategory"
 				*matHeaderCellDef
 			>
 				Can modify categories
@@ -52,8 +53,6 @@
 		<ng-container matColumnDef="modificationPost">
 			<th
 				mat-header-cell
-				mat-sort-header="modificationPost"
-				sortActionDescription="Sort by modificationPost"
 				*matHeaderCellDef
 			>
 				Can modify posts
@@ -69,8 +68,6 @@
 		<ng-container matColumnDef="availableCategoryIdsToView">
 			<th
 				mat-header-cell
-				mat-sort-header="availableCategoryIdsToView"
-				sortActionDescription="Sort by availableCategoryIdsToView"
 				*matHeaderCellDef
 			>
 				Available categories to view
@@ -105,14 +102,17 @@
 					mat-mini-fab
 					color="warn"
 					*ngIf="element.id !== '0'"
-					[matTooltip]="
-						element.hasUsers
-							? 'This role cannot delete because have users'
-							: 'Delete role  ' + element.name
-					"
+					[disabled]="element.hasUsers"
 					(click)="confirmationDelete(element)"
 				>
-					<mat-icon>delete</mat-icon>
+					<mat-icon
+						[matTooltip]="
+							element.hasUsers
+								? 'This role cannot delete because have users'
+								: 'Delete role  ' + element.name
+						"
+						>delete</mat-icon
+					>
 				</button>
 			</td>
 		</ng-container>

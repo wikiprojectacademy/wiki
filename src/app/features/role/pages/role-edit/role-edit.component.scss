@@ -1,10 +1,13 @@
 :host {
 	width: 100%;
 }
-
-.user-add {
+.header {
+	display: block;
+	height: 65px;
+}
+.role--add {
 	position: relative;
-	margin: 5vw auto 0;
+	margin: 0 auto;
 	width: 80vw;
 
 	border-radius: 23px;
@@ -91,6 +94,10 @@ mat-error {
 	padding-bottom: 5px;
 }
 
+.footer {
+	display: block;
+	height: 65px;
+}
 @keyframes move-up {
 	to {
 		transform: translateY(-10px) rotate(-20deg);
@@ -100,5 +107,41 @@ mat-error {
 @keyframes move-down {
 	to {
 		transform: translateY(10px) rotate(20deg);
+	}
+}
+@media (max-width: 576px) {
+	.role--add {
+		&:before {
+			display: none;
+		}
+
+		&:after {
+			display: none;
+		}
+	}
+	form {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		flex-direction: column;
+	}
+	.form__align {
+		align-content: start;
+	}
+	button {
+		margin: 10px 0;
+	}
+	.footer {
+		display: none;
+	}
+}
+@media (max-width: 960px) {
+	img {
+		display: none;
+	}
+}
+@media (min-width: 1400px) {
+	.role--add {
+		width: 900px;
 	}
 }
