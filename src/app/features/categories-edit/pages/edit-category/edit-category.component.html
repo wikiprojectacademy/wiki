@@ -163,13 +163,6 @@
 				>Posts: {{ category.postAmout }}</mat-card-subtitle
 			>
 
-			<div
-				class="delete-message"
-				*ngIf="category.postAmout"
-			>
-				<mat-icon>info</mat-icon>You cant delete category, if it has posts.
-			</div>
-
 			<div class="button-wrapper">
 				<div class="button-wrapper__delete">
 					<!-- (click)="deleteCategory()" -->
@@ -210,4 +203,11 @@
 			</div>
 		</form>
 	</mat-card>
+
+	<div
+		class="delete-message"
+		*ngIf="category.postAmout"
+	>
+		<mat-icon>info</mat-icon>You cant delete category, if it has posts.
+	</div>
 </div>

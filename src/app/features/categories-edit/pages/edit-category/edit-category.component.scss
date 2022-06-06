@@ -34,15 +34,10 @@ header {
 
 .form__wrapper {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	padding-bottom: 20px;
-
-	// @media screen and (max-width: $screen-width-small) {
-	// 	// min-height: 100%;
-	// 	// background-color: #f00;
-	// 	// flex-grow: 1;
-	// }
 
 	.form-card {
 		width: clamp(250px, 95vw, 600px);
@@ -184,13 +179,20 @@ header {
 				}
 			}
 		}
+	}
 
-		.delete-message {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding-bottom: 15px;
-			opacity: 0.4;
+	.delete-message {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-top: 15px;
+		opacity: 0.4;
+
+		@media screen and (max-width: $screen-width-small) {
+			padding: 5px;
+			width: 100%;
+			border: 1px solid #fa3a;
+			background-color: #fa33;
 		}
 	}
 }

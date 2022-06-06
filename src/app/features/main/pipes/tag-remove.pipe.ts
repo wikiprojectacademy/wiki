@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { IPost as Post } from '@core/models/Post';
+import { PostFull } from '../models/PostFull.interface';
 
 @Pipe({
 	name: 'tagRemove'
 })
 export class TagRemovePipe implements PipeTransform {
-	transform(posts: Post[]): Post[] {
+	transform(posts: PostFull[]): PostFull[] {
 		posts.forEach(post => {
 			let result = '';
 			let braceCounter = 0;
