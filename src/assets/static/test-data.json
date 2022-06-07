@@ -6,22 +6,57 @@
 			"hasUsers": true,
 			"canModifyCategory": false,
 			"canModifyPost": false
+		},
+		{
+			"id": "2",
+			"name": "simpleUser",
+			"hasUsers": true,
+			"canModifyCategory": false,
+			"canModifyPost": false
+		},
+		{
+			"id": "3",
+			"name": "defaultRole",
+			"hasUsers": true,
+			"canModifyCategory": true,
+			"canModifyPost": false
+		},
+		{
+			"id": "4",
+			"name": "editRole",
+			"hasUsers": true,
+			"canModifyCategory": false,
+			"canModifyPost": false
+		},
+		{
+			"id": "5",
+			"name": "userRole",
+			"hasUsers": true,
+			"canModifyCategory": false,
+			"canModifyPost": false
+		},
+		{
+			"id": "6",
+			"name": "simpleRole",
+			"hasUsers": true,
+			"canModifyCategory": false,
+			"canModifyPost": false
 		}
 	],
 	"users": [
 		{
 			"id": "2",
 			"email": "user1@mail.com",
-			"firstName": "default",
-			"lastName": "user",
+			"firstName": "John",
+			"lastName": "Smith",
 			"password": "Password12345",
 			"roleId": "1"
 		},
 		{
 			"id": "3",
 			"email": "user2@mail.com",
-			"firstName": "default",
-			"lastName": "user",
+			"firstName": "Lilly",
+			"lastName": "Smith",
 			"password": "Password12345",
 			"roleId": "1"
 		},
@@ -32,6 +67,38 @@
 			"lastName": "admin",
 			"password": "1q2w3e4r",
 			"roleId": "0"
+		},
+		{
+			"id": "5",
+			"email": "user5@mail.com",
+			"firstName": "Neo",
+			"lastName": "Anderson",
+			"password": "Password12345",
+			"roleId": "1"
+		},
+		{
+			"id": "6",
+			"email": "user6@mail.com",
+			"firstName": "James",
+			"lastName": "Depp",
+			"password": "Password12345",
+			"roleId": "1"
+		},
+		{
+			"id": "7",
+			"email": "user7@mail.com",
+			"firstName": "Harry",
+			"lastName": "Potter",
+			"password": "Password12345",
+			"roleId": "1"
+		},
+		{
+			"id": "8",
+			"email": "user8@mail.com",
+			"firstName": "Robert",
+			"lastName": "Barateon",
+			"password": "Password12345",
+			"roleId": "1"
 		}
 	],
 	"categories": [
