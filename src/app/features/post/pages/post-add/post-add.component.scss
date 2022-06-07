@@ -10,6 +10,10 @@
 	form {
 		display: flex;
 		gap: 32px;
+		@media (max-width: 700px) {
+			display: flex;
+			flex-direction: column;
+		}
 		.selectors {
 			display: flex;
 			flex-direction: column;
