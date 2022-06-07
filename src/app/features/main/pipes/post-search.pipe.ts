@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IPost as Post } from '@core/models/Post';
+import { PostFull } from '../models/PostFull.interface';
 
 @Pipe({
 	name: 'postSearch'
 })
 export class PostSearchPipe implements PipeTransform {
-	transform(posts: Post[], searchText: string): Post[] {
+	transform(posts: PostFull[], searchText: string): PostFull[] {
 		return posts.filter(
 			post =>
 				post.title.toLocaleLowerCase().includes(searchText.toLowerCase()) ||

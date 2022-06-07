@@ -20,8 +20,8 @@
 			<!--- -- -- -- -- --->
 			<!--- --- NAME --- -->
 			<!--- -- -- -- -- --->
-			<mat-card-title> Name: </mat-card-title>
 			<mat-form-field appearance="fill">
+				<mat-label>Name</mat-label>
 				<input
 					matInput
 					placeholder="Enter name of category here"
@@ -162,16 +162,8 @@
 				>Posts: {{ category.postAmout }}</mat-card-subtitle
 			>
 
-			<div
-				class="delete-message"
-				*ngIf="category.postAmout"
-			>
-				<mat-icon>info</mat-icon>You cant delete category, if it has posts.
-			</div>
-
 			<div class="button-wrapper">
 				<div class="button-wrapper__delete">
-					<!-- (click)="deleteCategory()" -->
 					<button
 						mat-stroked-button
 						color="warn"
@@ -209,4 +201,11 @@
 			</div>
 		</form>
 	</mat-card>
+
+	<div
+		class="delete-message"
+		*ngIf="category.postAmout"
+	>
+		<mat-icon>info</mat-icon>You cant delete category, if it has posts.
+	</div>
 </div>

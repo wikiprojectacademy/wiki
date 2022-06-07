@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IPost as Post } from '@core/models/Post';
+import { IPost as PostDB } from '@core/models/Post';
 import { IUser as UserDB } from '@core/models/User';
 import { PostFirebaseService } from '@core/services/firebase/firebase-entities/postFirebase.service';
 import { CurrentUserService } from '@core/services/user/current-user.service';
@@ -7,6 +7,7 @@ import { combineLatest, Observable, take } from 'rxjs';
 import { ICategoryFull as Category } from '../categories-edit/models/icategory-full';
 import { CategoryService } from '../categories-edit/services/categories.service';
 import { RolesService } from '../categories-edit/services/roles.service';
+import { PostFull as Post } from './models/PostFull.interface';
 
 @Component({
 	selector: 'app-main',
@@ -73,7 +74,6 @@ export class MainComponent implements OnInit {
 					}
 					return false;
 				});
-				// this.posts = this.mock;
 
 				this.isLoading = false;
 			}
