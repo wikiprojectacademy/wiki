@@ -15,6 +15,7 @@ import { PostComponent } from './pages/post/post.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
 	declarations: [
@@ -39,7 +40,8 @@ import { MatDividerModule } from '@angular/material/divider';
 		NgxEditorModule,
 		FormsModule,
 		MatProgressSpinnerModule,
-		MatDividerModule
+		MatDividerModule,
+		MatTooltipModule
 	]
 })
 export class PostModule {}
