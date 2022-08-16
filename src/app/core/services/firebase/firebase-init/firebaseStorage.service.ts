@@ -12,14 +12,6 @@ import { PostFirebaseService } from '@core/services/firebase/firebase-entities/p
 import { RoleFirebaseService } from '@core/services/firebase/firebase-entities/roleFirebase.service';
 import { UserFirebaseService } from '@core/services/firebase/firebase-entities/userFirebase.service';
 import { RoleCategoryFirebaseService } from '@core/services/firebase/firebase-entities/roleCategoryFirebase.service';
-import {
-	categoriesMock,
-	postsMock,
-	roleCategoryMocks,
-	rolesMock,
-	subCategoriesMock,
-	usersMock
-} from '@core/models/test-data';
 import { IRole } from '@core/models/Role';
 import { IRoleCategoryPair } from '@core/models/RoleCategoryPair';
 import {

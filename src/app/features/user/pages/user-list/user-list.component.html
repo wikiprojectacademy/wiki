@@ -100,7 +100,7 @@
 					color="primary"
 					*ngIf="!element.isAdmin"
 					matTooltip="Edit user {{ element.firstName }}	{{ element.lastName }}"
-					routerLink="/user/edit/{{ element.id }}"
+					[routerLink]="['edit', element.id]"
 				>
 					<mat-icon>edit</mat-icon>
 				</button>
